@@ -12,9 +12,7 @@ builder.Services.AddServerSideBlazor();
 
 #region db
 //register db context
-builder.Services.AddDbContextFactory<UserContext>(opt =>
-    opt.UseSqlite($"Data Source=/data/foodie/sqlite.db"));
-
+builder.Services.AddDbContextFactory<DatabaseContext>();
 
 #endregion
 
