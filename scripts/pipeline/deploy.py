@@ -6,6 +6,7 @@ import json
 import docker
 import util as u
 
+
 def main():
     print("Starting deploy")
     branch = u.getGitBranch()
@@ -21,7 +22,9 @@ def main():
         print("No old container found")
     # start new container
     print("Starting new container")
-    client.containers.create(image=u.getImageTag(config), name=config['hostname'], ports={config['port']: 80}, detach=True).start()
+    client.containers.create(image=u.getImageTag(config), name=config['hostname'], ports={
+                             config['port']: 80}, detach=True).start()
+
 
 if __name__ == "__main__":
     main()
