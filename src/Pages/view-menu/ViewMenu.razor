@@ -2,20 +2,35 @@
 @using project_foodie.Data
 @using project_foodie.Pages.view_menu.components
 @inject ExampleApiService ExampleApiService
+@inject NavigationManager UriHelper
 
-<div class="border-2">
-    <div class="d-flex flex-row gap-5 justify-content-center flex-wrap w-50 m-auto">
-        @for (int x=0; x<6; x++) {
-            <Dishes/>
-        }
+<div class="border border-2 border-dark h-75 w-75 m-auto mt-2 mb-5">
+    <MenuContainer/>
+    <div class="d-flex justify-content-center m-5">
+        <button @onclick="DecrementCount" class="btn btn-danger w-5 me-2" style="width: 200px;">Tillbaka</button>
+        <button @onclick="IncrementCount" class="btn btn-success w-5 ms-2" style="width: 200px;">Nästa steg</button>
     </div>
+    
 </div>
 
 @code{
-
-    private string message;
-
-    protected override async Task OnInitializedAsync()
+    private int count = 1;
+    void Navigate()
     {
+        if(count == 1) {
+            UriHelper.NavigateTo("order");
+        }
+    }
+
+    private void IncrementCount()
+    {
+        count++;
+        Console.WriteLine(count);
+    }
+
+    private void DecrementCount()
+    {
+        count--;
+        Console.WriteLine(count);
     }
 }
