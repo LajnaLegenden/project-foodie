@@ -1,13 +1,20 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.EntityFrameworkCore;
 using project_foodie.Data;
+using project_foodie.Model;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<ExampleApiService>();
+
+#region db
+//register db context
+builder.Services.AddDbContextFactory<DatabaseContext>();
+
+#endregion
 
 var app = builder.Build();
 
