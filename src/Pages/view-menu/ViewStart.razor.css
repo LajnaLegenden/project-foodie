@@ -1,0 +1,32 @@
+.border-container {
+    border: 2px solid black;
+    width: 75%;
+    margin: auto;
+    min-height: 450px;
+}
+h1 {
+    text-align:center;
+    margin-top: 15px;
+    margin-bottom:20px;
+}
+
+p {
+    font-size: 30px;
+    text-align:center;
+}
+
+span {
+    color:red;
+}
+
+.btn-container {
+    display: flex;
+    justify-content: center;
+}
+
+.btn-start {
+    background: green;
+    height: 45px;
+    width: 300px;
+    margin: 20px;
+}

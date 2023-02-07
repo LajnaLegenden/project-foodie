@@ -1,0 +1,105 @@
+.food-card {
+    width: 340px;
+    border: 2px solid grey;
+}
+
+.food-card-body {
+
+}
+
+.food-card-img {
+    width: 100%;
+    border-bottom: 1px solid black;
+}
+
+.food-card-text,
+.food-card-price {
+    padding-top: 10px;
+    width: 90%;
+    margin: auto;
+    font-weight: bold;
+}
+
+.food-card-price {
+    padding-bottom: 10px;
+}
+
+.food-card-btn-container {
+    display: flex;
+    justify-content: center;
+}
+
+.food-card-btn {
+    margin: 8px;
+    width: 75%;
+    height: 40px;
+    border: 1px solid gray;
+}
+
+.food-card-text-add-amount {
+    width: 80px;
+}
+
+.btn-add-container {
+    height: 45px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 75%;
+    margin: 5px;
+    border: 1px solid black;
+    border-radius: 25px;
+    background: #D9D9D9;
+    box-shadow: inset 0px 2px 2px rgba(0, 0, 0, 0.25);
+    line-height: 1.5em;
+}
+
+.food-card-btn-add-increment {
+    margin-top: 6px;
+    border-radius: 20px;
+    width: 45px;
+    height: 30px;
+    border: none;
+    float: right;
+    background: green;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
+
+.food-card-btn-decrement {
+    margin-top: 6px;
+    border-radius: 20px;
+    width: 45px;
+    height: 30px;
+    border: none;
+    float: left;
+    background: red;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    line-height: 0;
+    font-size: 20px;
+}
+
+.text-add-placeholder {
+    width: 20%;
+    background: none;
+    border: none;
+    text-align: center;
+    color: black;
+}
+
+.text-add-placeholder:focus {
+    border: none;
+    background: none;
+}
+
+::placeholder {
+    color: black;
+    opacity: 1;
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: red;
+  }
+  
+::-ms-input-placeholder { /* Microsoft Edge */
+color: red;
+}
