@@ -1,10 +1,9 @@
-<div class="card" style="width: 13rem;">
+<div class="card table-hover" style="width: 13rem;">
   <img class="card-img-top" src="https://static.mathem.se/shared/images/recipes/doublelarge/kycklingtimbal-och-bontimbal-findus-mathem.jpeg" alt="Card image cap">
   <div class="card-body">
     <p class="card-text">Kycklingtimbal med böntimbal, brunsås och potatismos</p>
     <p class="fw-bold">50kr</p>
 <div class="text-center">
-    <button class="@ButtonClass" type="submit" @onclick="ToggleInput">Välj</button>
     @if (showInput)
     {
         <div>
@@ -12,6 +11,10 @@
             <input type="text" class="form-control" count="@count" placeholder=@count/>
             <button class="btn btn-primary" @onclick="IncrementCount">+</button>
         </div>
+    }
+    else
+    {
+        <button class="btn btn-primary" type="submit" @onclick="ToggleInput">Välj</button>
     }
 </div>
   </div>
@@ -35,7 +38,6 @@
         {
             count = 0;
         }
-        
     }
 
     private void IncrementCount()
