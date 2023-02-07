@@ -11,18 +11,15 @@ pipeline {
         echo 'No tests'
       }
     }
-
     stage('Deploy') {
       steps {
          sh './scripts/pipeline/deploy.py'
       }
     }
-
     stage('Confirm') {
       steps {
         echo 'no step'
       }
     }
-
   }
 }

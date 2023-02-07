@@ -6,9 +6,9 @@ import json
 import docker
 import util as u
 def main():
-    print("Starting build")
     branch = u.getGitBranch()
     config = u.getConfig(branch)
+    print("Starting build for branch " + branch + " and hostname " + config['hostname'])
     client = docker.APIClient(base_url=config['daemon'])
     # print stream of build output as it happens
     for line in client.build(path="./", tag=u.getImageTag(config)):
