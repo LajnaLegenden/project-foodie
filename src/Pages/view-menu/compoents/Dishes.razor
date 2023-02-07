@@ -4,12 +4,12 @@
     <p class="card-text">Kycklingtimbal med böntimbal, brunsås och potatismos</p>
     <p class="fw-bold">50kr</p>
 <div class="text-center">
-    <button class="btn btn-primary" type="submit" @onclick="ToggleInput">Välj @count</button>
+    <button class="@ButtonClass" type="submit" @onclick="ToggleInput">Välj</button>
     @if (showInput)
     {
         <div>
             <button class="btn btn-primary" @onclick="DecrementCount">-</button>
-            <input type="text" value="@count" />
+            <input type="text" class="form-control" count="@count" placeholder=@count/>
             <button class="btn btn-primary" @onclick="IncrementCount">+</button>
         </div>
     }
@@ -18,13 +18,24 @@
 </div>
 
 
+
 @code {
     private int count = 0;
     private bool showInput = false;
+    private string ButtonClass => count <= 0 ? "btn btn-danger" : "btn btn-primary";
 
     private void ToggleInput()
     {
         showInput = !showInput;
+        if (showInput)
+        {
+            count = 1;
+        }
+        else
+        {
+            count = 0;
+        }
+        
     }
 
     private void IncrementCount()
@@ -35,8 +46,12 @@
     private void DecrementCount()
     {
         count--;
+        if (count < 0)
+        {
+            count = 0;
+        }
     }
-    
+
 
 }
 
