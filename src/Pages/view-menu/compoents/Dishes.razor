@@ -1,21 +1,44 @@
-@namespace project_foodie.Pages
 <div class="card" style="width: 13rem;">
   <img class="card-img-top" src="https://static.mathem.se/shared/images/recipes/doublelarge/kycklingtimbal-och-bontimbal-findus-mathem.jpeg" alt="Card image cap">
   <div class="card-body">
     <p class="card-text">Kycklingtimbal med böntimbal, brunsås och potatismos</p>
     <p class="fw-bold">50kr</p>
-    <div class="text-center">
-        <button class="btn btn-primary" type="submit" onclick="@(() => fethData())">Button</button>
-    </div>
+<div class="text-center">
+    <button class="btn btn-primary" type="submit" @onclick="ToggleInput">Välj @count</button>
+    @if (showInput)
+    {
+        <div>
+            <button class="btn btn-primary" @onclick="DecrementCount">-</button>
+            <input type="text" value="@count" />
+            <button class="btn btn-primary" @onclick="IncrementCount">+</button>
+        </div>
+    }
+</div>
   </div>
 </div>
 
 
 @code {
-    int counter = 0;
+    private int count = 0;
+    private bool showInput = false;
 
-    void fethData() {
-        counter++;
-        Console.WriteLine(counter);
+    private void ToggleInput()
+    {
+        showInput = !showInput;
     }
+
+    private void IncrementCount()
+    {
+        count++;
+    }
+
+    private void DecrementCount()
+    {
+        count--;
+    }
+    
+
 }
+
+
+
