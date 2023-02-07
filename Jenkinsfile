@@ -1,6 +1,11 @@
 pipeline {
     agent any
     stages {
+        stage('Pre Build') {
+            steps {
+                sh 'chmod +x -R ./scripts/'
+            }
+        }
         stage('Build') {
             steps {
                 sh './scripts/pipeline/build.py'
