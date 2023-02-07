@@ -14,7 +14,7 @@ def main():
         print("Skipping confirm")
         exit(0)
     # make sure the server responds with a 200 giving it 20 attempts and 3 seconds between each attempt
-    url = "http://locahost:" + config['port'] + "/"
+    url = "http://locahost:" + str(config['port']) + "/"
 
     num_attempts = 20
     while num_attempts > 0:
