@@ -1,0 +1,8 @@
+@using project_foodie.Pages.view_menu.components
+<h1 class="text-black text-center mt-5">Måndag vecka 34</h1>
+    <h1 class="text-black text-center mb-3"> Lunch</h1>
+    <div class="d-flex flex-row gap-5 justify-content-center flex-wrap w-75 m-auto">
+        @for (int x=0; x<6; x++) {
+            <Dishes/>
+        }
+    </div>
