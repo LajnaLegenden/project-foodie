@@ -2,6 +2,7 @@
 
 import json
 import requests
+import util as u
 
 def main():
     print("Starting confirm")
