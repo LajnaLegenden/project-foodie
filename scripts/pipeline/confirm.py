@@ -8,7 +8,7 @@ def main():
     branch = u.getGitBranch()
     config = u.getConfig(branch)
 
-    if(not u.hasOwnConfig(config)):
+    if(not u.hasOwnConfig(branch)):
         print("No config for branch " + branch)
         print("Skipping confirm")
         exit(0)
