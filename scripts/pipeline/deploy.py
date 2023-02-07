@@ -22,8 +22,10 @@ def main():
         print("No old container found")
     # start new container
     print("Starting new container")
-    client.containers.create(image=u.getImageTag(config), name=config['hostname'], ports={
-                             80: config['port'], 443: config["port"] + 443}, detach=True).start()
+
+    ports = {80: config['port'], 443: config["port"] + 443}
+    print("Ports: " + str(ports))
+    client.containers.create(image=u.getImageTag(config), name=config['hostname'], ports=ports, detach=True).start()
 
 
 if __name__ == "__main__":
