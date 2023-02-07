@@ -23,7 +23,7 @@ def main():
     # start new container
     print("Starting new container")
     client.containers.create(image=u.getImageTag(config), name=config['hostname'], ports={
-                             config['port']: 80}, detach=True).start()
+                             80: config['port'], 443: config["port"] + 443}, detach=True).start()
 
 
 if __name__ == "__main__":
