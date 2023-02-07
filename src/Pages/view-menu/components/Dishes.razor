@@ -1,0 +1,65 @@
+<div class="card table-hover" style="width: 13rem;">
+  <img class="card-img-top" src="https://static.mathem.se/shared/images/recipes/doublelarge/kycklingtimbal-och-bontimbal-findus-mathem.jpeg" alt="Card image cap">
+  <div class="card-body">
+    <p class="card-text">Kycklingtimbal med böntimbal, brunsås och potatismos</p>
+    <p class="fw-bold">50kr</p>
+<div class="text-center">
+    @if (showInput)
+    {
+        <div>
+            <button class="btn btn-primary" @onclick="DecrementCount">-</button>
+            <input type="text" class="form-control w-80" count="@count" placeholder=@count/>
+            <button class="btn btn-primary" @onclick="IncrementCount">+</button>
+        </div>
+    }
+    else
+    {
+        <button class="@ButtonClass" type="submit" @onclick="ToggleInput">Välj</button>
+    }
+</div>
+  </div>
+</div>
+
+
+
+@code {
+    private int count = 0;
+    private bool showInput = false;
+    private string ButtonClass => count <= 0 ? "btn btn-danger" : "btn btn-primary";
+
+    private void ToggleInput()
+    {
+        showInput = !showInput;
+        if (showInput)
+        {
+            count = 1;
+        }
+        else
+        {
+            count = 0;
+        }
+    }
+
+    private void IncrementCount()
+    {
+        count++;
+    }
+
+    private void DecrementCount()
+    {
+        if (count > 0)
+        {
+            count--;
+            
+        }
+        if (count == 0)
+        {
+            showInput = false;
+        }
+    }
+
+
+}
+
+
+
