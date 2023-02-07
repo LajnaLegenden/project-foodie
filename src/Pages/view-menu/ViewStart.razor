@@ -1,0 +1,25 @@
+@page "/start"
+@using project_foodie.Data
+@using project_foodie.Pages.view_menu.components
+@inject ExampleApiService ExampleApiService
+@inject NavigationManager NavManager
+@inject NavigationManager UriHelper
+
+<h1 class="text-center m-2 mb-4">Lägg en mat beställning</h1>
+<div class="border border-2 border-dark h-75 w-75 m-auto mt-2 mb-5">
+    <h1 class="text-black text-center mt-5">Veckomeny 34</h1>
+    <h3 class="text-black text-center mt-5">Välj max 1 rätt per måltid genom att trycka på “Lägg till”-knappen</h3>
+    <h3 class="text-black text-center mt-5">Om du vill läsa innehållsförteckningen på maträtten så tycker du på bilden</h3>
+    <h3 class="text-danger text-center mt-5">Beställ senast: 03/02/2023</h3>
+    <h3 class="text-black text-center mt-5">Leverans: 09/02/2023</h3>
+    <div class="d-flex justify-content-center m-5">
+        <button @onclick=@Navigate class="btn btn-success w-5 m-auto" style="width: 200px;">Starta Här</button>
+    </div>
+</div>
+
+@code {
+void Navigate()
+{
+    UriHelper.NavigateTo("order");
+}
+}
