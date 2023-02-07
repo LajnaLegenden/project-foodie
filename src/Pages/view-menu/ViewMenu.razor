@@ -1,16 +1,16 @@
 @page "/order"
 @using project_foodie.Data
+@using project_foodie.Model
 @using project_foodie.Pages.view_menu.components
-@inject ExampleApiService ExampleApiService
 @inject NavigationManager UriHelper
 
-<div class="border border-2 border-dark h-75 w-75 m-auto mt-2 mb-5">
+<Timeline/>
+<div class="menu-container">
     <MenuContainer/>
-    <div class="d-flex justify-content-center m-5">
-        <button @onclick="DecrementCount" class="btn btn-danger w-5 me-2" style="width: 200px;">Tillbaka</button>
-        <button @onclick="IncrementCount" class="btn btn-success w-5 ms-2" style="width: 200px;">Nästa steg</button>
+    <div class="button-container">
+        <button @onclick="DecrementCount" class="button-back">Tillbaka</button>
+        <button @onclick="IncrementCount" class="button-forward">Nästa steg</button>
     </div>
-    
 </div>
 
 @code{
