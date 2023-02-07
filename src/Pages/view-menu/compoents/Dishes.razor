@@ -4,7 +4,7 @@
     <p class="card-text">Kycklingtimbal med böntimbal, brunsås och potatismos</p>
     <p class="fw-bold">50kr</p>
     <div class="text-center">
-        <button class="btn btn-primary" type="submit" onclick="@(() => IncrementValue())">Button</button>
+        <button class="btn btn-primary" type="submit" onclick="@(() => fethData())">Button</button>
     </div>
   </div>
 </div>
@@ -13,7 +13,7 @@
 @code {
     int counter = 0;
 
-    void IncrementValue() {
+    void fethData() {
         counter++;
         Console.WriteLine(counter);
     }
