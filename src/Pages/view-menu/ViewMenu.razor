@@ -1,0 +1,21 @@
+@page "/order"
+@using project_foodie.Data
+@using project_foodie.Pages.view_menu.components
+@inject ExampleApiService ExampleApiService
+
+<div class="border-2">
+    <div class="d-flex flex-row gap-5 justify-content-center flex-wrap w-50 m-auto">
+        @for (int x=0; x<6; x++) {
+            <Dishes/>
+        }
+    </div>
+</div>
+
+@code{
+
+    private string message;
+
+    protected override async Task OnInitializedAsync()
+    {
+    }
+}
