@@ -6,9 +6,9 @@
         "port": 8103,
         "data": "/mnt/user/appdata/data/project-foodie/data"
     },
-    "dev": {
+    "CBG-292-jenkins": {
         "daemon": "unix://var/run/docker.sock",
-        "hostname": "hemdahl-bifrost-dev",
+        "hostname": "project-foodie-dev",
         "environment": "dev",
         "port": 8101,
         "data": "/mnt/user/appdata/data/project-foodie-dev/data"
