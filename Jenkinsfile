@@ -6,7 +6,6 @@ pipeline {
         sh './scripts/pipeline/build.py'
       }
     }
-
     stage('Test') {
       steps {
         echo 'No tests'
@@ -15,7 +14,7 @@ pipeline {
 
     stage('Deploy') {
       steps {
-        sh 'echo "no deploy specified"'
+         sh './scripts/pipeline/deploy.py'
       }
     }
 
