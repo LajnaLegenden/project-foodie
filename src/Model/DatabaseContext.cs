@@ -101,6 +101,7 @@ public class DatabaseContext : DbContext
 
     }
 }
+
 public enum FoodType
 {
     Chicken,
@@ -112,17 +113,29 @@ public enum FoodType
     Unknown
 }
 
+
+public enum OrderType
+{
+    Lunch, Dinner, Unknown
+}
+
+
 // Tables
-
-
-
-
 public class Ingredient
 {
     public required int Id { get; set; }
     public required string Name { get; set; }
 
     public IList<IngredientDish> IngredientDish { get; set; }
+    public IList<AllergenIngredient> AllergenIngredient { get; set; }
+}
+
+public class Allergen
+{
+    public required int Id { get; set; }
+    public required string Name { get; set; }
+
+    public IList<AllergenDish> AllergenDish { get; set; }
     public IList<AllergenIngredient> AllergenIngredient { get; set; }
 }
 
@@ -153,6 +166,28 @@ public class Menu
     public required DateTime startDate { get; set; }
     public required DateTime endDate { get; set; }
     public IList<DishMenu> DishMenu { get; set; }
+}
+
+public class OrderItem
+{
+
+    public required DateTime date { get; set; }
+    public required int id { get; set; }
+
+    public OrderType type { get; set; } = OrderType.Unknown;
+
+    public IList<OrderItemOrder> OrderItemOrder { get; set; }
+}
+
+public class Order
+{
+    public required int Id { get; set; }
+    public required int userId { get; set; }
+    public required int menuId { get; set; }
+    public required DateTime orderDate { get; set; }
+    public IList<OrderItemOrder> OrderItemOrder { get; set; }
+    public IList<DishOrder> DishOrder { get; set; }
+
 }
 
 // connection tables
@@ -194,46 +229,6 @@ public class DishMenu
     public Menu Menu { get; set; }
 }
 
-public class Allergen
-{
-    public required int Id { get; set; }
-    public required string Name { get; set; }
-
-    public IList<AllergenDish> AllergenDish { get; set; }
-    public IList<AllergenIngredient> AllergenIngredient { get; set; }
-}
-
-
-// connection tables
-
-
-public enum OrderType
-{
-    Lunch, Dinner, Unknown
-}
-
-
-public class OrderItem
-{
-
-    public required DateTime date { get; set; }
-    public required int id { get; set; }
-
-    public OrderType type { get; set; } = OrderType.Unknown;
-
-    public IList<OrderItemOrder> OrderItemOrder { get; set; }
-}
-
-public class Order
-{
-    public required int Id { get; set; }
-    public required int userId { get; set; }
-    public required int menuId { get; set; }
-    public required DateTime orderDate { get; set; }
-    public IList<OrderItemOrder> OrderItemOrder { get; set; }
-    public IList<DishOrder> DishOrder { get; set; }
-
-}
 
 public class OrderItemOrder
 {
