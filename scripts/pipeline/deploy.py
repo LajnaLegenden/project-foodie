@@ -15,6 +15,7 @@ def main():
 
     # stop and remove old container
     try:
+        print("Stopping old container")
         container = client.containers.get(config['hostname'])
         container.stop()
         container.remove()
@@ -24,7 +25,6 @@ def main():
     print("Starting new container")
 
     ports = {80: config['port'], 443: config["port"] + 443}
-    print("Ports: " + str(ports))
     client.containers.create(image=u.getImageTag(config), name=config['hostname'], ports=ports, detach=True).start()
 
 
