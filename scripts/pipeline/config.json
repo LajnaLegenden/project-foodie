@@ -5,7 +5,7 @@
         "environment": "prod",
         "port": 8103,
         "data": "/mnt/user/appdata/data/project-foodie/data",
-        "url": "https://prod.foodie.linusjansson.com"
+        "url": "https://prodfoodie.linusjansson.com/"
     },
     "CBG-292-jenkins": {
         "daemon": "unix://var/run/docker.sock",
@@ -13,7 +13,7 @@
         "environment": "dev",
         "port": 8101,
         "data": "/mnt/user/appdata/data/project-foodie-dev/data",
-        "url": "https://dev.foodie.linusjansson.com"
+        "url": "https://devfoodie.linusjansson.com/"
     },
     "default": {
         "daemon": "unix://var/run/docker.sock",
