@@ -1,0 +1,27 @@
+
+<div>
+    @foreach (var day in weekdays)
+    {
+        <div>
+            <h2>@day</h2>
+        </div>
+    }
+</div>
+
+@code {
+    // Testdatum
+    DateTime startDate = new DateTime(2023, 2, 6);
+    DateTime endDate = new DateTime(2023, 2, 12);
+
+    List<string> weekdays = new List<string>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        for (var date = startDate; date <= endDate; date = date.AddDays(1))
+        {
+            string day = date.ToString("dddddd", new System.Globalization.CultureInfo("sv-SE"));
+            string weekday = char.ToUpper(day[0]) + day.Substring(1);
+            weekdays.Add(weekday);
+        }
+    }
+}
