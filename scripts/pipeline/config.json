@@ -4,14 +4,16 @@
         "hostname": "project-foodie-prod",
         "environment": "prod",
         "port": 8103,
-        "data": "/mnt/user/appdata/data/project-foodie/data"
+        "data": "/mnt/user/appdata/data/project-foodie/data",
+        "url": "https://prod.foodie.linusjansson.com"
     },
     "CBG-292-jenkins": {
         "daemon": "unix://var/run/docker.sock",
         "hostname": "project-foodie-dev",
         "environment": "dev",
         "port": 8101,
-        "data": "/mnt/user/appdata/data/project-foodie-dev/data"
+        "data": "/mnt/user/appdata/data/project-foodie-dev/data",
+        "url": "https://dev.foodie.linusjansson.com"
     },
     "default": {
         "daemon": "unix://var/run/docker.sock",
