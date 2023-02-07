@@ -11,6 +11,12 @@ def main():
     print("Starting deploy")
     branch = u.getGitBranch()
     config = u.getConfig(branch)
+
+    if(not u.hasOwnConfig(config)):
+        print("No config for branch " + branch)
+        print("Skipping deploy")
+        exit(0)
+
     client = docker.DockerClient(base_url=config['daemon'])
 
     # stop and remove old container

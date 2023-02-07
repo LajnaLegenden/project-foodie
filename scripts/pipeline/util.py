@@ -15,6 +15,13 @@ def getConfig(branch):
 def getImageTag(config):
     return config['hostname'] + ":latest"
 
+def hasOwnConfig(config):
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    with open(dir_path + '/config.json') as f:
+        config = json.load(f)
+    if branch not in config:
+        return False
+    return True
 
 def printLine(line):
     line = line.decode('utf-8').strip()

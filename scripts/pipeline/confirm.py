@@ -4,10 +4,14 @@ import json
 import requests
 
 def main():
-    print("Starting deploy")
+    print("Starting confirm")
     branch = u.getGitBranch()
     config = u.getConfig(branch)
 
+    if(not u.hasOwnConfig(config)):
+        print("No config for branch " + branch)
+        print("Skipping confirm")
+        exit(0)
     # make sure the server responds with a 200 giving it 20 attempts and 3 seconds between each attempt
     url = "http://locahost:" + config['port'] + "/"
 

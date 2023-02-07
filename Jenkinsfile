@@ -17,7 +17,6 @@ pipeline {
             }
         }
         stage('Confirm') {
-            when { branch: "main|dev", comparator: "REGEXP"}
             steps {
                 sh './scripts/pipeline/confirm.py'
             }
