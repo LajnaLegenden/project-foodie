@@ -1,5 +1,5 @@
 {
-    "production": {
+    "main": {
         "daemon": "unix://var/run/docker.sock",
         "hostname": "project-foodie-prod",
         "environment": "prod",
@@ -7,7 +7,7 @@
         "data": "/mnt/user/appdata/data/project-foodie/data",
         "url": "https://prodfoodie.linusjansson.com/"
     },
-    "CBG-292-jenkins": {
+    "dev": {
         "daemon": "unix://var/run/docker.sock",
         "hostname": "project-foodie-dev",
         "environment": "dev",
