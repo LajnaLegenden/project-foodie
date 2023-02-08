@@ -1,22 +1,23 @@
 .border-container {
-    border: 2px solid black;
+    border: var(--border-default-width, 2px) solid var(--border-default-bg, #000000);
     width: 75%;
     margin: auto;
     min-height: 450px;
 }
 h1 {
+    font-size: var(--h1-font-default, 40px);
     text-align:center;
     margin-top: 15px;
     margin-bottom:20px;
 }
 
 p {
-    font-size: 30px;
-    text-align:center;
+    font-size: var(--h2-font-default, 30px);
+    text-align: center;
 }
 
 span {
-    color:red;
+    color:var(--btn-danger, #8B0000);
 }
 
 .btn-container {
@@ -25,7 +26,7 @@ span {
 }
 
 .btn-start {
-    background: green;
+    background: var(--btn-start, #006B38);
     height: 45px;
     width: 300px;
     margin: 20px;
