@@ -4,10 +4,6 @@ pipeline {
         stage('Pre Build') {
             steps {
                 sh 'chmod +x -R ./scripts/'
-                sh 'pwd'
-                sh 'env'
-                sh 'ssh-keyscan 10.147.20.156 >> ~/.ssh/known_hosts'
-                sh 'pwd'
             }
         }
         stage('Build') {
