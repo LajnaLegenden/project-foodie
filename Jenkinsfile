@@ -6,6 +6,8 @@ pipeline {
         sh 'chmod +x -R ./scripts/'
         sh 'pwd'
         sh 'env'
+        sh 'ls -la'
+        sh 'ls -la ./scripts/pipeline/'
       }
     }
 
