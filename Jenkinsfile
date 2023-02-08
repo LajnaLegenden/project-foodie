@@ -4,6 +4,8 @@ pipeline {
     stage('Pre Build') {
       steps {
         sh 'chmod +x -R ./scripts/'
+        sh 'pwd'
+        sh 'env'
       }
     }
 
