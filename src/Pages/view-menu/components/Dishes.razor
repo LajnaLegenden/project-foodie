@@ -31,17 +31,21 @@
     private int count = 0;
     private bool showInput = false;
     private string ButtonClass => count <= 0 ? "food-card-btn food-card-btn-add-amount" : "food-card-btn food-card-btn-add";
+    
+    [Parameter]
+    public int id { get; set; }
+    
 
     private string jsonData = string.Empty;
 
     private async Task GetJsonData()
     {
-        var data = new
+        var data  = new 
         { 
             pageId = 1,
             items = new
             {
-                dishId = 12,
+                dishId = id,
                 quantity = count,
             }
         };
