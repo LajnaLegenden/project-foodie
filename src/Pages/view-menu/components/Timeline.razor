@@ -1,27 +1,29 @@
-
-<div>
-    @foreach (var day in weekdays)
+<div class="timeline-container">
+    @foreach (var day in weekdays.Take(7))
     {
-        <div>
-            <h2>@day</h2>
-        </div>
+        <TimelineDay day="@day"/>
     }
 </div>
 
 @code {
-    // Testdatum
-    DateTime startDate = new DateTime(2023, 2, 6);
-    DateTime endDate = new DateTime(2023, 2, 12);
-
-    List<string> weekdays = new List<string>();
+    DateTime startDate;
+    DateTime endDate;
+    DateTime activeDate;
+    List<DateTime> weekdays = new List<DateTime>();
+    [Parameter]
+    public DateTime[] DatesList {get; set;} = new DateTime[3]; 
 
     protected override async Task OnInitializedAsync()
     {
-        for (var date = startDate; date <= endDate; date = date.AddDays(1))
+        // Get dates from parameter
+        startDate = DatesList[0];
+        endDate = DatesList[1];
+        activeDate = DatesList[2];
+
+        // Get all dates between start and end date
+        for (var date = startDate; date <= endDate; date = date.AddDays(1)) 
         {
-            string day = date.ToString("dddddd", new System.Globalization.CultureInfo("sv-SE"));
-            string weekday = char.ToUpper(day[0]) + day.Substring(1);
-            weekdays.Add(weekday);
+            weekdays.Add(date);
         }
     }
 }

@@ -1,0 +1,33 @@
+.menu-container {
+    border: var(--border-default-width, 2px) solid var(--border-default-bg, #000000);
+    height: 75%;
+    width: 90%;
+    margin: auto;
+    padding-top: 10px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+}
+
+.button-back {
+    font-weight: bold;
+    width: 200px;
+    height: 50px;
+    background: var(--btn-back, #8B0000);
+    margin-right: 10px;
+    color: white;
+}
+
+.button-forward {
+    font-weight: bold;
+    width: 200px;
+    height: 50px;
+    background-color: var(--btn-sucess, #006B38);
+    margin-left: 10px;
+    color: var(--btn-secondary-text-color, #000000);
+}
