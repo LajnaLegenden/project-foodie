@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
+
 namespace project_foodie.Model;
 
 public class DatabaseContext : DbContext
@@ -12,10 +14,18 @@ public class DatabaseContext : DbContext
     public DbSet<Ingredient> Ingredients { get; set; }
     public DbSet<Allergen> Allergens { get; set; }
 
+    public DbSet<OrderItem> OrderItems { get; set; }
+    public DbSet<OrderItemOrder> OrderItemOrders { get; set; }
+    public DbSet<DishOrder> DishOrders { get; set; }
+    public DbSet<IngredientDish> IngredientDishes { get; set; }
+    public DbSet<AllergenDish> AllergenDishes { get; set; }
+    public DbSet<AllergenIngredient> AllergenIngredients { get; set; }
+    public DbSet<DishMenu> DishMenu { get; set; }
+
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlite("Data Source=/data/foodie/sqlite.db;");
+        optionsBuilder.UseSqlite("Data Source=./data/foodie/db.sqlite;");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -98,7 +108,6 @@ public class DatabaseContext : DbContext
             .HasOne<Order>(dio => dio.Order)
             .WithMany(o => o.DishOrder)
             .HasForeignKey(dio => dio.OrderId);
-
     }
 }
 
@@ -113,81 +122,26 @@ public enum FoodType
     Unknown
 }
 
-
 public enum OrderType
 {
-    Lunch, Dinner, Unknown
+    Lunch,
+    Dinner,
+    Unknown
 }
 
 
-// Tables
-public class Ingredient
+public class OrderItemOrder
 {
-    public required int Id { get; set; }
-    public required string Name { get; set; }
+    public int OrderItemId { get; set; }
+    // The OrderItem property is used to access the OrderItem class and its methods.
+    // The OrderItem class is used to store information about an order item.
+    [Required]
+    public OrderItem OrderItem { get; set; }
 
-    public IList<IngredientDish> IngredientDish { get; set; }
-    public IList<AllergenIngredient> AllergenIngredient { get; set; }
-}
 
-public class Allergen
-{
-    public required int Id { get; set; }
-    public required string Name { get; set; }
-
-    public IList<AllergenDish> AllergenDish { get; set; }
-    public IList<AllergenIngredient> AllergenIngredient { get; set; }
-}
-
-public class Dish
-{
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public required int Id { get; set; }
-    public required string Name { get; set; }
-    public FoodType Type { get; set; } = FoodType.Unknown;
-    public string description { get; set; } = "";
-    public string ImageUrl { get; set; } = "";
-    public int Price { get; set; } = -1;
-    public IList<IngredientDish> IngredientDish { get; set; }
-    public IList<AllergenDish> AllergenDish { get; set; }
-    public IList<DishMenu> DishMenu { get; set; }
-    public IList<DishOrder> DishOrder { get; set; }
-
-}
-
-public class Menu
-{
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id { get; set; }
-    public required string Name { get; set; }
-    public required DateTime lastOrderDate { get; set; }
-    public required DateTime startDate { get; set; }
-    public required DateTime endDate { get; set; }
-    public IList<DishMenu> DishMenu { get; set; }
-}
-
-public class OrderItem
-{
-
-    public required DateTime date { get; set; }
-    public required int id { get; set; }
-
-    public OrderType type { get; set; } = OrderType.Unknown;
-
-    public IList<OrderItemOrder> OrderItemOrder { get; set; }
-}
-
-public class Order
-{
-    public required int Id { get; set; }
-    public required int userId { get; set; }
-    public required int menuId { get; set; }
-    public required DateTime orderDate { get; set; }
-    public IList<OrderItemOrder> OrderItemOrder { get; set; }
-    public IList<DishOrder> DishOrder { get; set; }
-
+    public int OrderId { get; set; }
+    [Required]
+    public Order Order { get; set; }
 }
 
 // connection tables
@@ -218,35 +172,22 @@ public class AllergenDish
     public Dish Dish { get; set; }
 }
 
-
 public class DishMenu
 {
-
     public int DishId { get; set; }
+    [JsonIgnore]
     public Dish Dish { get; set; }
 
     public int MenuId { get; set; }
+    [JsonIgnore]
     public Menu Menu { get; set; }
-}
-
-
-public class OrderItemOrder
-{
-
-    public int OrderItemId { get; set; }
-    public OrderItem OrderItem { get; set; }
-
-    public int OrderId { get; set; }
-    public Order Order { get; set; }
 }
 
 public class DishOrder
 {
-
     public int DishId { get; set; }
-    public Dish Dish { get; set; }
+    public Dish? Dish { get; set; }
 
     public int OrderId { get; set; }
-    public Order Order { get; set; }
+    public Order? Order { get; set; }
 }
-
