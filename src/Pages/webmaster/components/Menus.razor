@@ -1,0 +1,66 @@
+@namespace project_foodie.Pages.Webmaster
+@using project_foodie.Model;
+@using Newtonsoft.Json;
+<div>
+    @if (_allMenus != null)
+    {
+        <table>
+            <caption>
+               All menus
+            </caption>
+            <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Last order date</th>
+                    <th scope="col">Start Date</th>
+                    <th scope="col">End Date</th>
+                    <th scope="col">Num Dishes</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var menu in _allMenus)
+                {
+                    <tr @onclick="() => setMenuId(menu.Id)">
+                        <th scope="row">@menu.Id</th>
+                        <td>@menu.Name</td>
+                        <td>@menu.lastOrderDate</td>
+                        <td>@menu.startDate</td>
+                        <td>@menu.endDate</td>
+                        <td>@menu.DishMenu.Count</td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th scope="row" colspan="2">Total menus</th>
+                    <td colspan="2">@_allMenus.Count</td>
+                </tr>
+            </tfoot>
+        </table>
+        <div class="dishes" style="display: flex;">
+        @if (selectedMenuId >= 0){
+            @foreach(DishMenu dishMenu in _allMenus[selectedMenuId].DishMenu){
+                <div style=" border: 1px solid">
+                    <h3>@dishMenu.Dish.Name</h3>
+                    <p>@dishMenu.Dish.description</p>
+                    <p>@dishMenu.Dish.Price</p>
+                </div>
+            }
+        }
+    </div>
+            }
+        </div>
+            @code {
+
+    private List<Menu> _allMenus ;
+        private int selectedMenuId = -1;
+        protected override void OnInitialized()
+        {
+            this._allMenus = Menu.GetAll();
+        }
+
+        void setMenuId(int id){
+            selectedMenuId = id-1;
+        }
+}
