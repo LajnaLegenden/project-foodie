@@ -1,0 +1,17 @@
+
+<div class="timeline-card">
+    @weekday
+</div>
+
+@code {
+    string weekday = "";
+    [Parameter]
+    public DateTime day {get; set;}
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Convert from date to weekday
+        weekday = day.ToString("dddddd", new System.Globalization.CultureInfo("sv-SE"));
+        weekday = char.ToUpper(weekday[0]) + weekday.Substring(1);
+    }
+}

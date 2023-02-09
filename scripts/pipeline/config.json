@@ -8,7 +8,7 @@
         "url": "https://prodfoodie.linusjansson.com/"
     },
     "dev": {
-        "daemon": "ssh://cdg@10.147.20.156:22",
+        "daemon": "unix://var/run/docker.sock",
         "hostname": "project-foodie-dev",
         "environment": "dev",
         "port": 8101,
