@@ -11,8 +11,8 @@ using project_foodie.Model;
 namespace projectfoodie.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230207135821_SingleContex")]
-    partial class SingleContex
+    [Migration("20230208182905_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

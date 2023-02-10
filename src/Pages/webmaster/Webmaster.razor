@@ -1,0 +1,39 @@
+@namespace project_foodie.Pages.Webmaster
+@page "/admin"
+<main>
+    <div class="buttons">
+        <button class="button" @onclick="() => handleClick(1)" id="button1">Menus</button>
+        <button class="button" @onclick="() => handleClick(2)" id="button2">Dishes</button>
+        <button class="button" id="button3">Users</button>
+    </div>
+    <div class="page">
+        @switch (selectedPage)
+        {
+            case 1:
+                <Menus />
+                break;
+            case 2:
+                <Dishes />
+                break;
+            case 3:
+                <Users />
+                break;
+            default:
+                <Menus />
+                break;
+        }
+    </div>
+</main>
+
+@code {
+    int selectedPage = 1;
+    protected override void OnInitialized()
+    {
+
+    }
+
+    void handleClick(int page){
+        selectedPage = page;
+
+    }
+}
