@@ -17,5 +17,5 @@ FROM base AS final
 WORKDIR /app
 RUN mkdir -p ./data/foodie
 COPY --from=publish /app/publish .
-RUN dotnet ef database update --project src/project-foodie.csproj --startup-project src/project-foodie.csproj
+# RUN dotnet ef database update --project src/project-foodie.csproj --startup-project src/project-foodie.csproj
 ENTRYPOINT ["dotnet", "project-foodie.dll"]
