@@ -1,12 +1,12 @@
 h1 {
     text-align: center;
-    font-size: 40px;
+    font-size: var(--h1-font-default, 40px);
     font-weight: bold;
 }
 
 h2 {
     text-align: center;
-    font-size: 30px;
+    font-size: var(--h2-font-default, 30px);
 }
 
 .card-container {
@@ -17,5 +17,6 @@ h2 {
     flex-wrap: wrap;
     width: 90%;
     margin: auto;
-
+    height: 60vh;
+    overflow-y: scroll;
 }

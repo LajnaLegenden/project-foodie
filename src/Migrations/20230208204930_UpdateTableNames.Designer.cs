@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using project_foodie.Model;
 
@@ -10,9 +11,11 @@ using project_foodie.Model;
 namespace projectfoodie.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230208204930_UpdateTableNames")]
+    partial class UpdateTableNames
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.2");
@@ -273,13 +276,15 @@ namespace projectfoodie.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("project_foodie.Model.Menu", null)
+                    b.HasOne("project_foodie.Model.Menu", "Menu")
                         .WithMany("DishMenu")
                         .HasForeignKey("MenuId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Dish");
+
+                    b.Navigation("Menu");
                 });
 
             modelBuilder.Entity("project_foodie.Model.DishOrder", b =>

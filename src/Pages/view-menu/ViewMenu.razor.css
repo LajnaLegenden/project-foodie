@@ -1,5 +1,5 @@
 .menu-container {
-    border: 2px solid black;
+    border: var(--border-default-width, 2px) solid var(--border-default-bg, #000000);
     height: 75%;
     width: 90%;
     margin: auto;
@@ -18,7 +18,7 @@
     font-weight: bold;
     width: 200px;
     height: 50px;
-    background: rgb(171, 167, 67);
+    background: var(--btn-back, #8B0000);
     margin-right: 10px;
     color: white;
 }
@@ -27,7 +27,7 @@
     font-weight: bold;
     width: 200px;
     height: 50px;
-    background-color: rgb(81, 151, 81);
+    background-color: var(--btn-sucess, #006B38);
     margin-left: 10px;
-    color: white;
+    color: var(--btn-secondary-text-color, #000000);
 }
