@@ -1,7 +1,15 @@
+@using project_foodie.Pages.view_menu.components
+
 <div class="timeline-container">
     @foreach (var day in weekdays.Take(7))
     {
-        <TimelineDay day="@day"/>
+        DateTime[] dayParam = new DateTime[4];
+        dayParam[0] = day;
+        dayParam[1] = activeDate;
+        dayParam[2] = inactiveDate;
+        dayParam[3] = startDate;
+
+        <TimelineDay dates="@dayParam"/>
     }
 </div>
 
@@ -9,9 +17,10 @@
     DateTime startDate;
     DateTime endDate;
     DateTime activeDate;
+    DateTime inactiveDate;
     List<DateTime> weekdays = new List<DateTime>();
     [Parameter]
-    public DateTime[] DatesList {get; set;} = new DateTime[3]; 
+    public DateTime[] DatesList {get; set;} = new DateTime[4]; 
 
     protected override async Task OnInitializedAsync()
     {
@@ -19,6 +28,7 @@
         startDate = DatesList[0];
         endDate = DatesList[1];
         activeDate = DatesList[2];
+        inactiveDate = DatesList[3];
 
         // Get all dates between start and end date
         for (var date = startDate; date <= endDate; date = date.AddDays(1)) 
