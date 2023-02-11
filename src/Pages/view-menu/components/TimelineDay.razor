@@ -1,17 +1,36 @@
 
-<div class="timeline-card">
+<div class="@classTimelineCard">
     @weekday
 </div>
 
 @code {
+    string classTimelineCard = "timeline-day-not-done";
     string weekday = "";
     [Parameter]
-    public DateTime day {get; set;}
+    public DateTime[] dates {get; set;} = new DateTime[4]; 
 
     protected override async Task OnInitializedAsync()
     {
+        DateTime date = dates[0];
+        DateTime activeDate = dates[1];
+        DateTime inactiveDate = dates[2];
+        DateTime startDate = dates[3];
+
+        if (date == inactiveDate) 
+        {
+            classTimelineCard = "timeline-day-inactive";
+        }
+        else if (date == activeDate) 
+        {
+            classTimelineCard = "timeline-day-active";
+        }
+        else if (date < activeDate)
+        {
+            classTimelineCard = "timeline-day-done";
+        }
+
         // Convert from date to weekday
-        weekday = day.ToString("dddddd", new System.Globalization.CultureInfo("sv-SE"));
+        weekday = date.ToString("dddddd", new System.Globalization.CultureInfo("sv-SE"));
         weekday = char.ToUpper(weekday[0]) + weekday.Substring(1);
     }
 }
