@@ -42,7 +42,7 @@
     gap: 10px;
 }
 
-.button-categorie {
+.button-category {
     padding: 16px 24px 16px 24px;
     border-radius: 10px;
     border: 1px solid #067A46;
@@ -51,13 +51,13 @@
     background: #ffffff;
 }
 
-.button-categorie:hover {
+.button-category:hover {
     background-color: #067A46;
     opacity: 50%;
     color: white;
 }
 
-.button-categorie-clicked {
+.button-category-clicked {
     background-color: #067A46;
     padding: 16px 24px 16px 24px;
     border-radius: 10px;
