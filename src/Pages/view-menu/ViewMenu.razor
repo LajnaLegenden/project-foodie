@@ -3,13 +3,21 @@
 @using project_foodie.Model
 @using project_foodie.Pages.view_menu.components
 @inject NavigationManager UriHelper
-
-<Timeline/>
+<div class="information">
+    <h1 class="text-week">Vecka 7</h1>
+    <h1 class="text-day">Måndag 11/3</h1>
+</div>
+<div class="categories">
+    <button @onclick="ToggleClass1" class="@ButtonClass1">Kött</button>
+    <button @onclick="ToggleClass2" class="@ButtonClass2">Fläsk</button>
+    <button @onclick="ToggleClass3" class="@ButtonClass3">Kyckling</button>
+    <button @onclick="ToggleClass4" class="@ButtonClass4">Grönsaker</button>
+</div>
 <div class="menu-container">
     <MenuContainer/>
     <div class="button-container">
-        <button @onclick="DecrementCount" class="button-back">Tillbaka</button>
-        <button @onclick="IncrementCount" class="button-forward">Nästa steg</button>
+        <button @onclick="DecrementCount" class="button-back">Föregående dag</button>
+        <button @onclick="IncrementCount" class="button-forward">Nästa dag</button>
     </div>
 </div>
 
@@ -32,5 +40,59 @@
     {
         count--;
         Console.WriteLine(count);
+    }
+    
+    private Boolean btn_clicked1 = false;
+    private Boolean btn_clicked2 = false;
+    private Boolean btn_clicked3 = false;
+    private Boolean btn_clicked4 = false;
+    private string ButtonClass1 => btn_clicked1 ? "button-category-clicked" : "button-category";
+    private string ButtonClass2 => btn_clicked2 ? "button-category-clicked" : "button-category";
+    private string ButtonClass3 => btn_clicked3 ? "button-category-clicked" : "button-category";
+    private string ButtonClass4 => btn_clicked4 ? "button-category-clicked" : "button-category";
+
+    private void ToggleClass1()
+    {
+        if(btn_clicked1 == true) {
+            btn_clicked1 = false;
+        } else {
+            btn_clicked1 = true;
+            btn_clicked2 = false;
+            btn_clicked3 = false;
+            btn_clicked4 = false;
+        };
+    }
+    private void ToggleClass2()
+    {
+        if(btn_clicked2 == true) {
+            btn_clicked2 = false;
+        } else {
+            btn_clicked2 = true;
+            btn_clicked1 = false;
+            btn_clicked3 = false;
+            btn_clicked4 = false;
+        };
+    }
+    private void ToggleClass3()
+    {
+        if(btn_clicked3 == true) {
+            btn_clicked3 = false;
+        } else {
+            btn_clicked3 = true;
+            btn_clicked1 = false;
+            btn_clicked2 = false;
+            btn_clicked4 = false;
+        };
+    }
+    private void ToggleClass4()
+    {
+        if(btn_clicked4 == true) {
+            btn_clicked4 = false;
+        } else {
+            btn_clicked4 = true;
+            btn_clicked1 = false;
+            btn_clicked2 = false;
+            btn_clicked3 = false;
+        };
     }
 }

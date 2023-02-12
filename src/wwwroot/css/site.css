@@ -1,7 +1,9 @@
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
 html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'Inter', sans-serif;
+    margin: 0px;
+    height: 100%;
 }
 
 h1:focus {
@@ -9,7 +11,8 @@ h1:focus {
 }
 
 a, .btn-link {
-    color: #0071c1;
+    color: #484848;
+    text-decoration: none;
 }
 
 .btn-primary {
@@ -70,7 +73,7 @@ a, .btn-link {
 
 :root {
     /* Buttons colors */
-    --btn-sucess: green;
+    --btn-sucess: #067A46;
     --btn-back: red;
     --btn-primary: gray;
     --btn-secondary: gray;
@@ -84,7 +87,7 @@ a, .btn-link {
     --div-timeline-active: yellow;
     --div-timeline-inactive: grey;
     --div-timeline-blocked: black;
-    --div-timeline-done: green;
+    --div-timeline-done: #067A46;
 
     /* Default fonts */
     --h1-font-default: 40px;

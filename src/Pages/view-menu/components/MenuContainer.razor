@@ -1,8 +1,10 @@
 @using project_foodie.Pages.view_menu.components
-<h1>Måndag vecka 34</h1>
-    <h2> Lunch</h2>
+<div class="menu-container">
     <div class="card-container">
-        @for (int x=0; x<6; x++) {
+        <h2 class="meal-text">Lunch</h2>
+        @for (int x=0; x<3; x++) {
             <Dishes/>
         }
-    </div>
+    </div>    
+</div>
+    
