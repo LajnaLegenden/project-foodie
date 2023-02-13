@@ -1,15 +1,22 @@
 ﻿@inherits LayoutComponentBase
 
-<PageTitle>project-foodie</PageTitle>
+<PageTitle>Foodie</PageTitle>
 
 <div class="page">
     <main>
-        <div class="top-row px-4">
-        </div>
+        <NavHeader />
 
         <article class="content px-4">
             @Body
         </article>
-        <footer class="border-top" style="height: 100px;"></footer>
+        <footer>
+            <div class="copyright">
+                <p>Copyright 2023</p>
+            </div>
+            <div class="policy">
+                <p>Security</p>
+                <p>Privacy</p>
+            </div>
+        </footer>
     </main>
 </div>

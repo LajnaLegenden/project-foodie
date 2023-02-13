@@ -10,13 +10,13 @@ RUN dotnet restore "project-foodie.csproj"
 COPY src .
 RUN dotnet build "project-foodie.csproj" -c Release -o /app/build
 
-RUN dotnet tool install --global dotnet-ef
-RUN dotnet ef database update --project "src/project-foodie.csproj"
-
 FROM build AS publish
 RUN dotnet publish "project-foodie.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
+RUN mkdir -p ./data/foodie
 COPY --from=publish /app/publish .
+# RUN dotnet ef database update --project src/project-foodie.csproj --startup-project src/project-foodie.csproj
 ENTRYPOINT ["dotnet", "project-foodie.dll"]
+

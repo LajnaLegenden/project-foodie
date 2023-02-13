@@ -1,15 +1,37 @@
+@using project_foodie.Pages.view_menu.components
+@using project_foodie.Model;
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@using Newtonsoft.Json;
+
 <div class="food-card">
-    <img class="food-card-img" src="https://static.mathem.se/shared/images/recipes/doublelarge/kycklingtimbal-och-bontimbal-findus-mathem.jpeg" alt="Card image cap">
+    <div class="food-card-img-container">
+
+    </div>
     <div class="food-card-body">
-        <p class="food-card-text">Kycklingtimbal med böntimbal, brunsås och potatismos</p>
-        <p class="food-card-price">50kr</p>
+        <div class="food-card-upper-body">
+            <div class="food-card-food-container">
+                <p class="food-card-text">@dishData.Dish.Name</p>
+                <p class="food-card-text-extra">@dishData.Dish.description</p>
+            </div>
+            <div class="food-card-price-container">
+                <p class="food-card-price">@dishData.Dish.Price:-</p>
+            </div>
+        </div>
+        <div class="allergener">
+            <li>Stark</li>
+            <li>Gluttenfritt</li>
+            <li>Mjölkfri</li>
+        </div>
         <div class="food-card-btn-container">
             @if (showInput)
             {
                 <div class="btn-add-container">
-                    <button class="food-card-btn-decrement" @onclick="DecrementCount">-</button>
-                    <input type="text" class="text-add-placeholder" count="@count" placeholder=@count readonly="readonly"/>
-                    <button class="food-card-btn-add-increment" @onclick="IncrementCount">+</button>
+                    <button class="food-card-btn-decrement"
+                    @onclick="@((e) => DecrementCount(id, DishName, DishDescription))">-</button>
+                    <input type="text" class="text-add-placeholder" count="@count" placeholder="@count st"
+                        readonly="readonly" />
+                    <button class="food-card-btn-increment"
+                    @onclick="@((e) => IncrementCount(id, DishName, DishDescription))">+</button>
                 </div>
             }
             else
@@ -21,14 +43,37 @@
 </div>
 
 
-
 @code {
+
+
+    [Parameter]
+    public int id { get; set; }
+
+    [Parameter]
+    public string DishName { get; set; }
+    [Parameter]
+    public string DishDescription { get; set; }
+
+    [Parameter]
+    public project_foodie.Model.DishMenu dishData { get; set; }
+
     private int count = 0;
     private bool showInput = false;
     private string ButtonClass => count <= 0 ? "food-card-btn food-card-btn-add-amount" : "food-card-btn food-card-btn-add";
 
+    private string jsonString;
+
+    public class DishInformation
+    {
+        public int Count { get; set; }
+        public int ID { get; set; }
+        public string dishname { get; set; }
+        public string dishdiscription { get; set; }
+    }
+
     private void ToggleInput()
     {
+
         showInput = !showInput;
         if (showInput)
         {
@@ -40,18 +85,49 @@
         }
     }
 
-    private void IncrementCount()
+    private async void IncrementCount(int ID, string dishname, string dishdiscription)
     {
         count++;
+        DishInformation dishInfo = new DishInformation
+            {
+                ID = id,
+                Count = count,
+                dishname = DishName,
+                dishdiscription = DishDescription
+            };
+
+        string json = JsonConvert.SerializeObject(dishInfo);
+        await localStorage.SetItemAsync("LocalDataDishes", json);
     }
 
-    private void DecrementCount()
+
+    private async Task GetData()
+    {
+        var localStorageCount = await localStorage.GetItemAsync<string>("LocalDataDishes");
+        var localStorageCountJson = JsonConvert.DeserializeObject(localStorageCount);
+        //parse localStorageCount into json format
+        jsonString = JsonConvert.SerializeObject(localStorageCountJson);
+
+        Console.WriteLine(jsonString);
+    }
+
+    private async void DecrementCount(int ID, string dishname, string dishdiscription)
     {
         if (count > 0)
         {
             count--;
-            
+            DishInformation dishInfo = new DishInformation
+                {
+                    ID = id,
+                    Count = count,
+                    dishname = DishName,
+                    dishdiscription = DishDescription
+                };
+
+            string json = JsonConvert.SerializeObject(dishInfo);
+            await localStorage.SetItemAsync("LocalDataDishes", json);
         }
+
         if (count == 0)
         {
             showInput = false;

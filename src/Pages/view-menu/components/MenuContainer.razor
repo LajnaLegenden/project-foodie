@@ -1,8 +1,18 @@
 @using project_foodie.Pages.view_menu.components
-<h1>Måndag vecka 34</h1>
-    <h2> Lunch</h2>
+@using project_foodie.Model;
+@using Newtonsoft.Json;
+<div class="menu-container">
     <div class="card-container">
-        @for (int x=0; x<6; x++) {
-            <Dishes/>
+        <h2 class="meal-text">Lunch</h2>
+
+        @foreach(DishMenu dishMenu in menuData.DishMenu){
+            Console.WriteLine(dishMenu.Dish.Name);
+            <Dishes dishData=@dishMenu/>
         }
     </div>
+</div>
+
+@code {
+    [Parameter]
+    public project_foodie.Model.Menu menuData { get; set; }
+}

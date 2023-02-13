@@ -6,17 +6,24 @@ h1 {
 
 h2 {
     text-align: center;
-    font-size: var(--h2-font-default, 30px);
+    font-size: var(--h1-font-default, 30px);
+}
+
+.meal-text {
+    margin-left: -168px;
 }
 
 .card-container {
     display: flex;
     flex-direction: row;
-    gap: 30px;
-    justify-content: center;
+    gap: 53px;
     flex-wrap: wrap;
-    width: 90%;
     margin: auto;
-    height: 60vh;
-    overflow-y: scroll;
+    justify-content: center;
+}
+
+.menu-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
