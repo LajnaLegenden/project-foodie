@@ -15,15 +15,17 @@ namespace projectfoodie.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "7.0.2");
+            modelBuilder
+                .HasAnnotation("ProductVersion", "7.0.2")
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("AllergenDish", b =>
                 {
                     b.Property<int>("AllergensId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int>("DishesId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.HasKey("AllergensId", "DishesId");
 
@@ -35,10 +37,10 @@ namespace projectfoodie.Migrations
             modelBuilder.Entity("AllergenIngredient", b =>
                 {
                     b.Property<int>("AllergensId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int>("IngredientsId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.HasKey("AllergensId", "IngredientsId");
 
@@ -50,10 +52,10 @@ namespace projectfoodie.Migrations
             modelBuilder.Entity("DayMenuDish", b =>
                 {
                     b.Property<int>("dayMenusId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int>("dishesId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.HasKey("dayMenusId", "dishesId");
 
@@ -65,10 +67,10 @@ namespace projectfoodie.Migrations
             modelBuilder.Entity("DishIngredient", b =>
                 {
                     b.Property<int>("DishesId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int>("IngredientsId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.HasKey("DishesId", "IngredientsId");
 
@@ -77,44 +79,14 @@ namespace projectfoodie.Migrations
                     b.ToTable("DishIngredient");
                 });
 
-            modelBuilder.Entity("DishOrder", b =>
-                {
-                    b.Property<int>("DishesId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("OrdersId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("DishesId", "OrdersId");
-
-                    b.HasIndex("OrdersId");
-
-                    b.ToTable("DishOrder");
-                });
-
-            modelBuilder.Entity("OrderOrderItem", b =>
-                {
-                    b.Property<int>("OrderItemsId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("OrdersId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("OrderItemsId", "OrdersId");
-
-                    b.HasIndex("OrdersId");
-
-                    b.ToTable("OrderOrderItem");
-                });
-
             modelBuilder.Entity("project_foodie.Model.Allergen", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -125,16 +97,16 @@ namespace projectfoodie.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("MenuId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("date")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<int>("type")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -147,22 +119,22 @@ namespace projectfoodie.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<string>("ImageUrl")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Name")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("longtext");
 
                     b.Property<int>("Price")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int>("Type")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<string>("description")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -173,10 +145,10 @@ namespace projectfoodie.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -187,19 +159,19 @@ namespace projectfoodie.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("endDate")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<DateTime>("lastOrderDate")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<DateTime>("startDate")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
@@ -210,18 +182,20 @@ namespace projectfoodie.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
-                    b.Property<int>("menuId")
-                        .HasColumnType("INTEGER");
+                    b.Property<int?>("menuId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("orderDate")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<int>("userId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("menuId");
 
                     b.ToTable("Orders");
                 });
@@ -230,18 +204,22 @@ namespace projectfoodie.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
-                    b.Property<int>("orderId")
-                        .HasColumnType("INTEGER");
+                    b.Property<int?>("dishId")
+                        .HasColumnType("int");
 
-                    b.Property<int>("orderItemId")
-                        .HasColumnType("INTEGER");
+                    b.Property<int?>("orderId")
+                        .HasColumnType("int");
 
                     b.Property<int>("quantity")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("dishId");
+
+                    b.HasIndex("orderId");
 
                     b.ToTable("OrderItem");
                 });
@@ -306,36 +284,6 @@ namespace projectfoodie.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("DishOrder", b =>
-                {
-                    b.HasOne("project_foodie.Model.Dish", null)
-                        .WithMany()
-                        .HasForeignKey("DishesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("project_foodie.Model.Order", null)
-                        .WithMany()
-                        .HasForeignKey("OrdersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("OrderOrderItem", b =>
-                {
-                    b.HasOne("project_foodie.Model.OrderItem", null)
-                        .WithMany()
-                        .HasForeignKey("OrderItemsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("project_foodie.Model.Order", null)
-                        .WithMany()
-                        .HasForeignKey("OrdersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("project_foodie.Model.DayMenu", b =>
                 {
                     b.HasOne("project_foodie.Model.Menu", null)
@@ -343,9 +291,40 @@ namespace projectfoodie.Migrations
                         .HasForeignKey("MenuId");
                 });
 
+            modelBuilder.Entity("project_foodie.Model.Order", b =>
+                {
+                    b.HasOne("project_foodie.Model.Menu", "menu")
+                        .WithMany("Order")
+                        .HasForeignKey("menuId");
+
+                    b.Navigation("menu");
+                });
+
+            modelBuilder.Entity("project_foodie.Model.OrderItem", b =>
+                {
+                    b.HasOne("project_foodie.Model.Dish", "dish")
+                        .WithMany()
+                        .HasForeignKey("dishId");
+
+                    b.HasOne("project_foodie.Model.Order", "order")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("orderId");
+
+                    b.Navigation("dish");
+
+                    b.Navigation("order");
+                });
+
             modelBuilder.Entity("project_foodie.Model.Menu", b =>
                 {
+                    b.Navigation("Order");
+
                     b.Navigation("dayMenus");
+                });
+
+            modelBuilder.Entity("project_foodie.Model.Order", b =>
+                {
+                    b.Navigation("OrderItems");
                 });
 #pragma warning restore 612, 618
         }

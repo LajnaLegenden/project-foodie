@@ -16,27 +16,18 @@ public class DatabaseContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        if(Global.Environment == null){
-            optionsBuilder.UseSqlite("Data Source=./data/foodie/db.sqlite;");
-            return;
-        }
+        
+        DotNetEnv.Env.Load();
+        string dbAddr = System.Environment.GetEnvironmentVariable("DBADDR");
+        string dbUser = System.Environment.GetEnvironmentVariable("DBUSER");
+        string dbName = System.Environment.GetEnvironmentVariable("DBNAME");
+        string dbPass = System.Environment.GetEnvironmentVariable("DBPASS");
+            string connectionString = $"server={dbAddr};user={dbUser};database={dbName};password={dbPass};";
+            var serverVersion = new MariaDbServerVersion(new Version(10, 6, 11));
 
-        if(Global.Environment.IsDevelopment())
-        {
-            optionsBuilder.UseSqlite("Data Source=./data/foodie/db.sqlite;");
-        }
-        else
-        {
-            var config = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true)
-                .Build();
-
-            string connectionString = config.GetConnectionString("MySqlConnection");
-            var serverVersion = new MariaDbServerVersion(connectionString);
-
-            optionsBuilder.UseMySql(connectionString, serverVersion);
-        }
+            optionsBuilder.UseMySql(connectionString, serverVersion).LogTo(Console.WriteLine, LogLevel.Information)
+                .EnableSensitiveDataLogging()
+                .EnableDetailedErrors();
       }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

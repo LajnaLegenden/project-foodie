@@ -6,6 +6,8 @@ using project_foodie.Model;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//Load env variables
+DotNetEnv.Env.Load();
 
 
 // Add services to the container.
