@@ -10,8 +10,7 @@ public class Order
     public int Id { get; set; }
 
     public required int userId { get; set; }
-    public required int menuId { get; set; }
+    public required Menu menu { get; set; }
     public required DateTime orderDate { get; set; }
     public ICollection<OrderItem> OrderItems { get; set; }
-    public ICollection<Dish> Dishes { get; set; }
 }

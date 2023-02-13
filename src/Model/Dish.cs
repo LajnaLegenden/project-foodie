@@ -17,6 +17,5 @@ public class Dish
     public int Price { get; set; } = -1;
     public ICollection<Ingredient> Ingredients { get; set; }
     public ICollection<Allergen> Allergens { get; set; }
-    public ICollection<Order> Orders { get; set; }
     public ICollection<DayMenu> dayMenus { get; set; } = new List<DayMenu>();
 }
