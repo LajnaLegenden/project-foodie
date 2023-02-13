@@ -5,10 +5,7 @@ using project_foodie.Data;
 using project_foodie.Model;
 using Blazored.LocalStorage;
 
-class Global
-{
-    public static IHostEnvironment Environment { get; set; }
-}
+
 var builder = WebApplication.CreateBuilder(args);
 //Load env variables
 DotNetEnv.Env.Load();
@@ -42,3 +39,7 @@ app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
 app.Run(); 
+class Global
+{
+    public static IHostEnvironment Environment { get; set; }
+}
