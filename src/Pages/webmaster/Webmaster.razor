@@ -4,7 +4,7 @@
     <div class="buttons">
         <button class="button" @onclick="() => handleClick(1)" id="button1">Menus</button>
         <button class="button" @onclick="() => handleClick(2)" id="button2">Dishes</button>
-        <button class="button" id="button3">Users</button>
+        <button class="button" @onclick="() => handleClick(3)" id="button3">Db</button>
     </div>
     <div class="page">
         @switch (selectedPage)
@@ -16,7 +16,7 @@
                 <Dishes />
                 break;
             case 3:
-                <Users />
+                <Db />
                 break;
             default:
                 <Menus />

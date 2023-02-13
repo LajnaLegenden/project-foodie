@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using project_foodie.Model;
 
@@ -10,9 +11,11 @@ using project_foodie.Model;
 namespace projectfoodie.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230213145723_Init")]
+    partial class Init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -77,6 +80,36 @@ namespace projectfoodie.Migrations
                     b.HasIndex("IngredientsId");
 
                     b.ToTable("DishIngredient");
+                });
+
+            modelBuilder.Entity("DishOrder", b =>
+                {
+                    b.Property<int>("DishesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrdersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DishesId", "OrdersId");
+
+                    b.HasIndex("OrdersId");
+
+                    b.ToTable("DishOrder");
+                });
+
+            modelBuilder.Entity("OrderOrderItem", b =>
+                {
+                    b.Property<int>("OrderItemsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrdersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("OrderItemsId", "OrdersId");
+
+                    b.HasIndex("OrdersId");
+
+                    b.ToTable("OrderOrderItem");
                 });
 
             modelBuilder.Entity("project_foodie.Model.Allergen", b =>
@@ -184,7 +217,7 @@ namespace projectfoodie.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int?>("menuId")
+                    b.Property<int>("menuId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("orderDate")
@@ -195,8 +228,6 @@ namespace projectfoodie.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("menuId");
-
                     b.ToTable("Orders");
                 });
 
@@ -206,20 +237,16 @@ namespace projectfoodie.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int?>("dishId")
+                    b.Property<int>("orderId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("orderId")
+                    b.Property<int>("orderItemId")
                         .HasColumnType("int");
 
                     b.Property<int>("quantity")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("dishId");
-
-                    b.HasIndex("orderId");
 
                     b.ToTable("OrderItem");
                 });
@@ -284,6 +311,36 @@ namespace projectfoodie.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("DishOrder", b =>
+                {
+                    b.HasOne("project_foodie.Model.Dish", null)
+                        .WithMany()
+                        .HasForeignKey("DishesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("project_foodie.Model.Order", null)
+                        .WithMany()
+                        .HasForeignKey("OrdersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("OrderOrderItem", b =>
+                {
+                    b.HasOne("project_foodie.Model.OrderItem", null)
+                        .WithMany()
+                        .HasForeignKey("OrderItemsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("project_foodie.Model.Order", null)
+                        .WithMany()
+                        .HasForeignKey("OrdersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("project_foodie.Model.DayMenu", b =>
                 {
                     b.HasOne("project_foodie.Model.Menu", null)
@@ -291,40 +348,9 @@ namespace projectfoodie.Migrations
                         .HasForeignKey("MenuId");
                 });
 
-            modelBuilder.Entity("project_foodie.Model.Order", b =>
-                {
-                    b.HasOne("project_foodie.Model.Menu", "menu")
-                        .WithMany("Order")
-                        .HasForeignKey("menuId");
-
-                    b.Navigation("menu");
-                });
-
-            modelBuilder.Entity("project_foodie.Model.OrderItem", b =>
-                {
-                    b.HasOne("project_foodie.Model.Dish", "dish")
-                        .WithMany()
-                        .HasForeignKey("dishId");
-
-                    b.HasOne("project_foodie.Model.Order", "order")
-                        .WithMany("OrderItems")
-                        .HasForeignKey("orderId");
-
-                    b.Navigation("dish");
-
-                    b.Navigation("order");
-                });
-
             modelBuilder.Entity("project_foodie.Model.Menu", b =>
                 {
-                    b.Navigation("Order");
-
                     b.Navigation("dayMenus");
-                });
-
-            modelBuilder.Entity("project_foodie.Model.Order", b =>
-                {
-                    b.Navigation("OrderItems");
                 });
 #pragma warning restore 612, 618
         }

@@ -7,6 +7,8 @@ using Blazored.LocalStorage;
 
 
 var builder = WebApplication.CreateBuilder(args);
+//Load env variables
+DotNetEnv.Env.Load();
 
 // Add services to the container.
 builder.Services.AddRazorPages();
@@ -36,4 +38,8 @@ app.UseRouting();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
-app.Run();
+app.Run(); 
+class Global
+{
+    public static IHostEnvironment Environment { get; set; }
+}

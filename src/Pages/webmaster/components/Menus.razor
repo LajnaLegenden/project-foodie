@@ -1,5 +1,6 @@
 @namespace project_foodie.Pages.Webmaster
 @using project_foodie.Model;
+@using project_foodie.Repository
 @using Newtonsoft.Json;
 <div>
     @if (_allMenus != null)
@@ -15,19 +16,19 @@
                     <th scope="col">Last order date</th>
                     <th scope="col">Start Date</th>
                     <th scope="col">End Date</th>
-                    <th scope="col">Num Dishes</th>
+                    <th scope="col">Day menus</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var menu in _allMenus)
+                @foreach (var menu in _allMenus.Select((value, i) => new { i, value }))
                 {
-                    <tr @onclick="() => setMenuId(menu.Id)">
-                        <th scope="row">@menu.Id</th>
-                        <td>@menu.Name</td>
-                        <td>@menu.lastOrderDate</td>
-                        <td>@menu.startDate</td>
-                        <td>@menu.endDate</td>
-                        <td>@menu.DishMenu.Count</td>
+                    <tr @onclick="() => setMenuId(menu.i)">
+                        <th scope="row">@menu.value.Id</th>
+                        <td>@menu.value.Name</td>
+                        <td>@menu.value.lastOrderDate</td>
+                        <td>@menu.value.startDate</td>
+                        <td>@menu.value.endDate</td>
+                        <td>@countTotalDishes(menu.value)</td>
                     </tr>
                 }
             </tbody>
@@ -40,11 +41,15 @@
         </table>
         <div class="dishes" style="display: flex;">
         @if (selectedMenuId >= 0){
-            @foreach(DishMenu dishMenu in _allMenus[selectedMenuId].DishMenu){
+            @foreach(DayMenu dayMenu in _allMenus[selectedMenuId].dayMenus){
                 <div style=" border: 1px solid">
-                    <h3>@dishMenu.Dish.Name</h3>
-                    <p>@dishMenu.Dish.description</p>
-                    <p>@dishMenu.Dish.Price</p>
+                   <p>@dayMenu.date</p>
+                   <p>@dayMenu.type</p>
+                   <ul>
+                    @foreach(Dish dish in dayMenu.dishes){
+                    <li>@dish.Name</li>
+                    }
+                   </ul>
                 </div>
             }
         }
@@ -55,12 +60,36 @@
 
     private List<Menu> _allMenus ;
         private int selectedMenuId = -1;
-        protected override void OnInitialized()
+
+        protected override async Task OnInitializedAsync()
         {
-            this._allMenus = Menu.GetAll();
+            using(var context = new DatabaseContext())
+            {
+                MenuRepository menuRepository = new MenuRepository(context);
+                this._allMenus = await menuRepository.GetAllAsync();
+            }
         }
 
         void setMenuId(int id){
-            selectedMenuId = id-1;
+            selectedMenuId = id;
+        }
+
+        int countTotalDishes(Menu menu){
+            int totalDishes = 0;
+            if(menu.dayMenus == null){
+                return 0;
+            }
+          @*  print each day menu serializing it to json *@
+        
+            foreach(DayMenu dayMenu in menu.dayMenus){
+           //     Console.WriteLine(JsonConvert.SerializeObject(dayMenu));
+            }
+            
+
+
+           foreach(DayMenu dayMenu in menu.dayMenus){
+                totalDishes += dayMenu.dishes.Count;
+            } 
+            return totalDishes;
         }
 }
