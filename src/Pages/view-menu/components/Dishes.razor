@@ -42,6 +42,10 @@
     </div>
 </div>
 
+<button @onclick="GetData">GETDATA</button>
+
+<p>@jsonString</p>
+
 
 @code {
 
@@ -55,6 +59,8 @@
     private int count = 0;
     private bool showInput = false;
     private string ButtonClass => count <= 0 ? "food-card-btn food-card-btn-add-amount" : "food-card-btn food-card-btn-add";
+
+    private string jsonString;
 
     public class DishInformation
     {
@@ -83,8 +89,8 @@
         count++;
         DishInformation dishInfo = new DishInformation
             {
-                Count = count,
                 ID = id,
+                Count = count,
                 dishname = DishName,
                 dishdiscription = DishDescription
             };
@@ -94,6 +100,16 @@
     }
 
 
+    private async Task GetData()
+    {
+        var localStorageCount = await localStorage.GetItemAsync<string>("LocalDataDishes");
+        var localStorageCountJson = JsonConvert.DeserializeObject(localStorageCount);
+        //parse localStorageCount into json format
+        jsonString = JsonConvert.SerializeObject(localStorageCountJson);
+
+        Console.WriteLine(jsonString);
+    }
+
     private async void DecrementCount(int ID, string dishname, string dishdiscription)
     {
         if (count > 0)
@@ -101,8 +117,8 @@
             count--;
             DishInformation dishInfo = new DishInformation
                 {
-                    Count = count,
                     ID = id,
+                    Count = count,
                     dishname = DishName,
                     dishdiscription = DishDescription
                 };
