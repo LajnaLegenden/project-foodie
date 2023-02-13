@@ -17,7 +17,6 @@
 .food-card-price {
     font-size: 18px;
     padding-top: 10px;
-    width: 90%;
     margin: auto;
     font-weight: bold;
     font-size: var(--p-font-default);
@@ -45,11 +44,12 @@
 
 .food-card-upper-body {
     display: flex;
-    width: 90%;
+    justify-content: space-around;
+    width: 100%;
 }
 
-.food-card-price {
-    padding-bottom: 10px;
+.food-card-food-container {
+    width: 70%;
 }
 
 .food-card-btn-container {

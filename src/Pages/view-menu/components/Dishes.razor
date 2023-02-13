@@ -1,3 +1,6 @@
+@using project_foodie.Pages.view_menu.components
+@using project_foodie.Model;
+@using Newtonsoft.Json;
 <div class="food-card">
     <div class="food-card-img-container">
 
@@ -5,11 +8,11 @@
     <div class="food-card-body">
         <div class="food-card-upper-body">
             <div class="food-card-food-container">
-                <p class="food-card-text">Kycklingtimbal</p>
-                <p class="food-card-text-extra">med böntimbal, brunsås och potatismos</p>
+                <p class="food-card-text">@dishData.Dish.Name</p>
+                <p class="food-card-text-extra">@dishData.Dish.description</p>
             </div>
             <div class="food-card-price-container">
-                <p class="food-card-price">50kr</p>
+                <p class="food-card-price">@dishData.Dish.Price:-</p>
             </div>
         </div>
         <div class="allergener">
@@ -37,6 +40,9 @@
 
 
 @code {
+    [Parameter]
+    public project_foodie.Model.DishMenu dishData { get; set; }
+
     private int count = 0;
     private bool showInput = false;
     private string ButtonClass => count <= 0 ? "food-card-btn food-card-btn-add-amount" : "food-card-btn food-card-btn-add";
