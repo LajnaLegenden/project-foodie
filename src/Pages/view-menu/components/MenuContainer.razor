@@ -1,10 +1,19 @@
 @using project_foodie.Pages.view_menu.components
+@using project_foodie.Model;
+@using Newtonsoft.Json;
 <div class="menu-container">
     <div class="card-container">
         <h2 class="meal-text">Lunch</h2>
-        @for (int x=0; x<3; x++) {
-            <Dishes/>
+
+        @foreach(DishMenu dishMenu in menuData.DishMenu){
+            Console.WriteLine(dishMenu.Dish.Name);
+            <Dishes dishData=@dishMenu/>
         }
     </div>    
 </div>
+
+@code {
+    [Parameter]
+    public project_foodie.Model.Menu menuData { get; set; }
+}
     
