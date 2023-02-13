@@ -10,6 +10,7 @@
     <div class="food-card-body">
         <div class="food-card-upper-body">
             <div class="food-card-food-container">
+                <p class="food-card-text">@dishData.Dish.Id</p>
                 <p class="food-card-text">@dishData.Dish.Name</p>
                 <p class="food-card-text-extra">@dishData.Dish.description</p>
             </div>
@@ -40,6 +41,8 @@
             }
         </div>
     </div>
+    <button type="submit" @onclick="GetData">GetDATA</button>
+    <pre>@jsonString</pre>
 </div>
 
 
@@ -90,10 +93,10 @@
         count++;
         DishInformation dishInfo = new DishInformation
             {
-                ID = id,
+                ID = @dishData.Dish.Id,
                 Count = count,
-                dishname = DishName,
-                dishdiscription = DishDescription
+                dishname = @dishData.Dish.Name,
+                dishdiscription = @dishData.Dish.description
             };
 
         string json = JsonConvert.SerializeObject(dishInfo);
@@ -118,10 +121,10 @@
             count--;
             DishInformation dishInfo = new DishInformation
                 {
-                    ID = id,
+                    ID = @dishData.Dish.Id,
                     Count = count,
-                    dishname = DishName,
-                    dishdiscription = DishDescription
+                    dishname = @dishData.Dish.Name,
+                    dishdiscription = @dishData.Dish.description
                 };
 
             string json = JsonConvert.SerializeObject(dishInfo);
