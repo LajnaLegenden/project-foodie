@@ -7,9 +7,9 @@ public class DayMenu {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id{ get; set; }
-    DateTime date{ get; set; }
-    ICollection<Dish> dishes{ get; set; }
-    FoodType type{ get; set; }
+    public DateTime date{ get; set; }
+    public ICollection<Dish> dishes{ get; set; } = new List<Dish>();
+    public OrderType type{ get; set; }
 }
 
 public class Menu

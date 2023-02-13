@@ -2,8 +2,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-namespace project_foodie.Model;
 
+namespace project_foodie.Model;
 
 public class Dish
 {
@@ -18,5 +18,5 @@ public class Dish
     public ICollection<Ingredient> Ingredients { get; set; }
     public ICollection<Allergen> Allergens { get; set; }
     public ICollection<Order> Orders { get; set; }
+    public ICollection<DayMenu> dayMenus { get; set; } = new List<DayMenu>();
 }
-

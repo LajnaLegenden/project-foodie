@@ -28,7 +28,7 @@
                         <td>@menu.value.lastOrderDate</td>
                         <td>@menu.value.startDate</td>
                         <td>@menu.value.endDate</td>
-                        <td>@menu.value.dayMenus.Count</td>
+                        <td>@countTotalDishes(menu.value)</td>
                     </tr>
                 }
             </tbody>
@@ -41,9 +41,15 @@
         </table>
         <div class="dishes" style="display: flex;">
         @if (selectedMenuId >= 0){
-            @foreach(DayMenu dishes in _allMenus[selectedMenuId].dayMenus){
+            @foreach(DayMenu dayMenu in _allMenus[selectedMenuId].dayMenus){
                 <div style=" border: 1px solid">
-                   <p>@dishes.Id</p>
+                   <p>@dayMenu.date</p>
+                   <p>@dayMenu.type</p>
+                   <ul>
+                    @foreach(Dish dish in dayMenu.dishes){
+                    <li>@dish.Name</li>
+                    }
+                   </ul>
                 </div>
             }
         }
@@ -66,5 +72,24 @@
 
         void setMenuId(int id){
             selectedMenuId = id;
+        }
+
+        int countTotalDishes(Menu menu){
+            int totalDishes = 0;
+            if(menu.dayMenus == null){
+                return 0;
+            }
+          @*  print each day menu serializing it to json *@
+        
+            foreach(DayMenu dayMenu in menu.dayMenus){
+           //     Console.WriteLine(JsonConvert.SerializeObject(dayMenu));
+            }
+            
+
+
+           foreach(DayMenu dayMenu in menu.dayMenus){
+                totalDishes += dayMenu.dishes.Count;
+            } 
+            return totalDishes;
         }
 }

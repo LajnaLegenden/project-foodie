@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using project_foodie.Model;
 
@@ -10,9 +11,11 @@ using project_foodie.Model;
 namespace projectfoodie.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230213132727_ModifyDayMenu")]
+    partial class ModifyDayMenu
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.2");
@@ -45,21 +48,6 @@ namespace projectfoodie.Migrations
                     b.HasIndex("IngredientsId");
 
                     b.ToTable("AllergenIngredient");
-                });
-
-            modelBuilder.Entity("DayMenuDish", b =>
-                {
-                    b.Property<int>("dayMenusId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("dishesId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("dayMenusId", "dishesId");
-
-                    b.HasIndex("dishesId");
-
-                    b.ToTable("DayMenuDish");
                 });
 
             modelBuilder.Entity("DishIngredient", b =>
@@ -149,6 +137,9 @@ namespace projectfoodie.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("DayMenuId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("ImageUrl")
                         .HasColumnType("TEXT");
 
@@ -165,6 +156,8 @@ namespace projectfoodie.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DayMenuId");
 
                     b.ToTable("Dishes");
                 });
@@ -276,21 +269,6 @@ namespace projectfoodie.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("DayMenuDish", b =>
-                {
-                    b.HasOne("project_foodie.Model.DayMenu", null)
-                        .WithMany()
-                        .HasForeignKey("dayMenusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("project_foodie.Model.Dish", null)
-                        .WithMany()
-                        .HasForeignKey("dishesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("DishIngredient", b =>
                 {
                     b.HasOne("project_foodie.Model.Dish", null)
@@ -341,6 +319,18 @@ namespace projectfoodie.Migrations
                     b.HasOne("project_foodie.Model.Menu", null)
                         .WithMany("dayMenus")
                         .HasForeignKey("MenuId");
+                });
+
+            modelBuilder.Entity("project_foodie.Model.Dish", b =>
+                {
+                    b.HasOne("project_foodie.Model.DayMenu", null)
+                        .WithMany("dishes")
+                        .HasForeignKey("DayMenuId");
+                });
+
+            modelBuilder.Entity("project_foodie.Model.DayMenu", b =>
+                {
+                    b.Navigation("dishes");
                 });
 
             modelBuilder.Entity("project_foodie.Model.Menu", b =>

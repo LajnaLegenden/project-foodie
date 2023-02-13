@@ -1,5 +1,6 @@
 @namespace project_foodie.Pages.Webmaster
 @using project_foodie.Model;
+@using project_foodie.Repository;
 @using Newtonsoft.Json;
 <div>
 
@@ -54,7 +55,11 @@
 
     protected override async void OnInitialized()
     {
-        this._allDishes = await Dish.GetAll();
+       using(var context = new DatabaseContext()){
+        DishRepository dishRepository = new DishRepository(context);
+        _allDishes = await dishRepository.GetAllAsync();
+       }
+       
     }
 
     void setDishId(int id)

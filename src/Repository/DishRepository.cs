@@ -32,4 +32,8 @@ public class DishRepository
         _context.Dishes.Remove(dish);
         await _context.SaveChangesAsync();
     }
+    public async Task<List<Dish>> GetAllAsync()
+    {
+        return await _context.Dishes.Include(d => d.Ingredients).Include(d => d.Allergens).ToListAsync();
+    }
 }

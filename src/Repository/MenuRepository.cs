@@ -36,7 +36,35 @@ public class MenuRepository
 
     public async Task<List<Menu>> GetAllAsync()
     {
-        return await _context.Menus.Include(m => m.dayMenus).ToListAsync();
+        return await _context.Menus.Include(m => m.dayMenus).ThenInclude(dm => dm.dishes).ToListAsync();
+    }
+
+    //Add daymenu to menu
+    public async Task AddDayMenuAsync(Menu menu, DateTime date, Dish dish, OrderType orderType)
+    {
+        Console.WriteLine("[AddDayMenuAsync]: Trying to add " + dish.Name + " to menu " + menu.Name + " on " + date.ToString() + " for " + orderType.ToString() + "");
+        //if menu.dayMenus is null, create new list
+        if (menu.dayMenus == null)
+        {
+            menu.dayMenus = new List<DayMenu>();
+        }
+        //if daymenu for that date already exists add dish to existing daymenu
+        foreach (DayMenu day in menu.dayMenus)
+        {
+            if (day.date == date)
+            {
+                day.dishes.Add(dish);
+                await _context.SaveChangesAsync();
+                return;
+            }
+        }
+        //if daymenu for that date does not exist create new daymenu and add dish
+        DayMenu dayMenu = new DayMenu();
+        dayMenu.date = date;
+        dayMenu.dishes.Add(dish);
+        dayMenu.type = orderType;
+        menu.dayMenus.Add(dayMenu);
+        await _context.SaveChangesAsync();
     }
 
 }
