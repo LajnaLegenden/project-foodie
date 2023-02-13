@@ -10,7 +10,6 @@
     <div class="food-card-body">
         <div class="food-card-upper-body">
             <div class="food-card-food-container">
-                <p class="food-card-text">@dishData.Dish.Id</p>
                 <p class="food-card-text">@dishData.Dish.Name</p>
                 <p class="food-card-text-extra">@dishData.Dish.description</p>
             </div>
@@ -41,8 +40,6 @@
             }
         </div>
     </div>
-    <button type="submit" @onclick="GetData">GetDATA</button>
-    <pre>@jsonString</pre>
 </div>
 
 
@@ -110,8 +107,6 @@
         var localStorageCountJson = JsonConvert.DeserializeObject(localStorageCount);
         //parse localStorageCount into json format
         jsonString = JsonConvert.SerializeObject(localStorageCountJson);
-
-        Console.WriteLine(jsonString);
     }
 
     private async void DecrementCount(int ID, string dishname, string dishdiscription)
