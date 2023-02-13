@@ -1,6 +1,7 @@
-@using Newtonsoft.Json
+@using project_foodie.Pages.view_menu.components
+@using project_foodie.Model;
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
-
+@using Newtonsoft.Json;
 
 <div class="food-card">
     <div class="food-card-img-container">
@@ -9,12 +10,11 @@
     <div class="food-card-body">
         <div class="food-card-upper-body">
             <div class="food-card-food-container">
-                <p class="food-card-text">@id</p>
-                <p class="food-card-text">@DishName</p>
-                <p class="food-card-text-extra">@DishDescription</p>
+                <p class="food-card-text">@dishData.Dish.Name</p>
+                <p class="food-card-text-extra">@dishData.Dish.description</p>
             </div>
             <div class="food-card-price-container">
-                <p class="food-card-price">50kr</p>
+                <p class="food-card-price">@dishData.Dish.Price:-</p>
             </div>
         </div>
         <div class="allergener">
@@ -45,6 +45,7 @@
 
 @code {
 
+
     [Parameter]
     public int id { get; set; }
 
@@ -52,6 +53,10 @@
     public string DishName { get; set; }
     [Parameter]
     public string DishDescription { get; set; }
+
+    [Parameter]
+    public project_foodie.Model.DishMenu dishData { get; set; }
+
     private int count = 0;
     private bool showInput = false;
     private string ButtonClass => count <= 0 ? "food-card-btn food-card-btn-add-amount" : "food-card-btn food-card-btn-add";
