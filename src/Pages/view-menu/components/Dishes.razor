@@ -1,3 +1,7 @@
+@using Newtonsoft.Json
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+
+
 <div class="food-card">
     <div class="food-card-img-container">
 
@@ -5,8 +9,9 @@
     <div class="food-card-body">
         <div class="food-card-upper-body">
             <div class="food-card-food-container">
-                <p class="food-card-text">Kycklingtimbal</p>
-                <p class="food-card-text-extra">med böntimbal, brunsås och potatismos</p>
+                <p class="food-card-text">@id</p>
+                <p class="food-card-text">@DishName</p>
+                <p class="food-card-text-extra">@DishDescription</p>
             </div>
             <div class="food-card-price-container">
                 <p class="food-card-price">50kr</p>
@@ -21,9 +26,12 @@
             @if (showInput)
             {
                 <div class="btn-add-container">
-                    <button class="food-card-btn-decrement" @onclick="DecrementCount">-</button>
-                    <input type="text" class="text-add-placeholder" count="@count" placeholder="@count st"readonly="readonly"/>
-                    <button class="food-card-btn-add-increment" @onclick="IncrementCount">+</button>
+                    <button class="food-card-btn-decrement"
+                    @onclick="@((e) => DecrementCount(id, DishName, DishDescription))">-</button>
+                    <input type="text" class="text-add-placeholder" count="@count" placeholder="@count st"
+                        readonly="readonly" />
+                    <button class="food-card-btn-increment"
+                    @onclick="@((e) => IncrementCount(id, DishName, DishDescription))">+</button>
                 </div>
             }
             else
@@ -35,14 +43,40 @@
 </div>
 
 
-
 @code {
+
+    [Parameter]
+    public int id { get; set; }
+
+    [Parameter]
+    public string DishName { get; set; }
+    [Parameter]
+    public string DishDescription { get; set; }
     private int count = 0;
     private bool showInput = false;
     private string ButtonClass => count <= 0 ? "food-card-btn food-card-btn-add-amount" : "food-card-btn food-card-btn-add";
 
-    private void ToggleInput()
+    public class DishInformation
     {
+        public int Count { get; set; }
+        public int ID { get; set; }
+        public string dishname { get; set; }
+        public string dishdiscription { get; set; }
+    }
+
+    private async void ToggleInput()
+    {
+        DishInformation dishInfo = new DishInformation
+            {
+                Count = count,
+                ID = id,
+                dishname = DishName,
+                dishdiscription = DishDescription
+            };
+
+        string json = JsonConvert.SerializeObject(dishInfo);
+        await localStorage.SetItemAsync("LocalDataDishes", json);
+
         showInput = !showInput;
         if (showInput)
         {
@@ -54,18 +88,39 @@
         }
     }
 
-    private void IncrementCount()
+    private async void IncrementCount(int ID, string dishname, string dishdiscription)
     {
         count++;
+        DishInformation dishInfo = new DishInformation
+            {
+                Count = count,
+                ID = id,
+                dishname = DishName,
+                dishdiscription = DishDescription
+            };
+
+        string json = JsonConvert.SerializeObject(dishInfo);
+        await localStorage.SetItemAsync("LocalDataDishes", json);
     }
 
-    private void DecrementCount()
+
+    private async void DecrementCount(int ID, string dishname, string dishdiscription)
     {
         if (count > 0)
         {
             count--;
-            
+            DishInformation dishInfo = new DishInformation
+                {
+                    Count = count,
+                    ID = id,
+                    dishname = DishName,
+                    dishdiscription = DishDescription
+                };
+
+            string json = JsonConvert.SerializeObject(dishInfo);
+            await localStorage.SetItemAsync("LocalDataDishes", json);
         }
+
         if (count == 0)
         {
             showInput = false;
