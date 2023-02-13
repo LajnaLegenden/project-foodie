@@ -14,100 +14,34 @@ public class DatabaseContext : DbContext
     public DbSet<Ingredient> Ingredients { get; set; }
     public DbSet<Allergen> Allergens { get; set; }
 
-    public DbSet<OrderItem> OrderItems { get; set; }
-    public DbSet<OrderItemOrder> OrderItemOrders { get; set; }
-    public DbSet<DishOrder> DishOrders { get; set; }
-    public DbSet<IngredientDish> IngredientDishes { get; set; }
-    public DbSet<AllergenDish> AllergenDishes { get; set; }
-    public DbSet<AllergenIngredient> AllergenIngredients { get; set; }
-    public DbSet<DishMenu> DishMenu { get; set; }
-
-
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlite("Data Source=./data/foodie/db.sqlite;");
-    }
+        if(Global.Environment == null){
+            optionsBuilder.UseSqlite("Data Source=./data/foodie/db.sqlite;");
+            return;
+        }
+
+        if(Global.Environment.IsDevelopment())
+        {
+            optionsBuilder.UseSqlite("Data Source=./data/foodie/db.sqlite;");
+        }
+        else
+        {
+            var config = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true)
+                .Build();
+
+            string connectionString = config.GetConnectionString("MySqlConnection");
+            var serverVersion = new MariaDbServerVersion(connectionString);
+
+            optionsBuilder.UseMySql(connectionString, serverVersion);
+        }
+      }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // AllergenIngredient
-        modelBuilder.Entity<AllergenIngredient>().HasKey(ai => new { ai.AllergenId, ai.IngredientId });
 
-        modelBuilder.Entity<AllergenIngredient>()
-            .HasOne<Allergen>(ai => ai.Allergen)
-            .WithMany(a => a.AllergenIngredient)
-            .HasForeignKey(ai => ai.AllergenId);
-
-
-        modelBuilder.Entity<AllergenIngredient>()
-            .HasOne<Ingredient>(ai => ai.Ingredient)
-            .WithMany(i => i.AllergenIngredient)
-            .HasForeignKey(ai => ai.IngredientId);
-
-
-        //Ingredent Dish
-        modelBuilder.Entity<IngredientDish>().HasKey(id => new { id.IngredientId, id.DishId });
-        modelBuilder.Entity<IngredientDish>()
-            .HasOne<Ingredient>(id => id.Ingredient)
-            .WithMany(i => i.IngredientDish)
-            .HasForeignKey(id => id.IngredientId);
-        modelBuilder.Entity<IngredientDish>()
-            .HasOne<Dish>(id => id.Dish)
-            .WithMany(d => d.IngredientDish)
-            .HasForeignKey(id => id.DishId);
-
-        //Allergen Dish
-        modelBuilder.Entity<AllergenDish>().HasKey(ad => new { ad.AllergenId, ad.DishId });
-
-        modelBuilder.Entity<AllergenDish>()
-            .HasOne<Allergen>(ad => ad.Allergen)
-            .WithMany(a => a.AllergenDish)
-            .HasForeignKey(ad => ad.AllergenId);
-
-        modelBuilder.Entity<AllergenDish>()
-            .HasOne<Dish>(ad => ad.Dish)
-            .WithMany(d => d.AllergenDish)
-            .HasForeignKey(ad => ad.DishId);
-
-        //Dish Menu
-        modelBuilder.Entity<DishMenu>().HasKey(dm => new { dm.MenuId, dm.DishId });
-
-        modelBuilder.Entity<DishMenu>()
-            .HasOne<Menu>(dm => dm.Menu)
-            .WithMany(d => d.DishMenu)
-            .HasForeignKey(dm => dm.MenuId);
-
-        modelBuilder.Entity<DishMenu>()
-            .HasOne<Dish>(dm => dm.Dish)
-            .WithMany(m => m.DishMenu)
-            .HasForeignKey(dm => dm.DishId);
-        // OrderItem Order
-        modelBuilder.Entity<OrderItemOrder>().HasKey(oio => new { oio.OrderItemId, oio.OrderId });
-
-        modelBuilder.Entity<OrderItemOrder>()
-            .HasOne<OrderItem>(oio => oio.OrderItem)
-            .WithMany(oi => oi.OrderItemOrder)
-            .HasForeignKey(oio => oio.OrderItemId);
-
-
-        modelBuilder.Entity<OrderItemOrder>()
-            .HasOne<Order>(oio => oio.Order)
-            .WithMany(o => o.OrderItemOrder)
-            .HasForeignKey(oio => oio.OrderId);
-
-        // Dish Order
-        modelBuilder.Entity<DishOrder>().HasKey(dio => new { dio.DishId, dio.OrderId });
-
-        modelBuilder.Entity<DishOrder>()
-            .HasOne<Dish>(dio => dio.Dish)
-            .WithMany(d => d.DishOrder)
-            .HasForeignKey(dio => dio.DishId);
-
-
-        modelBuilder.Entity<DishOrder>()
-            .HasOne<Order>(dio => dio.Order)
-            .WithMany(o => o.DishOrder)
-            .HasForeignKey(dio => dio.OrderId);
     }
 }
 

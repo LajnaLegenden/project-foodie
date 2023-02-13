@@ -17,7 +17,7 @@ namespace projectfoodie.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false)
+                    Name = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -30,10 +30,10 @@ namespace projectfoodie.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: true),
                     Type = table.Column<int>(type: "INTEGER", nullable: false),
-                    description = table.Column<string>(type: "TEXT", nullable: false),
-                    ImageUrl = table.Column<string>(type: "TEXT", nullable: false),
+                    description = table.Column<string>(type: "TEXT", nullable: true),
+                    ImageUrl = table.Column<string>(type: "TEXT", nullable: true),
                     Price = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
@@ -47,7 +47,7 @@ namespace projectfoodie.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false)
+                    Name = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -60,7 +60,7 @@ namespace projectfoodie.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: true),
                     lastOrderDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     startDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     endDate = table.Column<DateTime>(type: "TEXT", nullable: false)
@@ -71,17 +71,18 @@ namespace projectfoodie.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OrderItem",
+                name: "OrderItems",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    date = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    type = table.Column<int>(type: "INTEGER", nullable: false)
+                    orderItemId = table.Column<int>(type: "INTEGER", nullable: false),
+                    orderId = table.Column<int>(type: "INTEGER", nullable: false),
+                    quantity = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderItem", x => x.id);
+                    table.PrimaryKey("PK_OrderItems", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -100,7 +101,7 @@ namespace projectfoodie.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AllergenDish",
+                name: "AllergenDishes",
                 columns: table => new
                 {
                     AllergenId = table.Column<int>(type: "INTEGER", nullable: false),
@@ -108,15 +109,15 @@ namespace projectfoodie.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AllergenDish", x => new { x.AllergenId, x.DishId });
+                    table.PrimaryKey("PK_AllergenDishes", x => new { x.AllergenId, x.DishId });
                     table.ForeignKey(
-                        name: "FK_AllergenDish_Allergens_AllergenId",
+                        name: "FK_AllergenDishes_Allergens_AllergenId",
                         column: x => x.AllergenId,
                         principalTable: "Allergens",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AllergenDish_Dishes_DishId",
+                        name: "FK_AllergenDishes_Dishes_DishId",
                         column: x => x.DishId,
                         principalTable: "Dishes",
                         principalColumn: "Id",
@@ -124,7 +125,7 @@ namespace projectfoodie.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AllergenIngredient",
+                name: "AllergenIngredients",
                 columns: table => new
                 {
                     AllergenId = table.Column<int>(type: "INTEGER", nullable: false),
@@ -132,15 +133,15 @@ namespace projectfoodie.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AllergenIngredient", x => new { x.AllergenId, x.IngredientId });
+                    table.PrimaryKey("PK_AllergenIngredients", x => new { x.AllergenId, x.IngredientId });
                     table.ForeignKey(
-                        name: "FK_AllergenIngredient_Allergens_AllergenId",
+                        name: "FK_AllergenIngredients_Allergens_AllergenId",
                         column: x => x.AllergenId,
                         principalTable: "Allergens",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AllergenIngredient_Ingredients_IngredientId",
+                        name: "FK_AllergenIngredients_Ingredients_IngredientId",
                         column: x => x.IngredientId,
                         principalTable: "Ingredients",
                         principalColumn: "Id",
@@ -148,7 +149,7 @@ namespace projectfoodie.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "IngredientDish",
+                name: "IngredientDishes",
                 columns: table => new
                 {
                     IngredientId = table.Column<int>(type: "INTEGER", nullable: false),
@@ -156,15 +157,15 @@ namespace projectfoodie.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_IngredientDish", x => new { x.IngredientId, x.DishId });
+                    table.PrimaryKey("PK_IngredientDishes", x => new { x.IngredientId, x.DishId });
                     table.ForeignKey(
-                        name: "FK_IngredientDish_Dishes_DishId",
+                        name: "FK_IngredientDishes_Dishes_DishId",
                         column: x => x.DishId,
                         principalTable: "Dishes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_IngredientDish_Ingredients_IngredientId",
+                        name: "FK_IngredientDishes_Ingredients_IngredientId",
                         column: x => x.IngredientId,
                         principalTable: "Ingredients",
                         principalColumn: "Id",
@@ -199,28 +200,28 @@ namespace projectfoodie.Migrations
                 name: "DishOrder",
                 columns: table => new
                 {
-                    DishId = table.Column<int>(type: "INTEGER", nullable: false),
-                    OrderId = table.Column<int>(type: "INTEGER", nullable: false)
+                    DishesId = table.Column<int>(type: "INTEGER", nullable: false),
+                    OrdersId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DishOrder", x => new { x.DishId, x.OrderId });
+                    table.PrimaryKey("PK_DishOrder", x => new { x.DishesId, x.OrdersId });
                     table.ForeignKey(
-                        name: "FK_DishOrder_Dishes_DishId",
-                        column: x => x.DishId,
+                        name: "FK_DishOrder_Dishes_DishesId",
+                        column: x => x.DishesId,
                         principalTable: "Dishes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_DishOrder_Orders_OrderId",
-                        column: x => x.OrderId,
+                        name: "FK_DishOrder_Orders_OrdersId",
+                        column: x => x.OrdersId,
                         principalTable: "Orders",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "OrderItemOrder",
+                name: "OrderItemOrders",
                 columns: table => new
                 {
                     OrderItemId = table.Column<int>(type: "INTEGER", nullable: false),
@@ -228,15 +229,15 @@ namespace projectfoodie.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderItemOrder", x => new { x.OrderItemId, x.OrderId });
+                    table.PrimaryKey("PK_OrderItemOrders", x => new { x.OrderItemId, x.OrderId });
                     table.ForeignKey(
-                        name: "FK_OrderItemOrder_OrderItem_OrderItemId",
+                        name: "FK_OrderItemOrders_OrderItems_OrderItemId",
                         column: x => x.OrderItemId,
-                        principalTable: "OrderItem",
-                        principalColumn: "id",
+                        principalTable: "OrderItems",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_OrderItemOrder_Orders_OrderId",
+                        name: "FK_OrderItemOrders_Orders_OrderId",
                         column: x => x.OrderId,
                         principalTable: "Orders",
                         principalColumn: "Id",
@@ -244,13 +245,13 @@ namespace projectfoodie.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AllergenDish_DishId",
-                table: "AllergenDish",
+                name: "IX_AllergenDishes_DishId",
+                table: "AllergenDishes",
                 column: "DishId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AllergenIngredient_IngredientId",
-                table: "AllergenIngredient",
+                name: "IX_AllergenIngredients_IngredientId",
+                table: "AllergenIngredients",
                 column: "IngredientId");
 
             migrationBuilder.CreateIndex(
@@ -259,18 +260,18 @@ namespace projectfoodie.Migrations
                 column: "DishId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DishOrder_OrderId",
+                name: "IX_DishOrder_OrdersId",
                 table: "DishOrder",
-                column: "OrderId");
+                column: "OrdersId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_IngredientDish_DishId",
-                table: "IngredientDish",
+                name: "IX_IngredientDishes_DishId",
+                table: "IngredientDishes",
                 column: "DishId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderItemOrder_OrderId",
-                table: "OrderItemOrder",
+                name: "IX_OrderItemOrders_OrderId",
+                table: "OrderItemOrders",
                 column: "OrderId");
         }
 
@@ -278,10 +279,10 @@ namespace projectfoodie.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "AllergenDish");
+                name: "AllergenDishes");
 
             migrationBuilder.DropTable(
-                name: "AllergenIngredient");
+                name: "AllergenIngredients");
 
             migrationBuilder.DropTable(
                 name: "DishMenu");
@@ -290,10 +291,10 @@ namespace projectfoodie.Migrations
                 name: "DishOrder");
 
             migrationBuilder.DropTable(
-                name: "IngredientDish");
+                name: "IngredientDishes");
 
             migrationBuilder.DropTable(
-                name: "OrderItemOrder");
+                name: "OrderItemOrders");
 
             migrationBuilder.DropTable(
                 name: "Allergens");
@@ -308,7 +309,7 @@ namespace projectfoodie.Migrations
                 name: "Ingredients");
 
             migrationBuilder.DropTable(
-                name: "OrderItem");
+                name: "OrderItems");
 
             migrationBuilder.DropTable(
                 name: "Orders");

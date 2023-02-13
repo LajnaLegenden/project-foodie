@@ -6,6 +6,8 @@ using project_foodie.Model;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
@@ -18,6 +20,7 @@ builder.Services.AddDbContextFactory<DatabaseContext>();
 
 var app = builder.Build();
 
+Global.Environment = app.Environment;
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -33,3 +36,7 @@ app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
 app.Run();
+class Global
+{
+    public static IHostEnvironment Environment { get; set; }
+}

@@ -12,5 +12,5 @@ public class OrderItem
     public required int orderId { get; set; }
     public required int quantity { get; set; }
 
-    public IList<OrderItemOrder> OrderItemOrder { get; set; }
+    public ICollection<Order> Orders { get; set; }
 }

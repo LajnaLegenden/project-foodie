@@ -15,23 +15,26 @@ public class Dish
     public string description { get; set; } = "";
     public string ImageUrl { get; set; } = "";
     public int Price { get; set; } = -1;
-    public IList<IngredientDish> IngredientDish { get; set; }
-    public IList<AllergenDish> AllergenDish { get; set; }
-    public IList<DishMenu> DishMenu { get; set; }
-    public IList<DishOrder> DishOrder { get; set; }
+    public ICollection<Ingredient> Ingredients { get; set; }
+    public ICollection<Allergen> Allergens { get; set; }
+    public ICollection<Menu> Menus { get; set; }
+    public ICollection<Order> Orders { get; set; }
 
 
 
     public static async Task<Dish> GetDishByIdAsync(int id)
     {
-        using var context = new DatabaseContext();
-        return (await context.Dishes.Include(d => d.IngredientDish).ThenInclude(id => id.Ingredient).Include(d => d.AllergenDish)!.ThenInclude(ad => ad.Allergen).ToListAsync<Dish>()).Find(d => d.Id == id);
+        return (await Dish.GetAll()).Find(d => d.Id == id);
+
     }
 
-    public static List<Dish> GetAll()
+    public static async Task<List<Dish>> GetAll()
     {
         using var context = new DatabaseContext();
-        return context.Dishes.Include(d => d.IngredientDish).ThenInclude(id => id.Ingredient).Include(d => d.AllergenDish).ThenInclude(ad => ad.Allergen).ToList<Dish>();
+        return await context.Dishes
+            .Include(d => d.Ingredients).ThenInclude(i => i.Allergens)
+            .Include(d => d.Allergens)
+            .ToListAsync();
     }
 
 }

@@ -11,14 +11,44 @@ using project_foodie.Model;
 namespace projectfoodie.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230208183320_UpdateConstraints")]
-    partial class UpdateConstraints
+    [Migration("20230210153322_ManyToMany")]
+    partial class ManyToMany
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.2");
+
+            modelBuilder.Entity("DishMenu", b =>
+                {
+                    b.Property<int>("DishesId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("MenusId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("DishesId", "MenusId");
+
+                    b.HasIndex("MenusId");
+
+                    b.ToTable("DishMenu");
+                });
+
+            modelBuilder.Entity("DishOrder", b =>
+                {
+                    b.Property<int>("DishesId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("OrdersId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("DishesId", "OrdersId");
+
+                    b.HasIndex("OrdersId");
+
+                    b.ToTable("DishOrder");
+                });
 
             modelBuilder.Entity("project_foodie.Model.Allergen", b =>
                 {
@@ -27,7 +57,6 @@ namespace projectfoodie.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -47,7 +76,7 @@ namespace projectfoodie.Migrations
 
                     b.HasIndex("DishId");
 
-                    b.ToTable("AllergenDish");
+                    b.ToTable("AllergenDishes");
                 });
 
             modelBuilder.Entity("project_foodie.Model.AllergenIngredient", b =>
@@ -62,7 +91,7 @@ namespace projectfoodie.Migrations
 
                     b.HasIndex("IngredientId");
 
-                    b.ToTable("AllergenIngredient");
+                    b.ToTable("AllergenIngredients");
                 });
 
             modelBuilder.Entity("project_foodie.Model.Dish", b =>
@@ -72,11 +101,9 @@ namespace projectfoodie.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Price")
@@ -86,42 +113,11 @@ namespace projectfoodie.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("description")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
                     b.ToTable("Dishes");
-                });
-
-            modelBuilder.Entity("project_foodie.Model.DishMenu", b =>
-                {
-                    b.Property<int>("MenuId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("DishId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("MenuId", "DishId");
-
-                    b.HasIndex("DishId");
-
-                    b.ToTable("DishMenu");
-                });
-
-            modelBuilder.Entity("project_foodie.Model.DishOrder", b =>
-                {
-                    b.Property<int>("DishId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("DishId", "OrderId");
-
-                    b.HasIndex("OrderId");
-
-                    b.ToTable("DishOrder");
                 });
 
             modelBuilder.Entity("project_foodie.Model.Ingredient", b =>
@@ -131,7 +127,6 @@ namespace projectfoodie.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -151,7 +146,7 @@ namespace projectfoodie.Migrations
 
                     b.HasIndex("DishId");
 
-                    b.ToTable("IngredientDish");
+                    b.ToTable("IngredientDishes");
                 });
 
             modelBuilder.Entity("project_foodie.Model.Menu", b =>
@@ -161,7 +156,6 @@ namespace projectfoodie.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("endDate")
@@ -200,19 +194,22 @@ namespace projectfoodie.Migrations
 
             modelBuilder.Entity("project_foodie.Model.OrderItem", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("date")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("type")
+                    b.Property<int>("orderId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("id");
+                    b.Property<int>("orderItemId")
+                        .HasColumnType("INTEGER");
 
-                    b.ToTable("OrderItem");
+                    b.Property<int>("quantity")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("project_foodie.Model.OrderItemOrder", b =>
@@ -227,7 +224,37 @@ namespace projectfoodie.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderItemOrder");
+                    b.ToTable("OrderItemOrders");
+                });
+
+            modelBuilder.Entity("DishMenu", b =>
+                {
+                    b.HasOne("project_foodie.Model.Dish", null)
+                        .WithMany()
+                        .HasForeignKey("DishesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("project_foodie.Model.Menu", null)
+                        .WithMany()
+                        .HasForeignKey("MenusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DishOrder", b =>
+                {
+                    b.HasOne("project_foodie.Model.Dish", null)
+                        .WithMany()
+                        .HasForeignKey("DishesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("project_foodie.Model.Order", null)
+                        .WithMany()
+                        .HasForeignKey("OrdersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("project_foodie.Model.AllergenDish", b =>
@@ -266,44 +293,6 @@ namespace projectfoodie.Migrations
                     b.Navigation("Allergen");
 
                     b.Navigation("Ingredient");
-                });
-
-            modelBuilder.Entity("project_foodie.Model.DishMenu", b =>
-                {
-                    b.HasOne("project_foodie.Model.Dish", "Dish")
-                        .WithMany("DishMenu")
-                        .HasForeignKey("DishId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("project_foodie.Model.Menu", "Menu")
-                        .WithMany("DishMenu")
-                        .HasForeignKey("MenuId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Dish");
-
-                    b.Navigation("Menu");
-                });
-
-            modelBuilder.Entity("project_foodie.Model.DishOrder", b =>
-                {
-                    b.HasOne("project_foodie.Model.Dish", "Dish")
-                        .WithMany("DishOrder")
-                        .HasForeignKey("DishId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("project_foodie.Model.Order", "Order")
-                        .WithMany("DishOrder")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Dish");
-
-                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("project_foodie.Model.IngredientDish", b =>
@@ -355,10 +344,6 @@ namespace projectfoodie.Migrations
                 {
                     b.Navigation("AllergenDish");
 
-                    b.Navigation("DishMenu");
-
-                    b.Navigation("DishOrder");
-
                     b.Navigation("IngredientDish");
                 });
 
@@ -369,15 +354,8 @@ namespace projectfoodie.Migrations
                     b.Navigation("IngredientDish");
                 });
 
-            modelBuilder.Entity("project_foodie.Model.Menu", b =>
-                {
-                    b.Navigation("DishMenu");
-                });
-
             modelBuilder.Entity("project_foodie.Model.Order", b =>
                 {
-                    b.Navigation("DishOrder");
-
                     b.Navigation("OrderItemOrder");
                 });
 

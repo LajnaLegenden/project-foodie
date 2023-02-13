@@ -1,11 +1,10 @@
-@page "/fill-db"
 @using project_foodie.Data
 @using project_foodie.Model
 @using System.Text.Json
 @using  System;
 @using  System.Linq;
 @using  Microsoft.EntityFrameworkCore;
-
+@namespace project_foodie.Pages.Webmaster
 <h1>Test</h1>
 <p>@message</p>
  <button @onclick="FillDB">Fill DB</button>
@@ -18,7 +17,7 @@
     private string message = "Hello, world!";
     private Menu menu;
 
-    private async Task clearDb(){
+    private void clearDb(){
         var db = new DatabaseContext();
         db.Database.EnsureDeleted();
         db.Database.EnsureCreated();
@@ -103,6 +102,131 @@
             },
         };
 
+List<Ingredient> porkTenderloinIngredients = new List<Ingredient>
+{
+    new Ingredient
+    {
+        Name = "Pork tenderloin",
+        Allergens = new List<Allergen>
+        {
+            new Allergen { Name = "None" },
+        },
+    },
+    new Ingredient
+    {
+        Name = "Potatoes",
+        Allergens = new List<Allergen>
+        {
+            new Allergen { Name = "None" },
+        },
+    },
+    new Ingredient
+    {
+        Name = "Carrots",
+        Allergens = new List<Allergen>
+        {
+            new Allergen { Name = "None" },
+        },
+    },
+    new Ingredient
+    {
+        Name = "Green beans",
+        Allergens = new List<Allergen>
+        {
+            new Allergen { Name = "None" },
+        },
+    },
+};
+
+List<Ingredient> tofuStirFryIngredients = new List<Ingredient>
+{
+    new Ingredient
+    {
+        Name = "Tofu",
+        Allergens = new List<Allergen>
+        {
+            new Allergen { Name = "Soy" },
+        },
+    },
+    new Ingredient
+    {
+        Name = "Broccoli",
+        Allergens = new List<Allergen>
+        {
+            new Allergen { Name = "None" },
+        },
+    },
+    new Ingredient
+    {
+        Name = "Red bell pepper",
+        Allergens = new List<Allergen>
+        {
+            new Allergen { Name = "None" },
+        },
+    },
+    new Ingredient
+    {
+        Name = "Carrots",
+        Allergens = new List<Allergen>
+        {
+            new Allergen { Name = "None" },
+        },
+    },
+};
+
+List<Ingredient> beefBurgerIngredients = new List<Ingredient>
+{
+    new Ingredient
+    {
+        Name = "Beef patty",
+        Allergens = new List<Allergen>
+        {
+            new Allergen { Name = "None" },
+        },
+    },
+    new Ingredient
+    {
+        Name = "Brioche bun",
+        Allergens = new List<Allergen>
+        {
+            new Allergen { Name = "Gluten" },
+            new Allergen { Name = "Dairy" },
+        },
+    },
+    new Ingredient
+    {
+        Name = "Lettuce",
+        Allergens = new List<Allergen>
+        {
+            new Allergen { Name = "None" }
+        },
+    },
+    new Ingredient
+    {
+        Name = "Tomato",
+        Allergens = new List<Allergen>
+        {
+            new Allergen { Name = "None" }
+        },
+    },
+        new Ingredient
+        {
+            Name = "Cheddar cheese",
+            Allergens = new List<Allergen>
+            {
+                new Allergen { Name = "Dairy" },
+            },
+        },
+        new Ingredient
+        {
+            Name = "French fries",
+            Allergens = new List<Allergen>
+            {
+                new Allergen { Name = "None" },
+            },
+        }
+    };
+
         List<Ingredient> salmonSushiIngredients = new List<Ingredient>
         {
             new Ingredient
@@ -167,6 +291,33 @@
                 Price = 8,
                 Ingredients = salmonSushiIngredients,
             },
+            new Dish
+    {
+        Name = "Pork tenderloin",
+        Type = FoodType.Pork,
+        description = "Pork tenderloin with roasted vegetables",
+        ImageUrl = "https://example.com/pork-tenderloin.jpg",
+        Price = 15,
+        Ingredients = porkTenderloinIngredients,
+    },
+    new Dish
+    {
+        Name = "Tofu stir-fry",
+        Type = FoodType.Vegan,
+        description = "Tofu stir-fry",
+        ImageUrl = "https://example.com/tofu-stir-fry.jpg",
+        Price = 12,
+        Ingredients = tofuStirFryIngredients,
+    },
+    new Dish
+    {
+        Name = "Beef burger",
+        Type = FoodType.Beef,
+        description = "Beef burger with fries",
+        ImageUrl = "https://example.com/beef-burger.jpg",
+        Price = 10,
+        Ingredients = beefBurgerIngredients,
+    }
         };
 
 

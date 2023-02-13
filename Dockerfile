@@ -10,6 +10,9 @@ RUN dotnet restore "project-foodie.csproj"
 COPY src .
 RUN dotnet build "project-foodie.csproj" -c Release -o /app/build
 
+RUN dotnet tool install --global dotnet-ef
+RUN dotnet ef database update --project "src/project-foodie.csproj"
+
 FROM build AS publish
 RUN dotnet publish "project-foodie.csproj" -c Release -o /app/publish
 
