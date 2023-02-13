@@ -30,7 +30,7 @@
 @if (viewMenu) 
 {
     <div class="menu-container">
-        <MenuContainer activeDate="@activeDate"/>
+        <MenuContainer menuData=@_menu/>
         <div class="button-container">
             <button @onclick="DecrementDate" class="button-back">Föregående dag</button>
             <button @onclick="IncrementDate" class="button-forward">Nästa dag</button>
