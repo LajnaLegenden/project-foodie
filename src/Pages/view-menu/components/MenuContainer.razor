@@ -9,13 +9,12 @@
             Console.WriteLine(dishMenu.Dish.Name);
             <Dishes dishData=@dishMenu/>
         }
-    </div>    
+    </div>
 </div>
 
 @code {
     [Parameter]
     public project_foodie.Model.Menu menuData { get; set; }
     
-    public DateTime activeDate {get; set;} 
+    public DateTime activeDate {get; set;}
 }
-    
