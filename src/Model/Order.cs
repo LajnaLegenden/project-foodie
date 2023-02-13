@@ -12,5 +12,5 @@ public class Order
     public required int userId { get; set; }
     public required Menu menu { get; set; }
     public required DateTime orderDate { get; set; }
-    public ICollection<OrderItem> OrderItems { get; set; }
+    public ICollection<OrderItem> orderItems { get; set; }
 }
