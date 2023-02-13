@@ -64,18 +64,8 @@
         public string dishdiscription { get; set; }
     }
 
-    private async void ToggleInput()
+    private void ToggleInput()
     {
-        DishInformation dishInfo = new DishInformation
-            {
-                Count = count,
-                ID = id,
-                dishname = DishName,
-                dishdiscription = DishDescription
-            };
-
-        string json = JsonConvert.SerializeObject(dishInfo);
-        await localStorage.SetItemAsync("LocalDataDishes", json);
 
         showInput = !showInput;
         if (showInput)
