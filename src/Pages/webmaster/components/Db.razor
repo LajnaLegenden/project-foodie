@@ -4,6 +4,7 @@
 @using  System;
 @using  System.Linq;
 @using  Microsoft.EntityFrameworkCore;
+@using project_foodie.Repository;
 @namespace project_foodie.Pages.Webmaster
 <h1>Test</h1>
 <p>@message</p>
@@ -24,324 +25,72 @@
         message = "DB cleared";
     }
 
+    private Ingredient CreateIngredient(string name)
+    {
+        var Ingredient =  new Ingredient()
+        {
+            Name = name,
+            Allergens = new List<Allergen>()
+        };
+
+        var Allergen = new Allergen()
+        {
+            Name = "Gluten",
+            Ingredients = new List<Ingredient>(){
+                Ingredient
+                }
+        };
+
+        return Ingredient;
+    }
+
     private async Task FillDB()
     {
-        var db = new DatabaseContext();
-        //list of 3 menus
+
+
+       using (var db = new DatabaseContext())
+        {
+        MenuRepository menuRepository = new MenuRepository(db);
+
+
         List<Menu> menus = new List<Menu>()
         {
             new Menu(){ Name = "Vecka 8", lastOrderDate = new DateTime(2023, 2, 18), startDate = new DateTime(2023, 2, 20), endDate = new DateTime(2023, 2,26) },
             new Menu(){ Name = "Vecka 9", lastOrderDate = new DateTime(2023, 2, 25), startDate = new DateTime(2023, 2,27), endDate = new DateTime(2023, 3, 5) },
             new Menu(){ Name = "Vecka 10", lastOrderDate = new DateTime(2023, 3, 4), startDate = new DateTime(2023, 3, 6), endDate = new DateTime(2023, 3, 12) }
         };
-
-
-
-        List<Ingredient> grilledChickenIngredients = new List<Ingredient>
-        {
-            new Ingredient
-            {
-                Name = "Chicken breast",
-                Allergens = new List<Allergen>
-                {
-                    new Allergen { Name = "Gluten" },
-                    new Allergen { Name = "Soy" },
-                },
-            },
-            new Ingredient
-            {
-                Name = "Olive oil",
-                Allergens = new List<Allergen>
-                {
-                    new Allergen { Name = "None" },
-                },
-            },
-            new Ingredient
-            {
-                Name = "Lemon",
-                Allergens = new List<Allergen>
-                {
-                    new Allergen { Name = "None" },
-                },
-            },
-        };
-
-        List<Ingredient> mushroomRisottoIngredients = new List<Ingredient>
-        {
-            new Ingredient
-            {
-                Name = "Arborio rice",
-                Allergens = new List<Allergen>
-                {
-                    new Allergen { Name = "None" },
-                },
-            },
-            new Ingredient
-            {
-                Name = "Mushrooms",
-                Allergens = new List<Allergen>
-                {
-                    new Allergen { Name = "None" },
-                },
-            },
-            new Ingredient
-            {
-                Name = "Butter",
-                Allergens = new List<Allergen>
-                {
-                    new Allergen { Name = "Dairy" },
-                },
-            },
-            new Ingredient
-            {
-                Name = "Parmesan cheese",
-                Allergens = new List<Allergen>
-                {
-                    new Allergen { Name = "Dairy" },
-                },
-            },
-        };
-
-List<Ingredient> porkTenderloinIngredients = new List<Ingredient>
-{
-    new Ingredient
-    {
-        Name = "Pork tenderloin",
-        Allergens = new List<Allergen>
-        {
-            new Allergen { Name = "None" },
-        },
-    },
-    new Ingredient
-    {
-        Name = "Potatoes",
-        Allergens = new List<Allergen>
-        {
-            new Allergen { Name = "None" },
-        },
-    },
-    new Ingredient
-    {
-        Name = "Carrots",
-        Allergens = new List<Allergen>
-        {
-            new Allergen { Name = "None" },
-        },
-    },
-    new Ingredient
-    {
-        Name = "Green beans",
-        Allergens = new List<Allergen>
-        {
-            new Allergen { Name = "None" },
-        },
-    },
-};
-
-List<Ingredient> tofuStirFryIngredients = new List<Ingredient>
-{
-    new Ingredient
-    {
-        Name = "Tofu",
-        Allergens = new List<Allergen>
-        {
-            new Allergen { Name = "Soy" },
-        },
-    },
-    new Ingredient
-    {
-        Name = "Broccoli",
-        Allergens = new List<Allergen>
-        {
-            new Allergen { Name = "None" },
-        },
-    },
-    new Ingredient
-    {
-        Name = "Red bell pepper",
-        Allergens = new List<Allergen>
-        {
-            new Allergen { Name = "None" },
-        },
-    },
-    new Ingredient
-    {
-        Name = "Carrots",
-        Allergens = new List<Allergen>
-        {
-            new Allergen { Name = "None" },
-        },
-    },
-};
-
-List<Ingredient> beefBurgerIngredients = new List<Ingredient>
-{
-    new Ingredient
-    {
-        Name = "Beef patty",
-        Allergens = new List<Allergen>
-        {
-            new Allergen { Name = "None" },
-        },
-    },
-    new Ingredient
-    {
-        Name = "Brioche bun",
-        Allergens = new List<Allergen>
-        {
-            new Allergen { Name = "Gluten" },
-            new Allergen { Name = "Dairy" },
-        },
-    },
-    new Ingredient
-    {
-        Name = "Lettuce",
-        Allergens = new List<Allergen>
-        {
-            new Allergen { Name = "None" }
-        },
-    },
-    new Ingredient
-    {
-        Name = "Tomato",
-        Allergens = new List<Allergen>
-        {
-            new Allergen { Name = "None" }
-        },
-    },
-        new Ingredient
-        {
-            Name = "Cheddar cheese",
-            Allergens = new List<Allergen>
-            {
-                new Allergen { Name = "Dairy" },
-            },
-        },
-        new Ingredient
-        {
-            Name = "French fries",
-            Allergens = new List<Allergen>
-            {
-                new Allergen { Name = "None" },
-            },
-        }
-    };
-
-        List<Ingredient> salmonSushiIngredients = new List<Ingredient>
-        {
-            new Ingredient
-            {
-                Name = "Sushi rice",
-                Allergens = new List<Allergen>
-                {
-                    new Allergen { Name = "None" },
-                },
-            },
-            new Ingredient
-            {
-                Name = "Salmon",
-                Allergens = new List<Allergen>
-                {
-                    new Allergen { Name = "Fish" },
-                },
-            },
-            new Ingredient
-            {
-                Name = "Nori seaweed",
-                Allergens = new List<Allergen>
-                {
-                    new Allergen { Name = "None" },
-                },
-            },
-            new Ingredient
-            {
-                Name = "Soy sauce",
-                Allergens = new List<Allergen>
-                {
-                    new Allergen { Name = "Soy" },
-                },
-            },
-        };
-
-            List<Dish> dishes = new List<Dish>
-        {
-            new Dish
-            {   Name = "Grilled chicken breast",
-                Type = FoodType.Chicken,
-                description = "Grilled chicken breast",
-                ImageUrl = "https://example.com/grilled-chicken.jpg",
-                Price = 10,
-                Ingredients = grilledChickenIngredients,
-            },
-            new Dish
-            {
-                Name = "Mushroom risotto",
-                Type = FoodType.Vegetarian,
-                description = "Mushroom risotto",
-                ImageUrl = "https://example.com/mushroom-risotto.jpg",
-                Price = 12,
-                Ingredients = mushroomRisottoIngredients,
-            },
-            new Dish
-            {
-                Name = "Salmon sushi roll",
-                Type = FoodType.Fish,
-                description = "Salmon sushi roll",
-                ImageUrl = "https://example.com/salmon-sushi.jpg",
-                Price = 8,
-                Ingredients = salmonSushiIngredients,
-            },
-            new Dish
-    {
-        Name = "Pork tenderloin",
-        Type = FoodType.Pork,
-        description = "Pork tenderloin with roasted vegetables",
-        ImageUrl = "https://example.com/pork-tenderloin.jpg",
-        Price = 15,
-        Ingredients = porkTenderloinIngredients,
-    },
-    new Dish
-    {
-        Name = "Tofu stir-fry",
-        Type = FoodType.Vegan,
-        description = "Tofu stir-fry",
-        ImageUrl = "https://example.com/tofu-stir-fry.jpg",
-        Price = 12,
-        Ingredients = tofuStirFryIngredients,
-    },
-    new Dish
-    {
-        Name = "Beef burger",
-        Type = FoodType.Beef,
-        description = "Beef burger with fries",
-        ImageUrl = "https://example.com/beef-burger.jpg",
-        Price = 10,
-        Ingredients = beefBurgerIngredients,
-    }
-        };
-
-
-
-        await db.Menus.AddRangeAsync(menus);
-        await db.Dishes.AddRangeAsync(dishes);
-        await db.SaveChangesAsync();
-
-        //Add dishes to menus
+        //loop over menus
         foreach (var menu in menus)
         {
-            Random rnd = new Random();
-            //rand nr of dishes
-            int nrOfDishes = rnd.Next(1, 3);
-            Console.WriteLine("Nr of dishes: " + nrOfDishes);
-            //start index count - nrofdishes
-            int index = rnd.Next(0, dishes.Count - nrOfDishes);
-            //list of dishes
-            for(int i = index; i < index + nrOfDishes; i++)
-            {
-                Console.WriteLine("Menu: " + menu.Name + " Dish: " + dishes[i].Name);
-                await Menu.AddDishToMenuAsync( menu.Id, dishes[i].Id);
-            }
+            //add menu
+            await menuRepository.AddAsync(menu);
+            Console.WriteLine("Menu added: " + menu.Id);
         }
+
+        List<Dish> dishes = new List<Dish>();
+
+
+        //Add dishes
+        for (int i = 0; i < 10; i++)
+        {
+            Dish dish = new Dish(){
+            Name = "Dish " + i,
+            Price = 100 + i,
+            description = "Description " + i,
+            ImageUrl = "Image " + i
+
+            };
+            dish.Ingredients = new List<Ingredient>();
+            dish.Ingredients.Add(CreateIngredient("Ingredient " + i));
+
+            dishes.Add(dish);
+        }
+
+
+
+    }
+
+   
         message = "Dishes added to menus";
     }
 

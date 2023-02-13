@@ -1,5 +1,6 @@
 @namespace project_foodie.Pages.Webmaster
 @using project_foodie.Model;
+@using project_foodie.Repository
 @using Newtonsoft.Json;
 <div>
     @if (_allMenus != null)
@@ -15,7 +16,7 @@
                     <th scope="col">Last order date</th>
                     <th scope="col">Start Date</th>
                     <th scope="col">End Date</th>
-                    <th scope="col">Num Dishes</th>
+                    <th scope="col">Day menus</th>
                 </tr>
             </thead>
             <tbody>
@@ -27,7 +28,7 @@
                         <td>@menu.value.lastOrderDate</td>
                         <td>@menu.value.startDate</td>
                         <td>@menu.value.endDate</td>
-                        <td>@menu.value.Dishes.Count</td>
+                        <td>@menu.value.dayMenus.Count</td>
                     </tr>
                 }
             </tbody>
@@ -40,11 +41,9 @@
         </table>
         <div class="dishes" style="display: flex;">
         @if (selectedMenuId >= 0){
-            @foreach(Dish dishes in _allMenus[selectedMenuId].Dishes){
+            @foreach(DayMenu dishes in _allMenus[selectedMenuId].dayMenus){
                 <div style=" border: 1px solid">
-                    <h3>@dishes.Name</h3>
-                    <p>@dishes.description</p>
-                    <p>@dishes.Price</p>
+                   <p>@dishes.Id</p>
                 </div>
             }
         }
@@ -55,9 +54,14 @@
 
     private List<Menu> _allMenus ;
         private int selectedMenuId = -1;
-        protected override void OnInitialized()
+
+        protected override async Task OnInitializedAsync()
         {
-            this._allMenus = Menu.GetAll();
+            using(var context = new DatabaseContext())
+            {
+                MenuRepository menuRepository = new MenuRepository(context);
+                this._allMenus = await menuRepository.GetAllAsync();
+            }
         }
 
         void setMenuId(int id){
