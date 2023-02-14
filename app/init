@@ -1,5 +1,9 @@
 #!/bin/bash
 dotnet tool install --global dotnet-ef
 export PATH="$PATH:/root/.dotnet/tools"
+echo $DBNAME
+echo $DBPASS
+echo $DBADDR
+echo $DBUSER
 dotnet ef database update --no-build
 dotnet project-foodie.dll

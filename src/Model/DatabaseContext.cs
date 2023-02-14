@@ -22,6 +22,7 @@ public class DatabaseContext : DbContext
         string dbUser = System.Environment.GetEnvironmentVariable("DBUSER");
         string dbName = System.Environment.GetEnvironmentVariable("DBNAME");
         string dbPass = System.Environment.GetEnvironmentVariable("DBPASS");
+        Console.WriteLine(dbName);
             string connectionString = $"server={dbAddr};user={dbUser};database={dbName};password={dbPass};";
             var serverVersion = new MariaDbServerVersion(new Version(10, 6, 11));
 
