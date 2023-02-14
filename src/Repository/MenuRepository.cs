@@ -51,7 +51,7 @@ public class MenuRepository
         //if daymenu for that date already exists add dish to existing daymenu
         foreach (DayMenu day in menu.dayMenus)
         {
-            if (day.date == date)
+            if (day.date == date && day.type == orderType)
             {
                 day.dishes.Add(dish);
                 await _context.SaveChangesAsync();

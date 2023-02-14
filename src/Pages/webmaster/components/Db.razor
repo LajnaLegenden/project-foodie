@@ -5,10 +5,10 @@
 @using System.Linq;
 @using Microsoft.EntityFrameworkCore;
 @using project_foodie.Repository;
-@namespace project_foodie.Pages.Webmaster 
-<h1 > Test </h1> 
-<p > @message </p> 
-<button @onclick = "FillDB" > Fill DB </button> 
+@namespace project_foodie.Pages.Webmaster
+<h1 > Test </h1>
+<p > @message </p>
+<button @onclick = "FillDB" > Fill DB </button>
 <button @onclick = "clearDb" > Clear DB </button>
 
 @code {
@@ -80,25 +80,52 @@
       //loop over menus
       foreach(var menu in menus) {
         //loop over dishes
-        for (int index = 0; index < 15; index ++) {
-          //add dish to menu
-          Random rnd = new Random();
-          DateTime date = menu.startDate.AddDays(rnd.Next(0, 7));
-          //Add dishes
+        for (int i = 0; i < 3; i ++) {
 
-          Dish dish = new Dish() {
-            Name = getDishName(),
-              Price = getPrice(),
-              description = "Description " + index,
-              ImageUrl = "Image " + index
-          };
-          dish.description = dish.Name;
-          dish.Ingredients = new List < Ingredient > ();
-          dish.Ingredients.Add(CreateIngredient("Ingredient " + index));
-          DishRepository dishRepository = new DishRepository(db);
-            await dishRepository.AddAsync(dish);
-        await menuRepository.AddDayMenuAsync(menu, date, dish, OrderType.Lunch);
-        Console.WriteLine("[FillDB]: Dish added to menu: " + dish.Name + "/" + menu.Name + "/" + date);
+            for (int index = 0; index < 7; index ++) {
+            //add dish to menu
+            Random rnd = new Random();
+            DateTime date = menu.startDate.AddDays(index);
+            //Add dishes
+
+            Dish dish = new Dish() {
+                Name = getDishName(),
+                Price = getPrice(),
+                description = "Description " + index,
+                ImageUrl = "Image " + index
+            };
+            dish.description = dish.Name;
+            dish.Ingredients = new List < Ingredient > ();
+            dish.Ingredients.Add(CreateIngredient("Ingredient " + index));
+            DishRepository dishRepository = new DishRepository(db);
+                await dishRepository.AddAsync(dish);
+            await menuRepository.AddDayMenuAsync(menu, date, dish, OrderType.Lunch);
+            Console.WriteLine("[FillDB]: Dish added to menu: " + dish.Name + "/" + menu.Name + "/" + date);
+            }
+      }
+
+       for (int i = 0; i < 3; i ++) {
+
+            for (int index = 0; index < 7; index ++) {
+            //add dish to menu
+            Random rnd = new Random();
+            DateTime date = menu.startDate.AddDays(index);
+            //Add dishes
+
+            Dish dish = new Dish() {
+                Name = getDishName(),
+                Price = getPrice(),
+                description = "Description " + index,
+                ImageUrl = "Image " + index
+            };
+            dish.description = dish.Name;
+            dish.Ingredients = new List < Ingredient > ();
+            dish.Ingredients.Add(CreateIngredient("Ingredient " + index));
+            DishRepository dishRepository = new DishRepository(db);
+                await dishRepository.AddAsync(dish);
+            await menuRepository.AddDayMenuAsync(menu, date, dish, OrderType.Dinner);
+            Console.WriteLine("[FillDB]: Dish added to menu: " + dish.Name + "/" + menu.Name + "/" + date);
+            }
         }
       }
     }
