@@ -23,7 +23,7 @@ ENV DBNAME ${DBNAME}
 ENV DBUSER ${DBUSER}
 ENV DBPASS ${DBPASS}
 RUN ls -la
-COPY /app/publish/ .
+COPY publish/ .
 
 # Start the application
 ENTRYPOINT ["/app/init"]
