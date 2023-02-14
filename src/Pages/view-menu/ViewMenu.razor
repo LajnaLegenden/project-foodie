@@ -15,65 +15,66 @@
     <input type="radio" id="radio-1" name="group" @onclick="() => toggleClass(1)" />
     <label for="radio-1">Kött</label>
 
-    <input type="radio" id="radio-2" name="group" @onclick="() => toggleClass(2)"/>
+    <input type="radio" id="radio-2" name="group" @onclick="() => toggleClass(2)" />
     <label for="radio-2">Fläsk</label>
 
-    <input type="radio" id="radio-3" name="group" @onclick="() => toggleClass(3)"/>
+    <input type="radio" id="radio-3" name="group" @onclick="() => toggleClass(3)" />
     <label for="radio-3">Kyckling</label>
 
-    <input type="radio" id="radio-4" name="group" @onclick="() => toggleClass(4)"/>
+    <input type="radio" id="radio-4" name="group" @onclick="() => toggleClass(4)" />
     <label for="radio-4">Vegetariskt</label>
 
-    <input type="radio" id="radio-5" name="group" @onclick="() => toggleClass(5)"/>
+    <input type="radio" id="radio-5" name="group" @onclick="() => toggleClass(5)" />
     <label for="radio-5">Visa Alla</label>
 </div>
-@if (viewMenu) 
+@if (viewMenu)
 {
     <div class="menu-container">
-        <MenuContainer menuData=@_menu/>
-        <div class="button-container">
-            <button @onclick="DecrementDate" class="button-back">Föregående dag</button>
-            <button @onclick="IncrementDate" class="button-forward">Nästa dag</button>
-        </div>
+    <MenuContainer menuData=@_menu />
+    <div class="button-container">
+        <button @onclick="DecrementDate" class="button-back">Föregående dag</button>
+        <button @onclick="IncrementDate" class="button-forward">Nästa dag</button>
     </div>
+</div>
 }
-else {
+else
+{
     <div class="overview-container">
-        <!-- Lägg in overview-container här-->
-        <h1>Overview :)</h1>
-    </div>
+    <!-- Lägg in overview-container här-->
+    <Overview />
+</div>
 }
 
-@code{
+@code {
     // Testdatum
     DateTime startDate = new DateTime(2023, 2, 13);
     DateTime endDate = new DateTime(2023, 2, 17);
     DateTime activeDate = new DateTime(2023, 2, 13);
 
     List<DateTime> dates = new List<DateTime>();
-    
+
     string activeWeekday;
-    string dateString; 
+    string dateString;
 
     bool viewMenu = true;
     private int count = 1;
-    protected override async Task OnInitializedAsync() 
+    protected override async Task OnInitializedAsync()
     {
         activeWeekday = convertToWeekday(activeDate);
         dateString = dateFormat(activeDate);
     }
 
-    private string convertToWeekday(DateTime date) 
+    private string convertToWeekday(DateTime date)
     {
         string weekday = "";
-        
+
         weekday = date.ToString("dddddd", new System.Globalization.CultureInfo("sv-SE"));
         weekday = char.ToUpper(weekday[0]) + weekday.Substring(1);
 
         return weekday;
     }
 
-    private string dateFormat(DateTime date) 
+    private string dateFormat(DateTime date)
     {
         string dateAsString = "";
 
@@ -84,32 +85,34 @@ else {
 
     void Navigate()
     {
-        if(count == 1) {
+        if (count == 1)
+        {
             UriHelper.NavigateTo("order");
         }
     }
 
     private void IncrementDate()
     {
-        if (activeDate <= endDate) 
+        if (activeDate <= endDate)
         {
             activeDate = activeDate.AddDays(1);
-            if (activeDate > endDate) 
+            if (activeDate > endDate)
             {
                 viewMenu = false;
             }
-            else {
+            else
+            {
                 //count++;
                 //Console.WriteLine(count);
                 activeWeekday = convertToWeekday(activeDate);
                 dateString = dateFormat(activeDate);
             }
-        }  
+        }
     }
 
     private void DecrementDate()
     {
-        if (activeDate > startDate) 
+        if (activeDate > startDate)
         {
             //count--;
             //Console.WriteLine(count);
@@ -119,36 +122,47 @@ else {
         activeWeekday = convertToWeekday(activeDate);
         dateString = dateFormat(activeDate);
     }
-    
+
     string category = "all";
 
-    void toggleClass(int type) {
-        if (type == 1) {
+    void toggleClass(int type)
+    {
+        if (type == 1)
+        {
             category = "kött";
-        } else if(type == 2) {
+        }
+        else if (type == 2)
+        {
             category = "fläsk";
-        } else if(type == 3) {
+        }
+        else if (type == 3)
+        {
             category = "kyckling";
-        } else if(type == 4) {
+        }
+        else if (type == 4)
+        {
             category = "vegetariskt";
-        } else {
+        }
+        else
+        {
             category = "all";
         };
     }
-    private List<Menu> _allMenus ;
-    private Menu _menu ;
-    
+    private List<Menu> _allMenus;
+    private Menu _menu;
     protected override void OnInitialized()
     {
-        this._allMenus = Menu.GetAll();
+      @*   this._allMenus = Menu.GetAll();
         foreach(var menu in _allMenus) {
             string menuLastOrderDate = menu.lastOrderDate.ToShortDateString();
             DateTime dateTimeLastOrder = DateTime.ParseExact(menuLastOrderDate, "MM/dd/yyyy", CultureInfo.InvariantCulture);
-            DateTime dateTimeToday = DateTime.ParseExact(@DateTime.Today.ToShortDateString(), "MM/dd/yyyy", CultureInfo.InvariantCulture);
-            if(dateTimeLastOrder > dateTimeToday) {
+            DateTime dateTimeToday = DateTime.ParseExact(@DateTime.Today.ToShortDateString(), "MM/dd/yyyy",
+            CultureInfo.InvariantCulture);
+            if (dateTimeLastOrder > dateTimeToday)
+            {
                 this._menu = menu;
                 break;
             }
-        }
+        } *@
     }
 }

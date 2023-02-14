@@ -13,6 +13,7 @@ def main():
     print("Starting build for branch " + branch +
           " and hostname " + config['hostname'])
     client = docker.APIClient(base_url=config['daemon'])
+
     # print stream of build output as it happens
     for line in client.build(path="./", tag=u.getImageTag(config)):
         u.printLine(line)
