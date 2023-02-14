@@ -1,5 +1,6 @@
 @namespace project_foodie.Pages.Webmaster
 @using project_foodie.Model;
+@using project_foodie.Repository;
 @using Newtonsoft.Json;
 <div>
 
@@ -37,10 +38,10 @@
     </table>
       <div class="ingredients" style="display: flex;">
         @if (selectedDishId >= 0){
-            @foreach(IngredientDish ingredientDish in _allDishes[selectedDishId].IngredientDish){
+            @foreach(Ingredient ingredient in _allDishes[selectedDishId].Ingredients){
                 <div style=" border: 1px solid">
-                    <h3>@ingredientDish.Ingredient.Name</h3>
-                    <p>@ingredientDish.Ingredient.Id</p>
+                    <h3>@ingredient.Name</h3>
+                    <p>@ingredient.Id</p>
                 </div>
             }
         }
@@ -52,9 +53,13 @@
     private List<Dish> _allDishes;
         private int selectedDishId = -1;
 
-    protected override void OnInitialized()
+    protected override async void OnInitialized()
     {
-        this._allDishes = Dish.GetAll();
+       using(var context = new DatabaseContext()){
+        DishRepository dishRepository = new DishRepository(context);
+        _allDishes = await dishRepository.GetAllAsync();
+       }
+       
     }
 
     void setDishId(int id)

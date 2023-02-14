@@ -1,10 +1,15 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace project_foodie.Model;
 
 public class Allergen
 {
-    public required int Id { get; set; }
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; }
     public required string Name { get; set; }
 
-    public IList<AllergenDish> AllergenDish { get; set; }
-    public IList<AllergenIngredient> AllergenIngredient { get; set; }
+    public ICollection<Dish> Dishes { get; set; }
+    public ICollection<Ingredient> Ingredients { get; set; }
 }
