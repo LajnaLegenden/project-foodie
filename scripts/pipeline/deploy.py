@@ -11,13 +11,15 @@ def main():
     print("Starting deploy")
     branch = u.getGitBranch()
     config = u.getConfig(branch)
+    client = docker.DockerClient(base_url=config['daemon'])
 
     if(not u.hasOwnConfig(branch)):
         print("No config for branch " + branch)
+        container = client.containers.get(config['hostname'])
+        container.remove()
         print("Skipping deploy")
         exit(0)
 
-    client = docker.DockerClient(base_url=config['daemon'])
 
     # stop and remove old container
     try:
@@ -45,7 +47,7 @@ def main():
         for line in env_file:
             env.append(line.rstrip())
 
-
+    
     ports = {80: config['port'], 443: config["port"] + 443}
     client.containers.create(image=u.getImageTag(config), name=config['hostname'], ports=ports, detach=True, environment=env).start()
 

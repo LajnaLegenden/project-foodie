@@ -17,8 +17,10 @@ COPY src/ .
 # Build the project
 RUN dotnet build
 
-# Expose port 80 for the application
-EXPOSE 80
+ENV DBADDR ${DBADDR}
+ENV DBNAME ${DBNAME}
+ENV DBUSER ${DBUSER}
+ENV DBPASS ${DBPASS}
 
 # Start the application
 ENTRYPOINT ["/app/init"]
