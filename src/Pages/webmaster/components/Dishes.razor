@@ -36,16 +36,6 @@
         </tr>
         </tfoot>
     </table>
-      <div class="ingredients" style="display: flex;">
-        @if (selectedDishId >= 0){
-            @foreach(Ingredient ingredient in _allDishes[selectedDishId].Ingredients){
-                <div style=" border: 1px solid">
-                    <h3>@ingredient.Name</h3>
-                    <p>@ingredient.Id</p>
-                </div>
-            }
-        }
-    </div>
 </div>
 
 @code {

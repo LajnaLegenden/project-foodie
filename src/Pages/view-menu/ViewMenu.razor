@@ -140,7 +140,7 @@ else {
     
     protected override void OnInitialized()
     {
-        this._allMenus = Menu.GetAll();
+      @*   this._allMenus = Menu.GetAll();
         foreach(var menu in _allMenus) {
             string menuLastOrderDate = menu.lastOrderDate.ToShortDateString();
             DateTime dateTimeLastOrder = DateTime.ParseExact(menuLastOrderDate, "MM/dd/yyyy", CultureInfo.InvariantCulture);
@@ -149,6 +149,6 @@ else {
                 this._menu = menu;
                 break;
             }
-        }
+        } *@
     }
 }

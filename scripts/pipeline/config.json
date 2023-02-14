@@ -5,7 +5,8 @@
         "environment": "prod",
         "port": 8103,
         "data": "/mnt/user/appdata/data/project-foodie/data",
-        "url": "https://prodfoodie.linusjansson.com/"
+        "url": "https://prodfoodie.linusjansson.com/",
+        "env" : ".env.main"
     },
     "dev": {
         "daemon": "unix://var/run/docker.sock",
@@ -13,13 +14,15 @@
         "environment": "dev",
         "port": 8101,
         "data": "/mnt/user/appdata/data/project-foodie-dev/data",
-        "url": "https://devfoodie.linusjansson.com/"
+        "url": "https://devfoodie.linusjansson.com/",
+        "env" : ".env.dev"
     },
     "default": {
         "daemon": "unix://var/run/docker.sock",
         "hostname": "project-foodie-test-branch",
         "environment": "dev",
         "port": 8101,
-        "data": "/dev/shm/data"
+        "data": "/dev/shm/data",
+        "env": ".env"
     }
 }
