@@ -22,7 +22,7 @@ ENV DBADDR ${DBADDR}
 ENV DBNAME ${DBNAME}
 ENV DBUSER ${DBUSER}
 ENV DBPASS ${DBPASS}
-
+RUN ls -la
 COPY /app/publish/ .
 
 # Start the application
