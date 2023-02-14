@@ -3,4 +3,4 @@ dotnet tool install --global dotnet-ef
 export PATH="$PATH:/root/.dotnet/tools"
 ping host.docker.internal
 dotnet ef database update --no-build
-dotnet run project-foodie.dll
+dotnet bin/Release/net7.0/project-foodie.dll

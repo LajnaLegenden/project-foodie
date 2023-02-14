@@ -15,7 +15,7 @@ RUN dotnet restore
 COPY src/ .
 
 # Build the project
-RUN dotnet build
+RUN dotnet publish -c Release
 
 ENV DBADDR ${DBADDR}
 ENV DBNAME ${DBNAME}
