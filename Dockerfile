@@ -15,12 +15,15 @@ RUN dotnet restore
 COPY src/ .
 
 # Build the project
-RUN dotnet publish -c Release
+RUN dotnet build -c Release -o  /app/build
+RUN dotnet publish -c Release -o /app/publish
 
 ENV DBADDR ${DBADDR}
 ENV DBNAME ${DBNAME}
 ENV DBUSER ${DBUSER}
 ENV DBPASS ${DBPASS}
+
+COPY /app/publish/ .
 
 # Start the application
 ENTRYPOINT ["/app/init"]
