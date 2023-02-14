@@ -3,7 +3,8 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 
 # Set the working directory to /app
 WORKDIR /app
-
+COPY app/init /app/init
+RUN chmod +x /app/init
 # Copy the project file into the container
 COPY src/project-foodie.csproj .
 
