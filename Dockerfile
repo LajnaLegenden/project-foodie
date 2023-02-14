@@ -24,7 +24,6 @@ ENV DBUSER ${DBUSER}
 ENV DBPASS ${DBPASS}
 RUN ls -la
 RUN ls -la publish/
-RUN mv /app/publish/**/* /app/
 
 # Start the application
 
