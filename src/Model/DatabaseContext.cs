@@ -22,12 +22,11 @@ public class DatabaseContext : DbContext
         string dbUser = System.Environment.GetEnvironmentVariable("DBUSER");
         string dbName = System.Environment.GetEnvironmentVariable("DBNAME");
         string dbPass = System.Environment.GetEnvironmentVariable("DBPASS");
+        Console.WriteLine(dbName);
             string connectionString = $"server={dbAddr};user={dbUser};database={dbName};password={dbPass};";
             var serverVersion = new MariaDbServerVersion(new Version(10, 6, 11));
 
-            optionsBuilder.UseMySql(connectionString, serverVersion).LogTo(Console.WriteLine, LogLevel.Information)
-                .EnableSensitiveDataLogging()
-                .EnableDetailedErrors();
+            optionsBuilder.UseMySql(connectionString, serverVersion).LogTo(Console.WriteLine, LogLevel.Error);
       }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

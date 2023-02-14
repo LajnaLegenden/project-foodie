@@ -90,10 +90,10 @@
         count++;
         DishInformation dishInfo = new DishInformation
             {
-                ID = id,
+                ID = @dishData.Dish.Id,
                 Count = count,
-                dishname = DishName,
-                dishdiscription = DishDescription
+                dishname = @dishData.Dish.Name,
+                dishdiscription = @dishData.Dish.description
             };
 
         string json = JsonConvert.SerializeObject(dishInfo);
@@ -107,8 +107,6 @@
         var localStorageCountJson = JsonConvert.DeserializeObject(localStorageCount);
         //parse localStorageCount into json format
         jsonString = JsonConvert.SerializeObject(localStorageCountJson);
-
-        Console.WriteLine(jsonString);
     }
 
     private async void DecrementCount(int ID, string dishname, string dishdiscription)
@@ -118,10 +116,10 @@
             count--;
             DishInformation dishInfo = new DishInformation
                 {
-                    ID = id,
+                    ID = @dishData.Dish.Id,
                     Count = count,
-                    dishname = DishName,
-                    dishdiscription = DishDescription
+                    dishname = @dishData.Dish.Name,
+                    dishdiscription = @dishData.Dish.description
                 };
 
             string json = JsonConvert.SerializeObject(dishInfo);
