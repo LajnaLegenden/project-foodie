@@ -150,12 +150,10 @@ else
     }
     private List<Menu> _allMenus;
     private Menu _menu;
-@* 
     protected override void OnInitialized()
     {
-        this._allMenus = Menu.GetAll();
-        foreach (var menu in _allMenus)
-        {
+      @*   this._allMenus = Menu.GetAll();
+        foreach(var menu in _allMenus) {
             string menuLastOrderDate = menu.lastOrderDate.ToShortDateString();
             DateTime dateTimeLastOrder = DateTime.ParseExact(menuLastOrderDate, "MM/dd/yyyy", CultureInfo.InvariantCulture);
             DateTime dateTimeToday = DateTime.ParseExact(@DateTime.Today.ToShortDateString(), "MM/dd/yyyy",
@@ -165,6 +163,6 @@ else
                 this._menu = menu;
                 break;
             }
-        }
-    } *@
+        } *@
+    }
 }

@@ -29,9 +29,25 @@ def main():
         print("No old container found")
     # start new container
     print("Starting new container")
+        # get jenkins home directory from environment
+    jenkins_home = os.environ['JENKINS_HOME']
+    # cehck if jenkinshomee/env exists
+    if not os.path.exists(jenkins_home + "/env"):
+        os.makedirs(jenkins_home + "/env")
+    #check if env file exists
+    if not os.path.isfile(jenkins_home + "/env/" + config['env']):
+        # create env file
+        with open(jenkins_home + "/env/" + config['env'], 'w') as env_file:
+            env_file.write("")
+    #add env to container
+    env = []
+    with open(jenkins_home + "/env/" + config['env'], 'r') as env_file:
+        for line in env_file:
+            env.append(line.rstrip())
+
 
     ports = {80: config['port'], 443: config["port"] + 443}
-    client.containers.create(image=u.getImageTag(config), name=config['hostname'], ports=ports, detach=True).start()
+    client.containers.create(image=u.getImageTag(config), name=config['hostname'], ports=ports, detach=True, environment=env).start()
 
 
 if __name__ == "__main__":

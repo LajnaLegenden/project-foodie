@@ -25,9 +25,7 @@ public class DatabaseContext : DbContext
             string connectionString = $"server={dbAddr};user={dbUser};database={dbName};password={dbPass};";
             var serverVersion = new MariaDbServerVersion(new Version(10, 6, 11));
 
-            optionsBuilder.UseMySql(connectionString, serverVersion).LogTo(Console.WriteLine, LogLevel.Information)
-                .EnableSensitiveDataLogging()
-                .EnableDetailedErrors();
+            optionsBuilder.UseMySql(connectionString, serverVersion).LogTo(Console.WriteLine, LogLevel.Error);
       }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

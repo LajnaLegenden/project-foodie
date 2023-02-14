@@ -1,22 +1,23 @@
-FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
-WORKDIR /app
-EXPOSE 80
-EXPOSE 443
-
+# Set the base image to the official .NET SDK 7 image
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
-WORKDIR /src
-COPY ["src/project-foodie.csproj", "."]
-RUN dotnet restore "project-foodie.csproj"
-COPY src .
-RUN dotnet build "project-foodie.csproj" -c Release -o /app/build
 
-FROM build AS publish
-RUN dotnet publish "project-foodie.csproj" -c Release -o /app/publish
-
-FROM base AS final
+# Set the working directory to /app
 WORKDIR /app
-RUN mkdir -p ./data/foodie
-COPY --from=publish /app/publish .
-# RUN dotnet ef database update --project src/project-foodie.csproj --startup-project src/project-foodie.csproj
-ENTRYPOINT ["dotnet", "project-foodie.dll"]
 
+# Copy the project file into the container
+COPY src/project-foodie.csproj .
+
+# Restore NuGet packages
+RUN dotnet restore
+
+# Copy the rest of the project files into the container
+COPY src/ .
+
+# Build the project
+RUN dotnet build
+
+# Expose port 80 for the application
+EXPOSE 80
+
+# Start the application
+ENTRYPOINT ["/app/init"]
