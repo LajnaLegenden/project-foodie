@@ -4,15 +4,21 @@
 <div class="menu-container">
     <div class="card-container">
         <h2 class="meal-text">Lunch</h2>
-            @foreach(Dish dish in menuData.dishes){
-                Console.WriteLine(dish.Name);
-                <Dishes dishData=@dish/>
-            }
-            @*<Dishes dishData=@dishMenu/>*@
+        @foreach (Dish dish in menuData.dishes)
+        {
+            Console.WriteLine(dish.Name);
+            <Dishes dishData=@dish day=@day menuId=@menuId />
+        }
+        @*<Dishes dishData=@dishMenu/>*@
     </div>
 </div>
 
 @code {
     [Parameter]
     public project_foodie.Model.DayMenu menuData { get; set; }
+    [Parameter]
+    public string day { get; set; }
+
+    [Parameter]
+    public int menuId { get; set; }
 }

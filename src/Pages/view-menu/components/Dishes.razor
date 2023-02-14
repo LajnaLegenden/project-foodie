@@ -10,11 +10,11 @@
     <div class="food-card-body">
         <div class="food-card-upper-body">
             <div class="food-card-food-container">
-                <p class="food-card-text">@dishData.Dish.Name</p>
-                <p class="food-card-text-extra">@dishData.Dish.description</p>
+                <p class="food-card-text">@dishData.Name</p>
+                <p class="food-card-text-extra">@dishData.description</p>
             </div>
             <div class="food-card-price-container">
-                <p class="food-card-price">@dishData.Dish.Price:-</p>
+                <p class="food-card-price">@dishData.Price:-</p>
             </div>
         </div>
         <div class="allergener">
@@ -45,6 +45,12 @@
 
 @code {
 
+    [Parameter]
+    public string day { get; set; }
+
+    [Parameter]
+    public int menuId { get; set; }
+
 
     [Parameter]
     public int id { get; set; }
@@ -55,7 +61,7 @@
     public string DishDescription { get; set; }
 
     [Parameter]
-    public project_foodie.Model.DishMenu dishData { get; set; }
+    public project_foodie.Model.Dish dishData { get; set; }
 
     private int count = 0;
     private bool showInput = false;
@@ -69,6 +75,8 @@
         public int ID { get; set; }
         public string dishname { get; set; }
         public string dishdiscription { get; set; }
+        public int menuID { get; set; }
+        public string day { get; set; }
     }
 
     private void ToggleInput()
@@ -90,10 +98,12 @@
         count++;
         DishInformation dishInfo = new DishInformation
             {
-                ID = @dishData.Dish.Id,
+                ID = @dishData.Id,
                 Count = count,
-                dishname = @dishData.Dish.Name,
-                dishdiscription = @dishData.Dish.description
+                dishname = @dishData.Name,
+                dishdiscription = @dishData.description,
+                day = @day,
+                menuID = @menuId
             };
 
         string json = JsonConvert.SerializeObject(dishInfo);
@@ -116,10 +126,10 @@
             count--;
             DishInformation dishInfo = new DishInformation
                 {
-                    ID = @dishData.Dish.Id,
+                    ID = @dishData.Id,
                     Count = count,
-                    dishname = @dishData.Dish.Name,
-                    dishdiscription = @dishData.Dish.description
+                    dishname = @dishData.Name,
+                    dishdiscription = @dishData.description
                 };
 
             string json = JsonConvert.SerializeObject(dishInfo);

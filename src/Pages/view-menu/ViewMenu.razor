@@ -8,11 +8,14 @@
 @using project_foodie.Repository;
 
 <div class="information">
-    @if(@_menu == null) {
-            <h1>Ajdå</h1>
-        } else {
-            <h1 class="text-week">@_menu.startDate</h1>
-        }
+    @if (@_menu == null)
+    {
+        <h1>Ajdå</h1>
+    }
+    else
+    {
+        <h1 class="text-week">@_menu.startDate</h1>
+    }
     <h1 class="text-day">@activeWeekday @dateString</h1>
 </div>
 <div class="radio-group">
@@ -33,18 +36,22 @@
 </div>
 @if (viewMenu)
 {
-    @if(@_menu == null) {
+    @if (@_menu == null)
+    {
         <h1>Ajdå</h1>
-    } else {
+    }
+    else
+    {
         <div class="menu-container">
-        @foreach(DayMenu dishdays in _menu.dayMenus){
-            <MenuContainer menuData=@dishdays/>
-        }
+    @foreach (DayMenu dishdays in _menu.dayMenus)
+            {
+                <MenuContainer menuData=@dishdays day=@activeWeekday menuId=@_menu.Id />
+            }
             <div class="button-container">
                 <button @onclick="DecrementDate" class="button-back">Föregående dag</button>
                 <button @onclick="IncrementDate" class="button-forward">Nästa dag</button>
             </div>
-        </div>   
+        </div>
     }
 }
 else
@@ -159,21 +166,24 @@ else
             category = "all";
         };
     }
-    private List<Menu> _allMenus ;
-    private Menu _menu ;
-    
+    private List<Menu> _allMenus;
+    private Menu _menu;
+
     protected async override void OnInitialized()
     {
-        using(var context = new DatabaseContext()){
+        using (var context = new DatabaseContext())
+        {
             MenuRepository menuRepository = new MenuRepository(context);
             this._allMenus = await menuRepository.GetAllAsync();
         }
-        foreach(var menu in _allMenus) {
+        foreach (var menu in _allMenus)
+        {
             string menuLastOrderDate = menu.lastOrderDate.ToShortDateString();
             DateTime dateTimeLastOrder = DateTime.ParseExact(menuLastOrderDate, "MM/dd/yyyy", CultureInfo.InvariantCulture);
-            DateTime dateTimeToday = DateTime.ParseExact(@DateTime.Today.ToShortDateString(), "MM/dd/yyyy", CultureInfo.InvariantCulture);
-            if(dateTimeLastOrder > dateTimeToday) {
-                Console.WriteLine("test111111111111111111111111111");
+            DateTime dateTimeToday = DateTime.ParseExact(@DateTime.Today.ToShortDateString(), "MM/dd/yyyy",
+            CultureInfo.InvariantCulture);
+            if (dateTimeLastOrder > dateTimeToday)
+            {
                 _menu = menu;
                 break;
             }
