@@ -4,4 +4,4 @@ export PATH="$PATH:/root/.dotnet/tools"
 dotnet ef database update --no-build
 ls -la 
 ls -la /app/
-dotnet "publish/project-foodie.dll" --urls "http://0.0.0.0:5000"
+dotnet run "build/project-foodie.dll" --urls "http://0.0.0.0:5000"
