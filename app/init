@@ -5,4 +5,4 @@ dotnet ef database update --no-build
 ls -la 
 ls -la /app/
 cd /app/build
-dotnet run "project-foodie.dll" --urls "http://0.0.0.0:5000"
+dotnet run project-foodie.csproj --urls "http://0.0.0.0:5000"
