@@ -1,14 +1,18 @@
 @page "/order"
 @using project_foodie.Data
-@using project_foodie.Model
 @using project_foodie.Pages.view_menu.components
 @inject NavigationManager UriHelper
 @using project_foodie.Model;
 @using Newtonsoft.Json;
 @using System.Globalization;
+@using project_foodie.Repository;
 
 <div class="information">
-    <h1 class="text-week">Vecka 7</h1>
+    @if(@_menu == null) {
+            <h1>Ajdå</h1>
+        } else {
+            <h1 class="text-week">@_menu.startDate</h1>
+        }
     <h1 class="text-day">@activeWeekday @dateString</h1>
 </div>
 <div class="radio-group">
@@ -29,13 +33,19 @@
 </div>
 @if (viewMenu)
 {
-    <div class="menu-container">
-    <MenuContainer menuData=@_menu />
-    <div class="button-container">
-        <button @onclick="DecrementDate" class="button-back">Föregående dag</button>
-        <button @onclick="IncrementDate" class="button-forward">Nästa dag</button>
-    </div>
-</div>
+    @if(@_menu == null) {
+        <h1>Ajdå</h1>
+    } else {
+        <div class="menu-container">
+        @foreach(DayMenu dishdays in _menu.dayMenus){
+            <MenuContainer menuData=@dishdays/>
+        }
+            <div class="button-container">
+                <button @onclick="DecrementDate" class="button-back">Föregående dag</button>
+                <button @onclick="IncrementDate" class="button-forward">Nästa dag</button>
+            </div>
+        </div>   
+    }
 }
 else
 {
@@ -47,9 +57,10 @@ else
 
 @code {
     // Testdatum
-    DateTime startDate = new DateTime(2023, 2, 13);
-    DateTime endDate = new DateTime(2023, 2, 17);
-    DateTime activeDate = new DateTime(2023, 2, 13);
+
+    DateTime startDate;
+    DateTime endDate;
+    DateTime activeDate;
 
     List<DateTime> dates = new List<DateTime>();
 
@@ -148,21 +159,34 @@ else
             category = "all";
         };
     }
-    private List<Menu> _allMenus;
-    private Menu _menu;
-    protected override void OnInitialized()
+    private List<Menu> _allMenus ;
+    private Menu _menu ;
+    
+    protected async override void OnInitialized()
     {
-      @*   this._allMenus = Menu.GetAll();
+        using(var context = new DatabaseContext()){
+            MenuRepository menuRepository = new MenuRepository(context);
+            this._allMenus = await menuRepository.GetAllAsync();
+        }
         foreach(var menu in _allMenus) {
             string menuLastOrderDate = menu.lastOrderDate.ToShortDateString();
             DateTime dateTimeLastOrder = DateTime.ParseExact(menuLastOrderDate, "MM/dd/yyyy", CultureInfo.InvariantCulture);
-            DateTime dateTimeToday = DateTime.ParseExact(@DateTime.Today.ToShortDateString(), "MM/dd/yyyy",
-            CultureInfo.InvariantCulture);
-            if (dateTimeLastOrder > dateTimeToday)
-            {
-                this._menu = menu;
+            DateTime dateTimeToday = DateTime.ParseExact(@DateTime.Today.ToShortDateString(), "MM/dd/yyyy", CultureInfo.InvariantCulture);
+            if(dateTimeLastOrder > dateTimeToday) {
+                Console.WriteLine("test111111111111111111111111111");
+                _menu = menu;
                 break;
             }
-        } *@
+        }
+
+        string menuLastOrderDates = _menu.lastOrderDate.ToShortDateString();
+        string menuStartDate = _menu.startDate.ToShortDateString();
+        DateTime dtLast = DateTime.ParseExact(menuLastOrderDates, "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        DateTime dtStart = DateTime.ParseExact(menuLastOrderDates, "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        Console.WriteLine(dtLast.Day);
+        startDate = new DateTime(dtStart.Year, dtStart.Month, dtStart.Day);
+        endDate = new DateTime(dtLast.Year, dtLast.Month, dtLast.Day);
+        activeDate = new DateTime(dtStart.Year, dtStart.Month, dtStart.Day);
+        toggleClass(1);
     }
 }
