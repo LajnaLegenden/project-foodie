@@ -47,8 +47,8 @@ def main():
         for line in env_file:
             env.append(line.rstrip())
 
-    
-    ports = {80: config['port'], 443: config["port"] + 443}
+
+    ports = {5000: config['port'], 5443: config["port"] + 443}
     client.containers.create(image=u.getImageTag(config), name=config['hostname'], ports=ports, detach=True, environment=env).start()
 
 
