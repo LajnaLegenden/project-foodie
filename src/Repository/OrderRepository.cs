@@ -39,23 +39,4 @@ public class OrderRepository
         return await _context.Orders.Include(o => o.orderItems).ThenInclude(oi => oi.dish).ToListAsync();
     }
 
-    //Add orderItem to order
-    public async Task AddOrderItemAsync(Order order, Dish dish, int quantity)
-    {
-        Console.WriteLine("[AddOrderItemAsync]: Trying to add new orderItem with dish " + dish.Name + " and order " + order.Id + " of quantity " + quantity.ToString() + "");
-        //if order.orderitems is null, create new list
-        if (order.orderItems == null)
-        {
-            order.orderItems = new List<OrderItem>();
-        }
-        //create OrderItem
-        OrderItem orderItem = new OrderItem()
-        {
-            order = order,
-            dish = dish,
-            quantity = quantity
-        };
-        await _context.SaveChangesAsync();
-    }
-
 }
