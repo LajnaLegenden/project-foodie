@@ -1,7 +1,9 @@
-@using project_foodie.Pages.view_menu.components
+@using project_foodie.Pages.view_menu.components;
 @using project_foodie.Model;
-@inject Blazored.LocalStorage.ILocalStorageService localStorage
 @using Newtonsoft.Json;
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+
+
 
 <div class="food-card">
     <div @onclick="() => OpenPopup()" class="food-card-img-container">
@@ -10,11 +12,11 @@
     <div class="food-card-body">
         <div class="food-card-upper-body">
             <div class="food-card-food-container">
-                <p class="food-card-text">@dishData.Dish.Name</p>
-                <p class="food-card-text-extra">@dishData.Dish.description</p>
+                <p class="food-card-text">@dishData.Name</p>
+                <p class="food-card-text-extra">@dishData.description</p>
             </div>
             <div class="food-card-price-container">
-                <p class="food-card-price">@dishData.Dish.Price:-</p>
+                <p class="food-card-price">@dishData.Price:-</p>
             </div>
         </div>
         <div class="allergener">
@@ -24,23 +26,21 @@
         </div>
         <div class="food-card-btn-container">
             @if (showInput)
-            {
-                <div class="btn-add-container">
-                    <button class="food-card-btn-decrement"
-                    @onclick="@((e) => DecrementCount(id, DishName, DishDescription))">-</button>
-                    <input type="text" class="text-add-placeholder" count="@count" placeholder="@count st"
-                        readonly="readonly" />
-                    <button class="food-card-btn-increment"
-                    @onclick="@((e) => IncrementCount(id, DishName, DishDescription))">+</button>
-                </div>
-            }
-            else
-            {
-                <button class="@ButtonClass food-card-btn" type="submit" @onclick="ToggleInput">Välj</button>
-            }
+{
+            <div class="btn-add-container">
+                <button class="food-card-btn-decrement" @onclick="((e) => modifyCount(-1))"> - </button>
+                <input type="text" class="text-add-placeholder" count="@count" placeholder="@count st" readonly="readonly" />
+                <button class="food-card-btn-increment" @onclick="((e) => modifyCount(1))">+</button>
+            </div>
+} else {
+     <button class="@ButtonClass food-card-btn" type="submit" @onclick="((e) => modifyCount(1))">Välj</button>
+}
+
+
         </div>
     </div>
 </div>
+
 
 @if (PopupOpen) 
 {
@@ -65,20 +65,15 @@
 
     [Parameter]
     public int id { get; set; }
-
     [Parameter]
-    public string DishName { get; set; }
-    [Parameter]
-    public string DishDescription { get; set; }
-
-    [Parameter]
-    public project_foodie.Model.DishMenu dishData { get; set; }
-
+    public Dish dishData { get; set; }
     private int count = 0;
     private bool showInput = false;
     private string ButtonClass => count <= 0 ? "food-card-btn food-card-btn-add-amount" : "food-card-btn food-card-btn-add";
 
     private string jsonString;
+
+    public static int MAX_DISHES = 20;
 
     public class DishInformation
     {
@@ -88,35 +83,32 @@
         public string dishdiscription { get; set; }
     }
 
-    private void ToggleInput()
-    {
-
-        showInput = !showInput;
-        if (showInput)
-        {
-            count = 1;
-        }
-        else
-        {
+    private async void modifyCount(int value){
+        count += value;
+        //enforce max dishes and min dishes
+        if (count > 20){
+            count = 20;
+        } else if(count < 0){
             count = 0;
         }
-    }
-
-    private async void IncrementCount(int ID, string dishname, string dishdiscription)
-    {
-        count++;
         DishInformation dishInfo = new DishInformation
             {
-                ID = @dishData.Dish.Id,
+                ID = @dishData.Id,
                 Count = count,
-                dishname = @dishData.Dish.Name,
-                dishdiscription = @dishData.Dish.description
+                dishname = dishData.Name,
+                dishdiscription = dishData.description
             };
-
         string json = JsonConvert.SerializeObject(dishInfo);
         await localStorage.SetItemAsync("LocalDataDishes", json);
-    }
 
+        //handle showInput
+        if(count > 0){
+            showInput = true;
+        } else {
+            showInput = false;
+        }
+        await InvokeAsync(StateHasChanged);
+    }
 
     private async Task GetData()
     {
@@ -126,30 +118,7 @@
         jsonString = JsonConvert.SerializeObject(localStorageCountJson);
     }
 
-    private async void DecrementCount(int ID, string dishname, string dishdiscription)
-    {
-        if (count > 0)
-        {
-            count--;
-            DishInformation dishInfo = new DishInformation
-                {
-                    ID = @dishData.Dish.Id,
-                    Count = count,
-                    dishname = @dishData.Dish.Name,
-                    dishdiscription = @dishData.Dish.description
-                };
-
-            string json = JsonConvert.SerializeObject(dishInfo);
-            await localStorage.SetItemAsync("LocalDataDishes", json);
-        }
-
-        if (count == 0)
-        {
-            showInput = false;
-        }
-    }
-
-
+   
 }
 
 
