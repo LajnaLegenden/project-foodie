@@ -18,12 +18,3 @@ h1 {
   color: white;
 }
 
-.overview-table tr:last-child td:first-child {
-  border: 2px solid orange;
-  border-radius: 10px;
-}
-
-.overview-table tr:last-child td:last-child {
-  border: 2px solid green;
-  border-bottom-right-radius: 10px;
-}
