@@ -4,7 +4,7 @@
 @using Newtonsoft.Json;
 
 <div class="food-card">
-    <div class="food-card-img-container">
+    <div @onclick="() => OpenPopup()" class="food-card-img-container">
 
     </div>
     <div class="food-card-body">
@@ -42,9 +42,26 @@
     </div>
 </div>
 
+@if (PopupOpen) 
+{
+    <Contents DishName="@dishData.Name" OnClose="@PopupClose"/>
+}
 
 @code {
+    /*------- Popup (Modal dialog)--------*/
+    public bool PopupOpen { get; set; }
 
+    private void PopupClose(bool accepted) 
+    {
+        PopupOpen = false;
+        StateHasChanged();
+    }
+    private void OpenPopup() 
+    {
+        PopupOpen = true;
+        StateHasChanged();
+    }
+    /*-------------------------------------*/
 
     [Parameter]
     public int id { get; set; }
