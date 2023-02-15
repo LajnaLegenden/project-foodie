@@ -2,323 +2,60 @@
 @using Newtonsoft.Json;
 @using Newtonsoft.Json.Linq;
 
-<div>
+<div class="overview-container">
 <h1>Översikt över dina val</h1>
-<p>Thomas Andersson</p>
 <p>Beställningsdag: 2023-01-23</p>
 
 <table class="overview-table">
   <tr>
     <th>Veckodag</th>
     <th>Lunch</th>
-    <th>Antal portioner</th>
     <th>Middag</th>
-    <th>Antal portioner</th>
-    <th>Val</th>
+    <th></th>
   </tr>
   <tr>
-    <td>Måndag</td>
-    <td>
+    <td data-label="Veckodag">Måndag</td>
+    <td data-label="Lunch">
     <ul>
         <li>
-            Klassisk Lasagne
+            Klassisk Lasagne &nbsp;&nbsp;<b>x1</b>
         </li>
         <li>
-            Klassisk Lasagne
+            Klassisk Lasagne &nbsp;&nbsp;<b>x1</b>
         </li>
     </ul>
     </td>
-    <td>
+    <td data-label="Middag">
     <ul>
         <li>
-            1
+            Klassisk Lasagne &nbsp;&nbsp;<b>x1</b>
         </li>
         <li>
-            3
-        </li>
-    </ul>
-    </td>
-    <td>
-    <ul>
-        <li>
-            Klassisk Lasagne
-        </li>
-        <li>
-            Klassisk Lasagne
-        </li>
-    </ul>
-    </td>
-    <td>
-    <ul>
-        <li>
-            1
-        </li>
-        <li>
-            3
+            Klassisk Lasagne &nbsp;&nbsp;<b>x1</b>
         </li>
     </ul>
     </td>
     <td><button class="change-dish-button">Ändra val</button></td>
   </tr>
   <tr>
-    <td>Måndag</td>
-    <td>
+    <td data-label="Veckodag">Måndag</td>
+    <td data-label="Lunch">
     <ul>
         <li>
-            Klassisk Lasagne
+            Klassisk Lasagne &nbsp;&nbsp;<b>x1</b>
         </li>
         <li>
-            Klassisk Lasagne
+            Klassisk Lasagne &nbsp;&nbsp;<b>x1</b>
         </li>
     </ul>
     </td>
-    <td>
+    <td data-label="Middag">
     <ul>
         <li>
-            1
+            Klassisk Lasagne &nbsp;&nbsp;<b>x1</b>
         </li>
         <li>
-            3
-        </li>
-    </ul>
-    </td>
-    <td>
-    <ul>
-        <li>
-            Klassisk Lasagne
-        </li>
-        <li>
-            Klassisk Lasagne
-        </li>
-    </ul>
-    </td>
-    <td>
-    <ul>
-        <li>
-            1
-        </li>
-        <li>
-            3
-        </li>
-    </ul>
-    </td>
-    <td><button class="change-dish-button">Ändra val</button></td>
-  </tr>
-  <tr>
-    <td>Måndag</td>
-    <td>
-    <ul>
-        <li>
-            Klassisk Lasagne
-        </li>
-        <li>
-            Klassisk Lasagne
-        </li>
-    </ul>
-    </td>
-    <td>
-    <ul>
-        <li>
-            1
-        </li>
-        <li>
-            3
-        </li>
-    </ul>
-    </td>
-    <td>
-    <ul>
-        <li>
-            Klassisk Lasagne
-        </li>
-        <li>
-            Klassisk Lasagne
-        </li>
-    </ul>
-    </td>
-    <td>
-    <ul>
-        <li>
-            1
-        </li>
-        <li>
-            3
-        </li>
-    </ul>
-    </td>
-    <td><button class="change-dish-button">Ändra val</button></td>
-  </tr>
-  <tr>
-    <td>Måndag</td>
-    <td>
-    <ul>
-        <li>
-            Klassisk Lasagne
-        </li>
-        <li>
-            Klassisk Lasagne
-        </li>
-    </ul>
-    </td>
-    <td>
-    <ul>
-        <li>
-            1
-        </li>
-        <li>
-            3
-        </li>
-    </ul>
-    </td>
-    <td>
-    <ul>
-        <li>
-            Klassisk Lasagne
-        </li>
-        <li>
-            Klassisk Lasagne
-        </li>
-    </ul>
-    </td>
-    <td>
-    <ul>
-        <li>
-            1
-        </li>
-        <li>
-            3
-        </li>
-    </ul>
-    </td>
-    <td><button class="change-dish-button">Ändra val</button></td>
-  </tr>
-  <tr>
-    <td>Måndag</td>
-    <td>
-    <ul>
-        <li>
-            Klassisk Lasagne
-        </li>
-        <li>
-            Klassisk Lasagne
-        </li>
-    </ul>
-    </td>
-    <td>
-    <ul>
-        <li>
-            1
-        </li>
-        <li>
-            3
-        </li>
-    </ul>
-    </td>
-    <td>
-    <ul>
-        <li>
-            Klassisk Lasagne
-        </li>
-        <li>
-            Klassisk Lasagne
-        </li>
-    </ul>
-    </td>
-    <td>
-    <ul>
-        <li>
-            1
-        </li>
-        <li>
-            3
-        </li>
-    </ul>
-    </td>
-    <td><button class="change-dish-button">Ändra val</button></td>
-  </tr>
-  <tr>
-    <td>Måndag</td>
-    <td>
-    <ul>
-        <li>
-            Klassisk Lasagne
-        </li>
-        <li>
-            Klassisk Lasagne
-        </li>
-    </ul>
-    </td>
-    <td>
-    <ul>
-        <li>
-            1
-        </li>
-        <li>
-            3
-        </li>
-    </ul>
-    </td>
-    <td>
-    <ul>
-        <li>
-            Klassisk Lasagne
-        </li>
-        <li>
-            Klassisk Lasagne
-        </li>
-    </ul>
-    </td>
-    <td>
-    <ul>
-        <li>
-            1
-        </li>
-        <li>
-            3
-        </li>
-    </ul>
-    </td>
-    <td><button class="change-dish-button">Ändra val</button></td>
-  </tr>
-  <tr>
-    <td>Måndag</td>
-    <td>
-    <ul>
-        <li>
-            Klassisk Lasagne
-        </li>
-        <li>
-            Klassisk Lasagne
-        </li>
-    </ul>
-    </td>
-    <td>
-    <ul>
-        <li>
-            1
-        </li>
-        <li>
-            3
-        </li>
-    </ul>
-    </td>
-    <td>
-    <ul>
-        <li>
-            Klassisk Lasagne
-        </li>
-        <li>
-            Klassisk Lasagne
-        </li>
-    </ul>
-    </td>
-    <td>
-    <ul>
-        <li>
-            1
-        </li>
-        <li>
-            3
+            Klassisk Lasagne &nbsp;&nbsp;<b>x1</b>
         </li>
     </ul>
     </td>
