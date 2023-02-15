@@ -59,14 +59,14 @@ else
     }
 
     string activeWeekday() {
-        if(selectedIndex == -1) {
+        if(selectedIndex == -1 || selectedIndex >= getSortedDayMenus().Count) {
             return "";
         }
         return convertToWeekday(getSortedDayMenus()[selectedIndex].DayMenu.date);
     }
 
     string dateString() {
-        if(selectedIndex == -1) {
+        if(selectedIndex == -1 || selectedIndex >= getSortedDayMenus().Count) {
             return "";
         }
         return dateFormat(getSortedDayMenus()[selectedIndex].DayMenu.date);
@@ -117,7 +117,7 @@ private List<(DayMenu DayMenu, int Index)> getSortedDayMenus()
     {
         result.Add((indexedDayMenus[i].DayMenu, i));
     }
-        
+
     return result;
 }
 
