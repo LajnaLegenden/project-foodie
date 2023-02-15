@@ -50,3 +50,11 @@
     color: var(--btn-secondary-text-color, #000000);
     border-radius: 15px;
 }
+
+.hidden {
+    display: none;
+}
+
+.show {
+    display: block;
+}
