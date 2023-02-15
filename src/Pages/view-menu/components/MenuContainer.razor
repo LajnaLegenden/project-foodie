@@ -22,7 +22,8 @@
         <h2 class="meal-text">@dayMenu.type</h2>
         @foreach (Dish dish in dayMenu.dishes)
         {
-           <Dishes dishData=@dish />
+           
+           <Dishes dayMenu=@dayMenu dishData=@dish />
         }
     </div>
 </div>
@@ -32,7 +33,7 @@
     public DayMenu dayMenu { get; set; }
 
     string currentCategory = "all";
-    
+
     void toggleClass(int type)
     {
         if (type == 1)

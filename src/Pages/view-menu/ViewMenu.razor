@@ -15,12 +15,13 @@ else
 {
     <h1 class="text-day">@activeWeekday @dateString</h1>
     <div class="menu-container">
-    @foreach (var dayMenu in getSortedDayMenus())
+    @foreach (var d in getSortedDayMenus())
         {
-            @if (selectedIndex == dayMenu.Index)
-            {
-                <MenuContainer dayMenu=@dayMenu.DayMenu />
-            }
+
+                 <div class="@(ss(d.Index) ? "shown" : "hidden")">
+                <MenuContainer dayMenu=@d.DayMenu />
+                </div>
+
         }
         @if(selectedIndex == overViewIndex){
         <Overview />
@@ -48,6 +49,9 @@ else
         public DayMenu DayMenu;
     }
 
+bool ss(int  i) {
+ return selectedIndex  == i;
+}
 
     protected override async Task OnInitializedAsync()
     {
