@@ -1,0 +1,29 @@
+h1 {
+  text-align: center;
+  font-size: var(--h1-font-default, 40px);
+  font-weight: bold;
+}
+
+.overview-table {
+  border-collapse: collapse;
+  width: 100%;
+  border-radius: 10px;
+}
+
+.overview-table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #067A46;
+  color: white;
+}
+
+.overview-table tr:last-child td:first-child {
+  border: 2px solid orange;
+  border-radius: 10px;
+}
+
+.overview-table tr:last-child td:last-child {
+  border: 2px solid green;
+  border-bottom-right-radius: 10px;
+}

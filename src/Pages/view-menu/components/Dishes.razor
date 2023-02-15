@@ -1,6 +1,7 @@
 @using project_foodie.Pages.view_menu.components;
 @using project_foodie.Model;
 @using Newtonsoft.Json;
+@using Newtonsoft.Json.Linq;
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 
 
@@ -26,16 +27,15 @@
         </div>
         <div class="food-card-btn-container">
             @if (showInput)
-{
-            <div class="btn-add-container">
-                <button class="food-card-btn-decrement" @onclick="((e) => modifyCount(-1))"><span>-</span></button>
-                <input type="text" class="text-add-placeholder" count="@count" placeholder="@count st" readonly="readonly" />
-                <button class="food-card-btn-increment" @onclick="((e) => modifyCount(1))"><span>+</span></button>
-            </div>
-} else {
-     <button class="@ButtonClass food-card-btn" type="submit" @onclick="((e) => modifyCount(1))">Välj</button>
-}
-
+              {
+                <div class="btn-add-container">
+                    <button class="food-card-btn-decrement" @onclick="((e) => modifyCount(-1))"><span>-</span></button>
+                    <input type="text" class="text-add-placeholder" count="@count" placeholder="@count st" readonly="readonly" />
+                    <button class="food-card-btn-increment" @onclick="((e) => modifyCount(1))"><span>+</span></button>
+                </div>
+              } else {
+                   <button class="@ButtonClass food-card-btn" type="submit" @onclick="((e) => modifyCount(1))">Välj</button>
+              }
 
         </div>
     </div>
@@ -67,60 +67,114 @@
     public int id { get; set; }
     [Parameter]
     public Dish dishData { get; set; }
+
+    [Parameter]
+    public DayMenu dayMenu { get; set; }
     private int count = 0;
     private bool showInput = false;
     private string ButtonClass => count <= 0 ? "food-card-btn food-card-btn-add-amount" : "food-card-btn food-card-btn-add";
-
+    private string dayString = "";
     private string jsonString;
 
     public static int MAX_DISHES = 20;
+    private bool firstRender = true;
+    //onAfterRenderAsync
 
-    public class DishInformation
+       protected override void OnAfterRender(bool firstRender)
     {
-        public int Count { get; set; }
-        public int ID { get; set; }
-        public string dishname { get; set; }
-        public string dishdiscription { get; set; }
-        public int menuID { get; set; }
-        public string day { get; set; }
+        if (firstRender)
+        {
+        dayString = dayMenu.date.ToString("yyyy-MM-dd") + "-" + dayMenu.type + "-" + dayMenu.Id;
+        GetData();
+        }
     }
 
-    private async void modifyCount(int value){
+    private async void modifyCount(int value)
+    {
         count += value;
         //enforce max dishes and min dishes
-        if (count > 20){
-            count = 20;
-        } else if(count < 0){
+        if (count > MAX_DISHES)
+        {
+            count = MAX_DISHES;
+        }
+        else if (count < 0)
+        {
             count = 0;
         }
-        DishInformation dishInfo = new DishInformation
-            {
-                ID = @dishData.Id,
-                Count = count,
-                dishname = dishData.Name,
-                dishdiscription = dishData.description
-            };
-        string json = JsonConvert.SerializeObject(dishInfo);
-        await localStorage.SetItemAsync("LocalDataDishes", json);
 
-        //handle showInput
-        if(count > 0){
-            showInput = true;
-        } else {
-            showInput = false;
+        //check if key
+        var localStorageContent = await localStorage.GetItemAsync<string>("dishData");
+        if (localStorageContent == null)
+        {
+            //create key
+            await localStorage.SetItemAsync("dishData", "{}");
+            localStorageContent = "{}";
         }
-        await InvokeAsync(StateHasChanged);
+        DateTime day = dayMenu.date;
+        string dayString = day.ToString("yyyy-MM-dd") + "-" + dayMenu.type + "-" + dayMenu.Id;
+        JObject obj = JObject.Parse(localStorageContent);
+        //save dish as array of object {dishId: 1, count: 2} with key date
+        //check if date exists
+        if (obj.ContainsKey(dayString))
+        {
+            //check if dish exists
+            if (obj[dayString][dishData.Id.ToString()] != null)
+            {
+                //update count
+                obj[dayString][dishData.Id.ToString()] = count;
+            }
+            else
+            {
+                //add dish
+                obj[dayString][dishData.Id.ToString()] = count;
+            }
+        }
+        else
+        {
+            //add date
+            obj[dayString] = new JObject();
+            //add dish
+            obj[dayString][dishData.Id.ToString()] = count;
+        }
+
+        string json = JsonConvert.SerializeObject(obj);
+        await localStorage.SetItemAsync("dishData", json);
+        enforceCounter();
     }
 
     private async Task GetData()
     {
-        var localStorageCount = await localStorage.GetItemAsync<string>("LocalDataDishes");
-        var localStorageCountJson = JsonConvert.DeserializeObject(localStorageCount);
-        //parse localStorageCount into json format
-        jsonString = JsonConvert.SerializeObject(localStorageCountJson);
+        //parse json
+        var localStorageContent = await localStorage.GetItemAsync<string>("dishData");
+        if (localStorageContent != null)
+        {
+            JObject obj = JObject.Parse(localStorageContent);
+            DateTime day = dayMenu.date;
+            string dayString = day.ToString("yyyy-MM-dd") + "-" + dayMenu.type + "-" + dayMenu.Id;
+            if (obj.ContainsKey(dayString))
+            {
+                if (obj[dayString][dishData.Id.ToString()] != null)
+                {
+                    count = (int)obj[dayString][dishData.Id.ToString()];
+                    enforceCounter();
+                }
+            }
+        }
+    }
+    private void  enforceCounter()
+    {
+        if (count > 0)
+        {
+            showInput = true;
+        }
+        else
+        {
+            showInput = false;
+        }
+        InvokeAsync(StateHasChanged);
     }
 
-   
+
 }
 
 

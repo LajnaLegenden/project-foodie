@@ -21,10 +21,11 @@ else
     <div class="menu-container">
     @foreach (var dayMenu in getSortedDayMenus())
         {
-            @if (selectedIndex == dayMenu.Index)
-            {
+
+                 <div class="@(showSelected(dayMenu.Index) ? "shown" : "hidden")">
                 <MenuContainer dayMenu=@dayMenu.DayMenu />
-            }
+                </div>
+
         }
         @if(selectedIndex == overViewIndex){
         <Overview />
@@ -59,7 +60,9 @@ else
         return dateFormat(getSortedDayMenus()[selectedIndex].DayMenu.date);
     }
 
-
+bool showSelected(int  i) {
+ return selectedIndex  == i;
+}
     protected override async Task OnInitializedAsync()
     {
         using (var db = new DatabaseContext())
