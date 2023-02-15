@@ -1,0 +1,44 @@
+
+<div class="modal-background">
+    <div class="modal-card">
+        <div class="card-header">
+            <h1>@DishName</h1>
+        </div>
+        <div class="card-body">
+            <div class="content">
+                <h3>Innehåll</h3>
+                <ul>
+                    <li>Nötfärs</li>
+                    <li>Gul lök</li>
+                    <li>Vitlök</li>
+                    <li>Ägg</li>
+                    <li>Salt</li>
+                    <li>Svartpeppar</li>
+                    <li>Potatis</li>
+                </ul>
+            </div>
+            <div class="content">
+                <h3>Allergener</h3>
+                <ul>
+                    <li>Stark</li>
+                    <li>Gluttenfritt</li>
+                    <li>Mjölkfri</li>
+                </ul>
+            </div>
+        </div>
+        <button class="close-button" onclick="@ModalClose">Stäng ner</button>
+    </div>
+</div>
+
+
+@code {
+    [Parameter]
+    public string DishName {get; set;}
+    [Parameter]
+    public EventCallback<bool> OnClose {get; set;}
+
+    private Task ModalClose() 
+    {
+        return OnClose.InvokeAsync(false);
+    }
+}
