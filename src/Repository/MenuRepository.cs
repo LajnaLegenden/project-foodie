@@ -36,7 +36,7 @@ public class MenuRepository
 
     public async Task<List<Menu>> GetAllAsync()
     {
-        return await _context.Menus.Include(m => m.dayMenus).ThenInclude(dm => dm.dishes).ToListAsync();
+        return await _context.Menus.Include(m => m.dayMenus).ThenInclude(dm => dm.dishes).ThenInclude(d => d.Allergens).ToListAsync();
     }
 
     //Add daymenu to menu

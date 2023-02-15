@@ -1,0 +1,39 @@
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@using Newtonsoft.Json;
+@using Newtonsoft.Json.Linq;
+
+
+<p>@dishName</p>
+<p>@count</p>
+<p>@id</p>
+<p>@dishDescription</p>
+
+
+@code {
+    private string jsonString;
+    private string dishName;
+    private int count;
+    private int id;
+    private string dishDescription;
+
+    protected override async Task OnInitializedAsync()
+    {
+        //await GetData();
+    }
+    private async Task GetData()
+    {
+        var localStorageCount = await localStorage.GetItemAsync<string>("LocalDataDishes");
+        //parse localStorageCount into json format
+        jsonString = JsonConvert.SerializeObject(localStorageCount);
+
+        // Retrieve the values
+        JObject json = JObject.Parse(localStorageCount);
+        dishName = (string)json["dishname"];
+        count = (int)json["Count"];
+        id = (int)json["ID"];
+        dishDescription = (string)json["dishdiscription"];
+    }
+
+
+
+}

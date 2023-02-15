@@ -1,18 +1,59 @@
 @using project_foodie.Pages.view_menu.components
 @using project_foodie.Model;
 @using Newtonsoft.Json;
+<div class="radio-group">
+    <input type="radio" id="radio-1" name="group" @onclick="() => toggleClass(1)" />
+    <label for="radio-1">Kött</label>
+
+    <input type="radio" id="radio-2" name="group" @onclick="() => toggleClass(2)" />
+    <label for="radio-2">Fläsk</label>
+
+    <input type="radio" id="radio-3" name="group" @onclick="() => toggleClass(3)" />
+    <label for="radio-3">Kyckling</label>
+
+    <input type="radio" id="radio-4" name="group" @onclick="() => toggleClass(4)" />
+    <label for="radio-4">Vegetariskt</label>
+
+    <input type="radio" id="radio-5" name="group" @onclick="() => toggleClass(5)" />
+    <label for="radio-5">Visa Alla</label>
+</div>
 <div class="menu-container">
     <div class="card-container">
-        <h2 class="meal-text">Lunch</h2>
-
-        @foreach(DishMenu dishMenu in menuData.DishMenu){
-            Console.WriteLine(dishMenu.Dish.Name);
-            <Dishes dishData=@dishMenu/>
+        <h2 class="meal-text">@dayMenu.type</h2>
+        @foreach (Dish dish in dayMenu.dishes)
+        {
+           <Dishes dishData=@dish />
         }
     </div>
 </div>
 
 @code {
     [Parameter]
-    public project_foodie.Model.Menu menuData { get; set; }
+    public DayMenu dayMenu { get; set; }
+
+    string currentCategory = "all";
+    
+    void toggleClass(int type)
+    {
+        if (type == 1)
+        {
+            currentCategory = "kött";
+        }
+        else if (type == 2)
+        {
+            currentCategory = "fläsk";
+        }
+        else if (type == 3)
+        {
+            currentCategory = "kyckling";
+        }
+        else if (type == 4)
+        {
+            currentCategory = "vegetariskt";
+        }
+        else
+        {
+            currentCategory = "all";
+        };
+    }
 }
