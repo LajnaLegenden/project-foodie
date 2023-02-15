@@ -1,0 +1,46 @@
+
+<div class="modal-background">
+    <div class="modal-card">
+        <div class="card-header">
+            <h1>@DishName</h1>
+        </div>
+        <div class="card-body">
+            <div class="content">
+                <h3>Innehåll</h3>
+                <ul>
+                    @foreach (var ingredient in FoodContent)
+                    {
+                        <li>@ingredient</li>
+                    }
+                </ul>
+            </div>
+            <div class="content">
+                <h3>Allergener</h3>
+                <ul>
+                    @foreach (var allergen in Allergens)
+                    {
+                        <li>@allergen</li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <button class="close-button" onclick="@ModalClose">Stäng ner</button>
+    </div>
+</div>
+
+
+@code {
+    [Parameter]
+    public string DishName {get; set;}
+    [Parameter]
+    public List<string> FoodContent {get; set;}
+    [Parameter]
+    public List<string> Allergens {get; set;}
+    [Parameter]
+    public EventCallback<bool> OnClose {get; set;}
+
+    private Task ModalClose() 
+    {
+        return OnClose.InvokeAsync(false);
+    }
+}
