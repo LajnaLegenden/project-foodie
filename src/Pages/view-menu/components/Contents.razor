@@ -1,12 +1,14 @@
 
 <div class="modal-background">
     <div class="modal-card">
+        <div class="card-image">
+        </div>
         <div class="card-header">
             <h1>@DishName</h1>
         </div>
         <div class="card-body">
             <div class="content">
-                <h3>Innehåll</h3>
+                <h2>Innehåll</h2>
                 <ul>
                     @foreach (var ingredient in FoodContent)
                     {
@@ -15,7 +17,7 @@
                 </ul>
             </div>
             <div class="content">
-                <h3>Allergener</h3>
+                <h2>Allergener</h2>
                 <ul>
                     @foreach (var allergen in Allergens)
                     {
@@ -24,7 +26,9 @@
                 </ul>
             </div>
         </div>
-        <button class="close-button" onclick="@ModalClose">Stäng ner</button>
+        <div class="card-button">
+            <button class="close-button" onclick="@ModalClose">Stäng ner</button>
+        </div>
     </div>
 </div>
 
@@ -39,7 +43,7 @@
     [Parameter]
     public EventCallback<bool> OnClose {get; set;}
 
-    private Task ModalClose() 
+    private Task ModalClose()
     {
         return OnClose.InvokeAsync(false);
     }
