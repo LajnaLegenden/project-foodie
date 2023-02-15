@@ -15,14 +15,14 @@ RUN dotnet restore
 COPY src/ .
 
 # Build the project
-RUN dotnet build -c Release -o  /app/build
+RUN dotnet publish -c Release -o  /app/bin/release/project-foodie/
 
 ENV DBADDR ${DBADDR}
 ENV DBNAME ${DBNAME}
 ENV DBUSER ${DBUSER}
 ENV DBPASS ${DBPASS}
 RUN ls -la
-RUN ls -la build/
+RUN ls -la /app/bin/release/project-foodie/
 
 # Start the application
 
