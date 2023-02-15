@@ -48,7 +48,7 @@ def main():
             env.append(line.rstrip())
 
 
-    ports = {5182: config['port'], 5443: config["port"] + 443}
+    ports = {5000: config['port'], 5001: config["port"] + 443}
     client.containers.create(image=u.getImageTag(config), name=config['hostname'], ports=ports, detach=True, environment=env).start()
 
 
