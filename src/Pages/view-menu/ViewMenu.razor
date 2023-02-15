@@ -15,11 +15,11 @@ else
 {
     <h1 class="text-day">@activeWeekday @dateString</h1>
     <div class="menu-container">
-    @foreach (var d in getSortedDayMenus())
+    @foreach (var dayMenu in getSortedDayMenus())
         {
 
-                 <div class="@(ss(d.Index) ? "shown" : "hidden")">
-                <MenuContainer dayMenu=@d.DayMenu />
+                 <div class="@(showSelected(dayMenu.Index) ? "shown" : "hidden")">
+                <MenuContainer dayMenu=@dayMenu.DayMenu />
                 </div>
 
         }
@@ -49,7 +49,7 @@ else
         public DayMenu DayMenu;
     }
 
-bool ss(int  i) {
+bool showSelected(int  i) {
  return selectedIndex  == i;
 }
 
