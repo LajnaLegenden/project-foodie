@@ -1,3 +1,18 @@
+.day-container {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    font-size: 25px;
+}
+
+.day-container h1 {
+    margin: 20px 0px 20px 0px;
+}
+
+.week-highlight {
+    color: #067A46;
+}
+
 .menu-container {
     height: 75%;
     margin: auto;
@@ -8,7 +23,7 @@
 
 .button-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     margin: 20px;
 }
 
@@ -36,43 +51,10 @@
     border-radius: 15px;
 }
 
-.radio-group {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    }
-    
-    input[type="radio"] {
+.hidden {
     display: none;
-    }
-    
-    input[type="radio"] + label {
-    display: inline-block;
-    padding: 10px 20px;
-    border: 2px solid #067A46;
-    border-radius: 4px;
-    margin-right: 20px;
-    cursor: pointer;
-    }
-    
-    input[type="radio"]:checked + label {
-    background-color: #067A46;
-    color: white;
-    }
-
-.information {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding: 16px 48px;
-    justify-content: space-around;
 }
 
-.text-week {
-    text-align: left;
-    color: #067A46;
-}
-
-.text-dat {
-    text-align: center;
+.show {
+    display: block;
 }

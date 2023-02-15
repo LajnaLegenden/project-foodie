@@ -15,8 +15,11 @@ def main():
 
     if(not u.hasOwnConfig(branch)):
         print("No config for branch " + branch)
-        container = client.containers.get(config['hostname'])
-        container.remove()
+        try:
+            container = client.containers.get(config['hostname'])
+            container.remove()
+        except docker.errors.NotFound:
+            pass
         print("Skipping deploy")
         exit(0)
 
@@ -48,7 +51,7 @@ def main():
             env.append(line.rstrip())
 
 
-    ports = {5182: config['port'], 5443: config["port"] + 443}
+    ports = {5000: config['port'], 5001: config["port"] + 443}
     client.containers.create(image=u.getImageTag(config), name=config['hostname'], ports=ports, detach=True, environment=env).start()
 
 
