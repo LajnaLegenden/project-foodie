@@ -76,3 +76,11 @@
 .text-dat {
     text-align: center;
 }
+
+.shown {
+    display: block;
+}
+
+.hidden {
+    display: none;
+}
