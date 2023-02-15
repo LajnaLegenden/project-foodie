@@ -2,29 +2,33 @@
 @using project_foodie.Model;
 @using Newtonsoft.Json;
 <div class="radio-group">
-    <input type="radio" id="radio-1" name="group" @onclick="() => toggleClass(1)" />
+    <input type="radio" id="radio-5" name="group" @onclick="() => toggleClass(1)" checked/>
+    <label for="radio-5">Visa Alla</label>
+
+    <input type="radio" id="radio-1" name="group" @onclick="() => toggleClass(2)" />
     <label for="radio-1">Kött</label>
 
-    <input type="radio" id="radio-2" name="group" @onclick="() => toggleClass(2)" />
+    <input type="radio" id="radio-2" name="group" @onclick="() => toggleClass(3)" />
     <label for="radio-2">Fläsk</label>
 
-    <input type="radio" id="radio-3" name="group" @onclick="() => toggleClass(3)" />
+    <input type="radio" id="radio-3" name="group" @onclick="() => toggleClass(4)" />
     <label for="radio-3">Kyckling</label>
 
-    <input type="radio" id="radio-4" name="group" @onclick="() => toggleClass(4)" />
+    <input type="radio" id="radio-4" name="group" @onclick="() => toggleClass(5)" />
     <label for="radio-4">Vegetariskt</label>
-
-    <input type="radio" id="radio-5" name="group" @onclick="() => toggleClass(5)" />
-    <label for="radio-5">Visa Alla</label>
 </div>
 <div class="menu-container">
+    <h2 class="meal-text">@dayMenu.type</h2>
     <div class="card-container">
-        <h2 class="meal-text">@dayMenu.type</h2>
         @foreach (Dish dish in dayMenu.dishes)
         {
            
            <Dishes dayMenu=@dayMenu dishData=@dish />
         }
+    </div>
+    <div class="skip-container">
+        <input type="checkbox" class="skip-checkbox" name="skip" value="skip">
+        <label for="skip"> Jag vill avstå lunch.</label><br>
     </div>
 </div>
 
@@ -38,23 +42,23 @@
     {
         if (type == 1)
         {
-            currentCategory = "kött";
+            currentCategory = "all";
         }
         else if (type == 2)
         {
-            currentCategory = "fläsk";
+            currentCategory = "kött";
         }
         else if (type == 3)
         {
-            currentCategory = "kyckling";
+            currentCategory = "fläsk";
         }
         else if (type == 4)
         {
-            currentCategory = "vegetariskt";
+            currentCategory = "kyckling";
         }
         else
         {
-            currentCategory = "all";
+            currentCategory = "vegetariskt";
         };
     }
 }

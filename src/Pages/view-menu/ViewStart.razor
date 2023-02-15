@@ -1,8 +1,5 @@
-@page "/start"
 @using project_foodie.Data
 @using project_foodie.Pages.view_menu.components
-@inject NavigationManager NavManager
-@inject NavigationManager UriHelper
 
 <h1>Lägg en mat beställning</h1>
 <div class="border-container">
@@ -11,14 +8,5 @@
     <p>Om du vill läsa innehållsförteckningen på maträtten så tycker du på bilden</p>
     <p><span>Beställ senast: 03/02/2023</span></p>
     <p>Leverans: 09/02/2023</p>
-    <div class="btn-container">
-        <button @onclick=@Navigate class="btn-start">Starta Här</button>
-    </div>
 </div>
 
-@code {
-void Navigate()
-{
-    UriHelper.NavigateTo("order");
-}
-}
