@@ -16,15 +16,13 @@ COPY src/ .
 
 # Build the project
 RUN dotnet build -c Release -o  /app/build
-RUN dotnet publish -c Release -o /app/publish
 
 ENV DBADDR ${DBADDR}
 ENV DBNAME ${DBNAME}
 ENV DBUSER ${DBUSER}
 ENV DBPASS ${DBPASS}
 RUN ls -la
-RUN ls -la publish/
-RUN mv /app/publish/**/* /app/
+RUN ls -la build/
 
 # Start the application
 
