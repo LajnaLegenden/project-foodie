@@ -1,89 +1,49 @@
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @using Newtonsoft.Json;
 @using Newtonsoft.Json.Linq;
+@using project_foodie.Model
 
-<div>
 <h1>Översikt över dina val</h1>
 <p>Thomas Andersson</p>
 <p>Beställningsdag: 2023-01-23</p>
 
-<table class="overview-table">
-  <tr>
-    <th>Veckodag</th>
-    <th>Frukost</th>
-    <th>Lunch</th>
-    <th>Val</th>
-
-  </tr>
-  <tr>
-    <td>Måndag</td>
-    <td>Klassisk Lasagne</td>
-    <td>Klassisk Chili Con Carne med ris</td>
-    <td><button class="change-dish-button">Ändra val</button></td>
-  </tr>
-  <tr>
-    <td>Tisdag</td>
-    <td>Klassisk Lasagne</td>
-    <td>Klassisk Chili Con Carne med ris</td>
-    <td><button class="change-dish-button">Ändra val</button></td>
-  </tr>
-  <tr>
-    <td>IOnsdag</td>
-    <td>Klassisk Lasagne</td>
-    <td>Klassisk Chili Con Carne med ris</td>
-    <td><button class="change-dish-button">Ändra val</button></td>
-  </tr>
-  <tr>
-    <td>Torsdag</td>
-    <td>Klassisk Lasagne</td>
-    <td>Klassisk Chili Con Carne med ris</td>
-    <td><button class="change-dish-button">Ändra val</button></td>
-  </tr>
-  <tr>
-    <td>Lördag</td>
-    <td>Klassisk Lasagne</td>
-    <td>Klassisk Chili Con Carne med ris</td>
-    <td><button class="change-dish-button">Ändra val</button></td>
-  </tr>
-  <tr>
-    <td>Söndag</td>
-    <td>Klassisk Lasagne</td>
-    <td>Klassisk Chili Con Carne med ris</td>
-    <td><button class="change-dish-button">Ändra val</button></td>
-  </tr>
-</table>
-</div>
-@* <p>@dishName</p>
-<p>@count</p>
-<p>@id</p>
-<p>@dishDescription</p> *@
+@foreach (var dish in menu.dayMenus.First().dishes)
+{
+  <p>@dish.Id - @dish.Name</p>
+}
 
 
 @code {
-    private string jsonString;
-    private string dishName;
-    private int count;
-    private int id;
-    private string dishDescription;
+  private string jsonString;
+  private string DishName;
+  private int DishCount;
+  private int DishID;
+  private string DishMenuDate;
+  private string DishDescription;
 
-    protected override async Task OnInitializedAsync()
+  [Parameter]
+  public Menu menu { get; set; }
+
+  protected override async Task OnInitializedAsync()
+  {
+    await GetData();
+  }
+  private async Task GetData()
+  {
+    var localStorageCount = await localStorage.GetItemAsync<string>("dishData");
+    //parse localStorageCount into json format
+    jsonString = JsonConvert.SerializeObject(localStorageCount);
+    // loop over day menu
+
+
+    foreach (var dish in menu.dayMenus.First().dishes)
     {
-        await GetData();
-    }
-    private async Task GetData()
-    {
-        var localStorageCount = await localStorage.GetItemAsync<string>("LocalDataDishes");
-        //parse localStorageCount into json format
-        jsonString = JsonConvert.SerializeObject(localStorageCount);
-
-        // Retrieve the values
-        JObject json = JObject.Parse(localStorageCount);
-        dishName = (string)json["dishname"];
-        count = (int)json["Count"];
-        id = (int)json["ID"];
-        dishDescription = (string)json["dishdiscription"];
+      Console.WriteLine(dish.Id);
+      Console.WriteLine(dish.Name);
     }
 
 
+    //print
+  }
 
 }
