@@ -9,41 +9,41 @@
 
 @foreach (var dish in menu.dayMenus.First().dishes)
 {
-  <p>@dish.Id - @dish.Name</p>
+    <p>@dish.Id - @dish.Name</p>
 }
 
 
 @code {
-  private string jsonString;
-  private string DishName;
-  private int DishCount;
-  private int DishID;
-  private string DishMenuDate;
-  private string DishDescription;
+    private string jsonString;
+    private string DishName;
+    private int DishCount;
+    private int DishID;
+    private string DishMenuDate;
+    private string DishDescription;
 
-  [Parameter]
-  public Menu menu { get; set; }
+    [Parameter]
+    public Menu menu { get; set; }
 
-  protected override async Task OnInitializedAsync()
-  {
-    await GetData();
-  }
-  private async Task GetData()
-  {
-    var localStorageCount = await localStorage.GetItemAsync<string>("dishData");
-    //parse localStorageCount into json format
-    jsonString = JsonConvert.SerializeObject(localStorageCount);
-    // loop over day menu
-
-
-    foreach (var dish in menu.dayMenus.First().dishes)
+    protected override async Task OnInitializedAsync()
     {
-      Console.WriteLine(dish.Id);
-      Console.WriteLine(dish.Name);
+        await GetData();
     }
+    private async Task GetData()
+    {
+        var localStorageCount = await localStorage.GetItemAsync<string>("dishData");
+        //parse localStorageCount into json format
+        jsonString = JsonConvert.SerializeObject(localStorageCount);
+        // loop over day menu
 
+        foreach (var dish in menu.dayMenus.First().dishes)
+        {
+            foreach (var item in dish.GetType().GetProperties())
+            {
+                Console.WriteLine("{0} = {1}", item.Name, item.GetValue(dish));
+            }
+        }
 
-    //print
-  }
+        //print
+    }
 
 }
