@@ -13,7 +13,11 @@
 }
 else
 {
-    <h1 class="text-day">@activeWeekday @dateString</h1>
+    <div class="day-container">
+        <h1 class="week-highlight">@_menu.Name</h1>
+        <h1>@activeWeekday()</h1>
+        <h1>@dateString()</h1>
+    </div>
     <div class="menu-container">
     @foreach (var dayMenu in getSortedDayMenus())
         {
@@ -26,6 +30,7 @@ else
         <Overview />
         }
 
+
         <div class="button-container">
             <button @onclick="prevPage" class="button-back">Föregående dag</button>
             <button @onclick="nextPage" class="button-forward">@getNextButtonString()</button>
@@ -35,8 +40,6 @@ else
 
 @code {
     string category = "all";
-    string activeWeekday;
-    string dateString;
     private int selectedIndex = 0;
     private int overViewIndex;
     private Menu _menu;
@@ -46,6 +49,14 @@ else
     {
         public int Index;
         public DayMenu DayMenu;
+    }
+
+    string activeWeekday() {
+        return convertToWeekday(getSortedDayMenus()[selectedIndex].DayMenu.date);
+    }
+
+    string dateString() {
+        return dateFormat(getSortedDayMenus()[selectedIndex].DayMenu.date);
     }
 
 
