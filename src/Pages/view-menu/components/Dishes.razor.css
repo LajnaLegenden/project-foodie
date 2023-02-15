@@ -3,19 +3,21 @@
     height: 391px;
     background: #FCFCFC;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 10px;
+    border-radius: 5px;
 }
 
 .food-card-img-container {
     height: 177px;
-    border-radius: 10px 10px 0px 0px;
+    border-radius: 5px 5px 0px 0px;
     background-color: #067A46;
 }
 
+.food-card-upper-body {
+    height: 70px;
+}
 
 .food-card-text,
 .food-card-price {
-    font-size: 18px;
     padding-top: 10px;
     margin: auto;
     font-weight: bold;
@@ -23,23 +25,43 @@
     line-height: 130%;
 }
 
-.allergener {
-    display: flex;
-    align-items: center;
-    padding: 0px;
-    gap: 12px;
-    margin-top: 30px;
-    margin-bottom: 10px;
-    margin-left: 10px;
+.food-card-price {
+    color: #067A46;
+    font-size: 25px;
+}
+
+.food-card-text {
+    font-size: 18px;
 }
 
 .food-card-text-extra {
     font-size: 14px;
-    width: 90%;
+    width: 100%;
     margin: auto;
     margin-top: 4px;
     font-weight: 100;
     color: #3D3D3D;
+}
+
+.allergener {
+    display: flex;
+    border-top: 1px solid #DBDBDB;
+    align-items: center;
+    padding: 0px;
+    gap: 5px;
+    margin-top: 16px;
+    padding-top: 16px;
+    margin-bottom: 26px;
+    margin-left: 10px;
+}
+
+.allergener li {
+    color: #3D3D3D;
+}
+
+.allergener li span {
+    position: relative;
+    left: -10px;
 }
 
 .food-card-upper-body {
@@ -72,8 +94,8 @@
     height: 45px;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
-    width: 75%;
+    justify-content: center;
+    width: 180px;
     margin: 5px;
     border: 1px solid grey;
     border-radius: 25px;
@@ -82,36 +104,48 @@
     line-height: 1.5em;
 }
 
-.food-card-btn-increment {
-    margin-top: 6px;
-    border-radius: 20px;
-    width: 45px;
-    height: 30px;
-    border: none;
-    float: right;
-    background: var(--btn-sucess, #006B38);
-    filter: var(--filter-shadow-default, drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)));
-}
-
-.food-card-btn-decrement {
-    margin-top: 6px;
-    border-radius: 20px;
-    width: 45px;
-    height: 30px;
-    border: none;
-    float: left;
-    background: var(--btn-back, #8B0000);
-    filter: var(--filter-shadow-default, drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)));
-    line-height: 0;
-    font-size: 20px;
-}
-
 .text-add-placeholder {
-    width: 20%;
+    width: 85px;
     background: none;
     border: none;
     text-align: center;
     color: var(--text-color-primary, #000000);
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.food-card-btn-increment,
+.food-card-btn-decrement {
+    color: white;
+    border-radius: 100%;
+    width: 40px;
+    height: 40px;
+    border: none;
+    filter: var(--filter-shadow-default, drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)));
+    margin-top: 3px;
+    font-size: 30px;
+}
+
+.food-card-btn-increment {
+    float: right;
+    background: var(--btn-sucess, #006B38);
+}
+
+.food-card-btn-increment span {
+    font-size: 40px;
+    height: 30px;
+    line-height: 0.95;
+}
+
+.food-card-btn-decrement span {
+    font-size: 40px;
+    height: 30px;
+    line-height: 0;
+}
+
+.food-card-btn-decrement {
+    float: left;
+    background: #b10000;
 }
 
 .text-add-placeholder:focus {
