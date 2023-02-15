@@ -7,73 +7,93 @@
 @using System.Globalization;
 @using project_foodie.Repository;
 
-<div class="information">
-    @if(@_menu == null) {
-            <h1>Ajdå</h1>
-        } else {
-            <h1 class="text-week">@_menu.startDate</h1>
-        }
-    <h1 class="text-day">@activeWeekday @dateString</h1>
-</div>
-<div class="radio-group">
-    <input type="radio" id="radio-1" name="group" @onclick="() => toggleClass(1)" />
-    <label for="radio-1">Kött</label>
-
-    <input type="radio" id="radio-2" name="group" @onclick="() => toggleClass(2)" />
-    <label for="radio-2">Fläsk</label>
-
-    <input type="radio" id="radio-3" name="group" @onclick="() => toggleClass(3)" />
-    <label for="radio-3">Kyckling</label>
-
-    <input type="radio" id="radio-4" name="group" @onclick="() => toggleClass(4)" />
-    <label for="radio-4">Vegetariskt</label>
-
-    <input type="radio" id="radio-5" name="group" @onclick="() => toggleClass(5)" />
-    <label for="radio-5">Visa Alla</label>
-</div>
-@if (viewMenu)
+@if (loading)
 {
-    @if(@_menu == null) {
-        <h1>Ajdå</h1>
-    } else {
-        <div class="menu-container">
-        @foreach(DayMenu dishdays in _menu.dayMenus){
-            <MenuContainer menuData=@dishdays/>
-        }
-            <div class="button-container">
-                <button @onclick="DecrementDate" class="button-back">Föregående dag</button>
-                <button @onclick="IncrementDate" class="button-forward">Nästa dag</button>
-            </div>
-        </div>   
-    }
+    <p>Loading</p>
 }
 else
 {
-    <div class="overview-container">
-    <!-- Lägg in overview-container här-->
-    <Overview />
-</div>
+    <h1 class="text-day">@activeWeekday @dateString</h1>
+    <div class="menu-container">
+    @foreach (var dayMenu in getSortedDayMenus())
+        {
+            @if (selectedIndex == dayMenu.Index)
+            {
+                <MenuContainer dayMenu=@dayMenu.DayMenu />
+            }
+        }
+        @if(selectedIndex == overViewIndex){
+        <Overview />
+        }
+
+        <div class="button-container">
+            <button @onclick="prevPage" class="button-back">Föregående dag</button>
+            <button @onclick="nextPage" class="button-forward">@getNextButtonString()</button>
+        </div>
+    </div>
 }
 
 @code {
-    // Testdatum
-
-    DateTime startDate;
-    DateTime endDate;
-    DateTime activeDate;
-
-    List<DateTime> dates = new List<DateTime>();
-
+    string category = "all";
     string activeWeekday;
     string dateString;
+    private int selectedIndex = 0;
+    private int overViewIndex;
+    private Menu _menu;
+    private bool loading = true;
 
-    bool viewMenu = true;
-    private int count = 1;
+    protected class DayMenuIndex
+    {
+        public int Index;
+        public DayMenu DayMenu;
+    }
+
+
     protected override async Task OnInitializedAsync()
     {
-        activeWeekday = convertToWeekday(activeDate);
-        dateString = dateFormat(activeDate);
+        using (var db = new DatabaseContext())
+        {
+            MenuRepository mr = new MenuRepository(db);
+            List<Menu> menus = await mr.GetAllAsync();
+
+            menus.Sort((m1, m2) => m1.lastOrderDate > m2.lastOrderDate ? 1 : -1);
+
+            DateTime now = DateTime.Now;
+
+            foreach (Menu menu in menus)
+            {
+                if (menu.lastOrderDate > now)
+                {
+                    _menu = menu;
+                    loading = false;
+                    break;
+                }
+            }
+
+            overViewIndex = _menu.dayMenus.Count;
+        }
+
     }
+
+private List<(DayMenu DayMenu, int Index)> getSortedDayMenus()
+{
+    var indexedDayMenus = _menu.dayMenus
+        .Select((d, i) => new { DayMenu = d, Index = i })
+        .OrderBy(di => di.DayMenu.date)
+        .ThenBy(di => di.DayMenu.type)
+        .ToList();
+
+    var sortedDayMenus = indexedDayMenus.Select(di => di.DayMenu).ToList();
+
+    var result = new List<(DayMenu DayMenu, int Index)>();
+
+    for (int i = 0; i < indexedDayMenus.Count(); i++)
+    {
+        result.Add((indexedDayMenus[i].DayMenu, i));
+    }
+        
+    return result;
+}
 
     private string convertToWeekday(DateTime date)
     {
@@ -87,106 +107,31 @@ else
 
     private string dateFormat(DateTime date)
     {
-        string dateAsString = "";
-
-        dateAsString = date.ToString("dd/M");
-
-        return dateAsString;
+        return date != null ? date.ToString("dd/M") : "";
     }
 
-    void Navigate()
+    private void nextPage()
     {
-        if (count == 1)
-        {
-            UriHelper.NavigateTo("order");
-        }
+        selectedIndex++;
+        checkPageMax();
     }
 
-    private void IncrementDate()
+    private void prevPage()
     {
-        if (activeDate <= endDate)
-        {
-            activeDate = activeDate.AddDays(1);
-            if (activeDate > endDate)
-            {
-                viewMenu = false;
-            }
-            else
-            {
-                //count++;
-                //Console.WriteLine(count);
-                activeWeekday = convertToWeekday(activeDate);
-                dateString = dateFormat(activeDate);
-            }
+        selectedIndex--;
+        checkPageMax();
+    }
+
+    private void checkPageMax(){
+        if(selectedIndex < 0){
+            selectedIndex = 0;
+        } else if(selectedIndex > overViewIndex){
+            selectedIndex = overViewIndex;
         }
     }
 
-    private void DecrementDate()
-    {
-        if (activeDate > startDate)
-        {
-            //count--;
-            //Console.WriteLine(count);
-            activeDate = activeDate.AddDays(-1);
-        }
-
-        activeWeekday = convertToWeekday(activeDate);
-        dateString = dateFormat(activeDate);
+    private string getNextButtonString(){
+        return selectedIndex == overViewIndex ? "Lägg Order" : "Nästa Dag";
     }
 
-    string category = "all";
-
-    void toggleClass(int type)
-    {
-        if (type == 1)
-        {
-            category = "kött";
-        }
-        else if (type == 2)
-        {
-            category = "fläsk";
-        }
-        else if (type == 3)
-        {
-            category = "kyckling";
-        }
-        else if (type == 4)
-        {
-            category = "vegetariskt";
-        }
-        else
-        {
-            category = "all";
-        };
-    }
-    private List<Menu> _allMenus ;
-    private Menu _menu ;
-    
-    protected async override void OnInitialized()
-    {
-        using(var context = new DatabaseContext()){
-            MenuRepository menuRepository = new MenuRepository(context);
-            this._allMenus = await menuRepository.GetAllAsync();
-        }
-        foreach(var menu in _allMenus) {
-            string menuLastOrderDate = menu.lastOrderDate.ToShortDateString();
-            DateTime dateTimeLastOrder = DateTime.ParseExact(menuLastOrderDate, "MM/dd/yyyy", CultureInfo.InvariantCulture);
-            DateTime dateTimeToday = DateTime.ParseExact(@DateTime.Today.ToShortDateString(), "MM/dd/yyyy", CultureInfo.InvariantCulture);
-            if(dateTimeLastOrder > dateTimeToday) {
-                Console.WriteLine("test111111111111111111111111111");
-                _menu = menu;
-                break;
-            }
-        }
-
-        string menuLastOrderDates = _menu.lastOrderDate.ToShortDateString();
-        string menuStartDate = _menu.startDate.ToShortDateString();
-        DateTime dtLast = DateTime.ParseExact(menuLastOrderDates, "MM/dd/yyyy", CultureInfo.InvariantCulture);
-        DateTime dtStart = DateTime.ParseExact(menuLastOrderDates, "MM/dd/yyyy", CultureInfo.InvariantCulture);
-        Console.WriteLine(dtLast.Day);
-        startDate = new DateTime(dtStart.Year, dtStart.Month, dtStart.Day);
-        endDate = new DateTime(dtLast.Year, dtLast.Month, dtLast.Day);
-        activeDate = new DateTime(dtStart.Year, dtStart.Month, dtStart.Day);
-        toggleClass(1);
-    }
 }
