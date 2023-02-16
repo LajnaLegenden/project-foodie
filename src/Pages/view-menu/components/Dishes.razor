@@ -25,7 +25,6 @@
                 <li><span>@element.Name</span></li>
             }
         </div>
-        <div class="food-card-btn-container">
             <div class="btn-add-container">
                 <button class="food-card-btn-decrement" @onclick="((e) => modifyCount(-1))"><span>-</span></button>
                 <input type="text" class="text-add-placeholder" count="@count" placeholder="@count st" readonly="readonly" />
@@ -54,6 +53,17 @@
     {
         PopupOpen = true;
         StateHasChanged();
+    }
+    /*----------------No food--------------*/
+    [Parameter]
+    public bool wantFood {get; set;}
+    protected override void OnParametersSet()
+    {
+        if (wantFood)
+        {
+            count = 1;
+            modifyCount(-1);
+        }
     }
     /*-------------------------------------*/
     List<string> foodContent = new List<string>();
@@ -182,8 +192,6 @@
         }
         InvokeAsync(StateHasChanged);
     }
-
-
 }
 
 
