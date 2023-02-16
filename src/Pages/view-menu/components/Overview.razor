@@ -36,9 +36,14 @@
 
                 if (int.TryParse(idCount.Key, out int id) && await GetById(id) is Dish dish)
                 {
+
+                    Console.WriteLine("---------------------");
                     Console.WriteLine("DishName: " + dish.Name);
                     Console.WriteLine("DishId: " + dish.Id);
                     Console.WriteLine("DishPrice: " + dish.Price);
+                    Console.WriteLine("---------------------");
+
+
                 }
             }
         }
