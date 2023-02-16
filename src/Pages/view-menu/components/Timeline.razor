@@ -1,39 +1,94 @@
-@using project_foodie.Pages.view_menu.components
+@using project_foodie.Pages.view_menu.components;
+@using project_foodie.Model
+@using project_foodie.Service
+@inject IJSRuntime JS
+@inject BrowserService Service
 
+
+@if(state != "mobile"){
 <div class="timeline-container">
-    @foreach (var day in weekdays.Take(7))
+    @for (int i = 0; i < sections.Count; i += getNumberOfSameDateDayMenus(i))
     {
-        DateTime[] dayParam = new DateTime[4];
-        dayParam[0] = day;
-        dayParam[1] = activeDate;
-        dayParam[2] = inactiveDate;
-        dayParam[3] = startDate;
+        <div class="timeline-section @(@shouldShowTypes(sections[i]) ? "selected": "")">
+            <div class="timeline-entry">
+                <TimeLineSection dm="@sections[i].DayMenu" showTypes="true" isDay="true" />
+                @for (int j = 0; j < getNumberOfSameDateDayMenus(i); j++)
+                {
+                   @if(state == "desktop"){
+                     <div class="timeline-line @(shouldShowTypes(sections[i]) ? "" : "hidden")"></div>
 
-        <TimelineDay dates="@dayParam"/>
+                    //get current state
+                    TimeLineSection.TimelineState sectionState = currentIndex == sections[i + j].Index ?
+                    TimeLineSection.TimelineState.Active : currentIndex > sections[i + j].Index ?
+                    TimeLineSection.TimelineState.Completed : TimeLineSection.TimelineState.Inactive;
+                    <TimeLineSection dm="@sections[i+j].DayMenu" showTypes="@shouldShowTypes(sections[i])" isDay="false"
+                        state="sectionState" />
+                   }
+                }
+            </div>
+            @if (i + getNumberOfSameDateDayMenus(i) < sections.Count)
+            {
+                <div class="timeline-line"></div>
+            }
+        </div>
     }
 </div>
+} else {
+    <div class="small">1</div>
+    <div class="main">@menu.dayMenus.ElementAt(currentIndex).type</div>
+    <div class="small">1</div>
+}
 
 @code {
-    DateTime startDate;
-    DateTime endDate;
-    DateTime activeDate;
-    DateTime inactiveDate;
-    List<DateTime> weekdays = new List<DateTime>();
     [Parameter]
-    public DateTime[] DatesList {get; set;} = new DateTime[4]; 
+    public Menu menu { get; set; }
+    [Parameter]
+    public int currentIndex { get; set; }
+    [Parameter]
+    public string state { get; set; } = "desktop";
+
+    private List<(DayMenu DayMenu, int Index)> sections;
 
     protected override async Task OnInitializedAsync()
     {
-        // Get dates from parameter
-        startDate = DatesList[0];
-        endDate = DatesList[1];
-        activeDate = DatesList[2];
-        inactiveDate = DatesList[3];
-
-        // Get all dates between start and end date
-        for (var date = startDate; date <= endDate; date = date.AddDays(1)) 
-        {
-            weekdays.Add(date);
-        }
+        sections = ViewMenu.getSortedDayMenus(menu);
     }
+
+    private bool shouldShowTypes((DayMenu DayMenu, int Index) section)
+    {
+        if (currentIndex == section.Index)
+        {
+            return true;
+        }
+        //check if currentsection has same date as this section
+        if (sections[currentIndex].DayMenu.date == section.DayMenu.date)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    //function to get number of DayMenus with same date
+    private int getNumberOfSameDateDayMenus(int index)
+    {
+        int count = 0;
+        DateTime date = sections[index].DayMenu.date;
+
+        for (int i = index; i < sections.Count; i++)
+        {
+            if (sections[i].DayMenu.date == date)
+            {
+                count++;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        return count;
+    }
+
+
+
 }

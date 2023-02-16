@@ -6,6 +6,7 @@
 @using Newtonsoft.Json;
 @using System.Globalization;
 @using project_foodie.Repository;
+@inject IJSRuntime JS;
 
 @if (loading)
 {
@@ -16,13 +17,14 @@ else
     @if(selectedIndex == -1) {
         <ViewStart menuInfo=@_menu/>
     } else {
+    <Timeline menu="@_menu" currentIndex="@selectedIndex" state="@viewPort"/>
     <div class="day-container">
         <h1 class="week-highlight">@_menu.Name</h1>
         <h1 class=@dayString>@activeWeekday()</h1>
         <h1 class=@dayString>@dateString()</h1>
     </div>
         <div class="menu-container">
-            @foreach (var dayMenu in getSortedDayMenus())
+            @foreach (var dayMenu in ViewMenu.getSortedDayMenus(_menu))
                 {
 
                         <div class="@(showSelected(dayMenu.Index) ? "shown" : "hidden")">
@@ -53,6 +55,8 @@ else
     private int overViewIndex;
     private Menu _menu;
     private bool loading = true;
+    public string viewPort {get; set;} = "desktop";
+    private DotNetObjectReference<ViewMenu> objRef;
     private string dayString => selectedIndex == overViewIndex ? "overview-day-container" : "viewmenu-day-container";
 
     protected class DayMenuIndex
@@ -60,19 +64,40 @@ else
         public int Index;
         public DayMenu DayMenu;
     }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var viewPort = await JS.InvokeAsync<string>("blazorOnLoad", objRef);
+                Console.WriteLine(System.Reflection.Assembly.GetExecutingAssembly().GetName().Name);
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        objRef = DotNetObjectReference.Create(this);
+    }
+
+    //C#
+    [JSInvokable]
+    public void setViewPort(string state)
+    {
+        viewPort = state;
+        InvokeAsync(StateHasChanged);
+    }
 
     string activeWeekday() {
-        if(selectedIndex == -1 || selectedIndex >= getSortedDayMenus().Count) {
+        if(selectedIndex == -1 || selectedIndex >= ViewMenu.getSortedDayMenus(_menu).Count) {
             return "";
         }
-        return convertToWeekday(getSortedDayMenus()[selectedIndex].DayMenu.date);
+        return convertToWeekday(ViewMenu.getSortedDayMenus(_menu)[selectedIndex].DayMenu.date);
     }
 
     string dateString() {
-        if(selectedIndex == -1 || selectedIndex >= getSortedDayMenus().Count) {
+        if(selectedIndex == -1 || selectedIndex >= ViewMenu.getSortedDayMenus(_menu).Count) {
             return "";
         }
-        return dateFormat(getSortedDayMenus()[selectedIndex].DayMenu.date);
+        return dateFormat(ViewMenu.getSortedDayMenus(_menu)[selectedIndex].DayMenu.date);
     }
 
 bool showSelected(int  i) {
@@ -103,10 +128,9 @@ bool showSelected(int  i) {
         }
 
     }
-
-private List<(DayMenu DayMenu, int Index)> getSortedDayMenus()
+public static List<(DayMenu DayMenu, int Index)> getSortedDayMenus(Menu menu)
 {
-    var indexedDayMenus = _menu.dayMenus
+    var indexedDayMenus = menu.dayMenus
         .Select((d, i) => new { DayMenu = d, Index = i })
         .OrderBy(di => di.DayMenu.date)
         .ThenBy(di => di.DayMenu.type)
@@ -158,7 +182,6 @@ private List<(DayMenu DayMenu, int Index)> getSortedDayMenus()
             selectedIndex = overViewIndex;
         }
     }
-
     private string getBackButtonString() {
         return selectedIndex == 0 ? "Gå till start" : "Föregående dag";
     }
