@@ -72,17 +72,23 @@
         var localStorageData = await localStorage.GetItemAsync<string>("dishData");
         var localStorageObj = JObject.Parse(localStorageData);
 
+        Console.WriteLine(localStorageObj);
+
         foreach (var keyValue in localStorageObj)
         {
             foreach (var idCount in (JObject)keyValue.Value)
             {
                 if (int.TryParse(idCount.Key, out int id) && await GetById(id) is Dish dish)
                 {
-                    Dishes.Add(dish);
+                    if (idCount.Value.Value<int>() > 0)
+                    {
+                        Dishes.Add(dish);
+                    }
                 }
             }
         }
     }
+
 
     private async Task<Dish> GetById(int id)
     {
