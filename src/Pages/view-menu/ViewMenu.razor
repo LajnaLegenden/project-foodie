@@ -27,13 +27,26 @@ else
         <h1 class=@dayString>@dateString()</h1>
     </div>
         <div class="menu-container">
+            <div class="radio-group">
+            <EditForm Model="@_model">
+                <InputRadioGroup @bind-Value="_model.Category">
+
+                <input type="radio" id="radio-1" name="group" checked="checked" @onchange="(() => Category = categoryList[0].Category)" />
+                <label for="radio-1">Alla</label>
+
+                <input type="radio" id="radio-2" name="group" @onchange="(() => Category = categoryList[1].Category)" />
+                <label for="radio-2">Grundkost</label>
+
+                <input type="radio" id="radio-3" name="group" @onchange="(() => Category = categoryList[2].Category)" />
+                <label for="radio-3">Vegetariskt</label>
+                </InputRadioGroup>
+            </EditForm>
+        </div>
             @foreach (var dayMenu in ViewMenu.getSortedDayMenus(_menu))
                 {
-
-                        <div class="@(showSelected(dayMenu.Index) ? "shown" : "hidden")">
-                        <MenuContainer dayMenu=@dayMenu.DayMenu />
-                        </div>
-
+                    <div class="@(showSelected(dayMenu.Index) ? "shown" : "hidden")">
+                        <MenuContainer dayMenu=@dayMenu.DayMenu Category="@Category"/>
+                    </div>
                 }
             @if(selectedIndex == overViewIndex){
                 <Overview />
@@ -53,7 +66,7 @@ else
 }
 
 @code {
-    string category = "all";
+    public string Category = "all";
     private int selectedIndex = -1;
     private int overViewIndex;
     private Menu _menu;
@@ -61,6 +74,25 @@ else
     public string viewPort {get; set;} = "desktop";
     private DotNetObjectReference<ViewMenu> objRef;
     private string dayString => selectedIndex == overViewIndex ? "overview-day-container" : "viewmenu-day-container";
+
+
+    private List<Categories> categoryList = new()
+        {
+            new Categories()
+            {
+                Category = "all"
+            },
+            new Categories()
+            {
+                Category = "grundkost"
+            },
+            new Categories()
+            {
+                Category = "vegetariskt"
+            }
+        };
+
+    private Categories _model = new() { Category = "all" };
 
     protected class DayMenuIndex
     {
