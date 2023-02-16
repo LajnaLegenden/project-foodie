@@ -2,22 +2,18 @@
 @using Newtonsoft.Json;
 @using Newtonsoft.Json.Linq;
 @using project_foodie.Model
+@using project_foodie.Repository;
 
-@* <h1>Översikt över dina val</h1>
-<p>Thomas Andersson</p>
-<p>Beställningsdag: 2023-01-23</p> *@
-
-@foreach (var dish in menu.dayMenus.First().dishes)
-{
-    <p>@dish.Id - @dish.Name</p>
-}
-
-
-<p>@menu.dayMenus.First().date</p>
-
-
+<h1>@DishName</h1>
 
 @code {
+
+    public string DishName { get; set; }
+
+    public JObject LocalStorageObj { get; private set; }
+
+    public int id;
+
     [Parameter]
     public Menu menu { get; set; }
 
@@ -25,25 +21,39 @@
     {
         await GetData();
     }
+
     private async Task GetData()
     {
         var localStorageData = await localStorage.GetItemAsync<string>("dishData");
 
-
         var localStorageObj = JObject.Parse(localStorageData);
-        Console.WriteLine(localStorageObj);
+        LocalStorageObj = JObject.Parse(localStorageData);
+
+        Console.WriteLine(LocalStorageObj);
 
         foreach (var keyValue in localStorageObj)
         {
 
-            Console.WriteLine("\"Date\" " + keyValue.Key);
-
             foreach (var idCount in (JObject)keyValue.Value)
             {
-                Console.WriteLine("\"ID\" " + idCount.Key);
-                Console.WriteLine("\"Count\" " + idCount.Value);
+
+                if (int.TryParse(idCount.Key, out int id) && await GetById(id) is Dish dish)
+                {
+                    Console.WriteLine("DishName: " + dish.Name);
+                }
             }
         }
     }
 
+    private async Task<Dish> GetById(int id)
+    {
+        using (var db = new DatabaseContext())
+        {
+            DishRepository dr = new DishRepository(db);
+            Dish dish = await dr.GetByIdAsync(id);
+
+            DishName = dish.Name;
+            return dish;
+        }
+    }
 }
