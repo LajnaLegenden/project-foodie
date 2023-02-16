@@ -7,6 +7,7 @@
 @using System.Globalization;
 @using project_foodie.Repository;
 @inject IJSRuntime JS;
+@inject IJSRuntime JSRuntime
 
 @if (loading)
 {
@@ -17,7 +18,9 @@ else
     @if(selectedIndex == -1) {
         <ViewStart menuInfo=@_menu/>
     } else {
-    <Timeline menu="@_menu" currentIndex="@selectedIndex" state="@viewPort"/>
+        @if(selectedIndex != overViewIndex) {
+            <Timeline menu="@_menu" currentIndex="@selectedIndex" state="@viewPort"/>
+        }
     <div class="day-container">
         <h1 class="week-highlight">@_menu.Name</h1>
         <h1 class=@dayString>@activeWeekday()</h1>
@@ -163,16 +166,18 @@ public static List<(DayMenu DayMenu, int Index)> getSortedDayMenus(Menu menu)
         return date != null ? date.ToString("dd/M") : "";
     }
 
-    private void nextPage()
+    private async void nextPage()
     {
         selectedIndex++;
         checkPageMax();
+        await JSRuntime.InvokeVoidAsync("scrollToTop");
     }
 
-    private void prevPage()
+    private async void prevPage()
     {
         selectedIndex--;
         checkPageMax();
+        await JSRuntime.InvokeVoidAsync("scrollToTop");
     }
 
     private void checkPageMax(){
