@@ -6,10 +6,13 @@
 
 <h1>@DishName</h1>
 <h1>@DishPrice</h1>
+<h1>@DishDescription</h1>
 
 @code {
 
     public string DishName { get; set; }
+
+    public string DishDescription { get; set; }
 
     public int DishPrice { get; set; }
     public int id;
@@ -36,14 +39,12 @@
 
                 if (int.TryParse(idCount.Key, out int id) && await GetById(id) is Dish dish)
                 {
-
                     Console.WriteLine("---------------------");
                     Console.WriteLine("DishName: " + dish.Name);
+                    Console.WriteLine("DishDescription: " + dish.description);
                     Console.WriteLine("DishId: " + dish.Id);
                     Console.WriteLine("DishPrice: " + dish.Price);
                     Console.WriteLine("---------------------");
-
-
                 }
             }
         }
@@ -56,6 +57,7 @@
             Dish dish = await dr.GetByIdAsync(id);
 
             DishName = dish.Name;
+            DishDescription = dish.description;
             DishPrice = dish.Price;
             return dish;
         }
