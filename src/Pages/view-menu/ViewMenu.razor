@@ -6,6 +6,7 @@
 @using Newtonsoft.Json;
 @using System.Globalization;
 @using project_foodie.Repository;
+@inject IJSRuntime JS;
 
 @if (loading)
 {
@@ -13,13 +14,14 @@
 }
 else
 {
+    <Timeline menu="@_menu" currentIndex="@selectedIndex" state="@viewPort"/>
     <div class="day-container">
         <h1 class="week-highlight">@_menu.Name</h1>
         <h1>@activeWeekday()</h1>
         <h1>@dateString()</h1>
     </div>
     <div class="menu-container">
-    @foreach (var dayMenu in getSortedDayMenus())
+    @foreach (var dayMenu in getSortedDayMenus(_menu))
         {
 
                  <div class="@(showSelected(dayMenu.Index) ? "shown" : "hidden")">
@@ -45,6 +47,8 @@ else
     private int overViewIndex;
     private Menu _menu;
     private bool loading = true;
+    public string viewPort {get; set;} = "desktop";
+    private DotNetObjectReference<ViewMenu> objRef;
 
     protected class DayMenuIndex
     {
@@ -52,12 +56,34 @@ else
         public DayMenu DayMenu;
     }
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var viewPort = await JS.InvokeAsync<string>("blazorOnLoad", objRef);
+                Console.WriteLine(System.Reflection.Assembly.GetExecutingAssembly().GetName().Name);
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        objRef = DotNetObjectReference.Create(this);
+    }
+
+    //C#
+    [JSInvokable]
+    public void setViewPort(string state)
+    {
+        viewPort = state;
+        InvokeAsync(StateHasChanged);
+    }
+
     string activeWeekday() {
-        return convertToWeekday(getSortedDayMenus()[selectedIndex].DayMenu.date);
+        return convertToWeekday(ViewMenu.getSortedDayMenus(_menu)[selectedIndex].DayMenu.date);
     }
 
     string dateString() {
-        return dateFormat(getSortedDayMenus()[selectedIndex].DayMenu.date);
+        return dateFormat(getSortedDayMenus(_menu)[selectedIndex].DayMenu.date);
     }
 
 bool showSelected(int  i) {
@@ -90,9 +116,9 @@ bool showSelected(int  i) {
 
     }
 
-private List<(DayMenu DayMenu, int Index)> getSortedDayMenus()
+public static List<(DayMenu DayMenu, int Index)> getSortedDayMenus(Menu menu)
 {
-    var indexedDayMenus = _menu.dayMenus
+    var indexedDayMenus = menu.dayMenus
         .Select((d, i) => new { DayMenu = d, Index = i })
         .OrderBy(di => di.DayMenu.date)
         .ThenBy(di => di.DayMenu.type)
@@ -106,7 +132,7 @@ private List<(DayMenu DayMenu, int Index)> getSortedDayMenus()
     {
         result.Add((indexedDayMenus[i].DayMenu, i));
     }
-        
+
     return result;
 }
 
