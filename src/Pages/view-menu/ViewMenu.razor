@@ -24,7 +24,7 @@ else
         <h1 class=@dayString>@dateString()</h1>
     </div>
         <div class="menu-container">
-            @foreach (var dayMenu in ViewMenu.getSortedDayMenus(menu))
+            @foreach (var dayMenu in ViewMenu.getSortedDayMenus(_menu))
                 {
 
                         <div class="@(showSelected(dayMenu.Index) ? "shown" : "hidden")">
@@ -94,7 +94,7 @@ else
     }
 
     string dateString() {
-        if(selectedIndex == -1 || selectedIndex >= getSortedDayMenus().Count) {
+        if(selectedIndex == -1 || selectedIndex >= ViewMenu.getSortedDayMenus(_menu).Count) {
             return "";
         }
         return dateFormat(ViewMenu.getSortedDayMenus(_menu)[selectedIndex].DayMenu.date);
