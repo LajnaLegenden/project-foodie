@@ -81,6 +81,42 @@
     display: block;
 }
 
+
+.radio-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-bottom: 25px;
+}
+
+input[type="radio"] {
+  display: none;
+}
+
+input[type="radio"]+label {
+  display: inline-block;
+  padding: 8px 8px;
+  border: 2px solid #067A46;
+  border-radius: 4px;
+  margin-right: 8px;
+  margin-left: 8px;
+  cursor: pointer;
+  width: 100px;
+  text-align: center;
+}
+
+input[type="radio"]:checked+label {
+  background-color: #067A46;
+  color: white;
+}
+
+@media screen and (max-width: 600px) {
+.radio-group {
+  font-size: 16px;
+}
+}
+
+
 @media screen and (max-height: 1080px) {
   .button-start-container { margin-bottom: 200px;}
 }
