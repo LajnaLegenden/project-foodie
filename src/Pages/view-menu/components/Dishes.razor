@@ -72,6 +72,11 @@
     List<string> foodContent = new List<string>();
     List<string> allergens = new List<string>();
     protected override async Task OnInitializedAsync() {
+        foreach(Allergen element in dishData.Allergens) 
+        {
+            allergens.Add(element.Name);
+        }
+
         foodContent.Add("Nötfärs");
         foodContent.Add("Gul lök");
         foodContent.Add("Vitlök");
@@ -80,10 +85,6 @@
         foodContent.Add("Svartpeppar");
         foodContent.Add("Potatis");
         foodContent.Add("Smör");
-
-        allergens.Add("Stark");
-        allergens.Add("Gluttenfritt");
-        allergens.Add("Mjölkfri");
     }
 
     [Parameter]
