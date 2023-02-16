@@ -5,17 +5,58 @@
 @using project_foodie.Model;
 @using project_foodie.Repository;
 
+<div class="overview-container">
+    <h1>Översikt över dina val</h1>
+    <p>Beställningsdag: 2023-01-23</p>
+    <p>Leverans: 2023-02-01</p>
 
-@foreach (var dish in Dishes)
-{
-    <h2>@dish.Name</h2>
-    <p>@dish.description</p>
-    <p>@dish.Price</p>
-}
+    <table class="overview-table">
+        <tr>
+            <th>Veckodag</th>
+            <th>Lunch</th>
+            <th>Lunch pris</th>
+            <th>Middag</th>
+            <th>Middag pris</th>
+            <th>Totalt</th>
+            <th></th>
+        </tr>
+        @foreach (var dish in Dishes)
+        {
+            TotalPrice += dish.Price;
+            <tr>
+                <td data-label="Veckodag">Måndag</td>
+                <td data-label="Lunch">
+                    <ul>
+                        <li>
+                            @dish.Name &nbsp;&nbsp;<b>x1</b>
+                        </li>
+                    </ul>
+                </td>
+                <td data-label="Pris">@dish.Price</td>
+                <td data-label="Middag">
+                    <ul>
+                        <li>
+                            Köttbullar med potatis &nbsp;&nbsp;<b>x1</b>
+                        </li>
+                        <li>
+                            Skaldjur med pasta &nbsp;&nbsp;<b>x2</b>
+                        </li>
+                    </ul>
+                </td>
+                <td data-label="Pris">160kr</td>
+                <td data-label="Totalt">260kr</td>
+                <td><button class="change-dish-button">Ändra val</button></td>
+            </tr>
+        }
+        <h2 class="total-all-price">Total: @TotalPrice</h2>
+    </table>
+</div>
 
 @code {
     [Parameter]
     public Menu menu { get; set; }
+
+    public int TotalPrice { get; set; }
 
     public List<Dish> Dishes { get; set; }
 
