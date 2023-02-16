@@ -18,7 +18,7 @@
         <div class="card-container">
             @foreach (Dish dish in dayMenu.dishes)
             {
-                <Dishes dayMenu=@dayMenu dishData=@dish wantFood=@boxChecked />
+                <Dishes dayMenu=@dayMenu dishData=@dish wantFood=@boxChecked quantityContainer=@quantityContClass/>
             }
         </div>
     </div>
@@ -36,6 +36,7 @@
     string currentCategory = "all";
     private string interactable = "clickable";
     private bool boxChecked = false;
+    private string quantityContClass = "food-card-btn-container";
 
     void toggleClass(int type)
     {
@@ -59,11 +60,13 @@
         {
             interactable = "unclickable";
             boxChecked = true;
+            quantityContClass = "food-card-btn-container-no-food";
         }
         else 
         {
             interactable = "clickable";
             boxChecked = false;
+            quantityContClass = "food-card-btn-container";
         }
     }
 }

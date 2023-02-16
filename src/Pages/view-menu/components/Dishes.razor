@@ -25,6 +25,7 @@
                 <li><span>@element.Name</span></li>
             }
         </div>
+        <div class="@quantityContainer">
             <div class="btn-add-container">
                 <button class="food-card-btn-decrement" @onclick="((e) => modifyCount(-1))"><span>-</span></button>
                 <input type="text" class="text-add-placeholder" count="@count" placeholder="@count st" readonly="readonly" />
@@ -57,6 +58,8 @@
     /*----------------No food--------------*/
     [Parameter]
     public bool wantFood {get; set;}
+    [Parameter]
+    public string quantityContainer {get; set;}
     protected override void OnParametersSet()
     {
         if (wantFood)
