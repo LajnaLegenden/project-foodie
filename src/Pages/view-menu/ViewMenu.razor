@@ -24,7 +24,7 @@ else
         <h1 class=@dayString>@dateString()</h1>
     </div>
         <div class="menu-container">
-            @foreach (var dayMenu in getSortedDayMenus())
+            @foreach (var dayMenu in ViewMenu.getSortedDayMenus(menu))
                 {
 
                         <div class="@(showSelected(dayMenu.Index) ? "shown" : "hidden")">
@@ -87,7 +87,7 @@ else
     }
 
     string activeWeekday() {
-        if(selectedIndex == -1 || selectedIndex >= getSortedDayMenus().Count) {
+        if(selectedIndex == -1 || selectedIndex >= ViewMenu.getSortedDayMenus(_menu).Count) {
             return "";
         }
         return convertToWeekday(ViewMenu.getSortedDayMenus(_menu)[selectedIndex].DayMenu.date);
@@ -97,7 +97,7 @@ else
         if(selectedIndex == -1 || selectedIndex >= getSortedDayMenus().Count) {
             return "";
         }
-        return dateFormat(getSortedDayMenus(_menu)[selectedIndex].DayMenu.date);
+        return dateFormat(ViewMenu.getSortedDayMenus(_menu)[selectedIndex].DayMenu.date);
     }
 
 bool showSelected(int  i) {
