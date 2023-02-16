@@ -29,7 +29,10 @@ h2 {
 }
 
 .skip-container label {
-    margin: 7px 0px 0px 10px;
+    font-size: 23px;
+    margin: 3px 0px 0px 10px;
+    font-weight: bold;
+    color: #067A46;
 }
 
 .skip-checkbox {

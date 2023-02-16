@@ -1,12 +1,16 @@
 @using project_foodie.Data
 @using project_foodie.Pages.view_menu.components
+@using project_foodie.Model;
 
-<h1>Lägg en mat beställning</h1>
-<div class="border-container">
-    <h1>Veckomeny 34</h1>
-    <p>Välj max 1 rätt per måltid genom att trycka på “Lägg till”-knappen</p>
-    <p>Om du vill läsa innehållsförteckningen på maträtten så tycker du på bilden</p>
-    <p><span>Beställ senast: 03/02/2023</span></p>
-    <p>Leverans: 09/02/2023</p>
+<div class="startContainer">
+    <h1>Vi levererar din favorit maträtt</h1>
+    <h1 class="h1-same">direkt hem till dig.</h1>
+    <p>Du beställer för <span class="green">@menuInfo.Name</span></p>
+    <p>Sista bestälningsdag för <span class="green">@menuInfo.Name</span> är <span class="red">@menuInfo.lastOrderDate.ToShortDateString()</span></p>
 </div>
 
+@code {
+    [Parameter]
+    public Menu menuInfo { get; set; }
+
+}

@@ -14,12 +14,12 @@
 else
 {
     @if(selectedIndex == -1) {
-        <ViewStart/>
+        <ViewStart menuInfo=@_menu/>
     } else {
     <div class="day-container">
         <h1 class="week-highlight">@_menu.Name</h1>
-        <h1>@activeWeekday()</h1>
-        <h1>@dateString()</h1>
+        <h1 class=@dayString>@activeWeekday()</h1>
+        <h1 class=@dayString>@dateString()</h1>
     </div>
         <div class="menu-container">
             @foreach (var dayMenu in getSortedDayMenus())
@@ -41,7 +41,9 @@ else
         </div>
     }
     @if(selectedIndex == -1) {
-        <button @onclick="nextPage" class="button-forward">Beställ här</button>
+        <div class="button-start-container">
+            <button @onclick="nextPage" class="button-start">Beställ här</button>
+        </div>
     }
 }
 
@@ -51,6 +53,7 @@ else
     private int overViewIndex;
     private Menu _menu;
     private bool loading = true;
+    private string dayString => selectedIndex == overViewIndex ? "overview-day-container" : "viewmenu-day-container";
 
     protected class DayMenuIndex
     {

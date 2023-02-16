@@ -22,7 +22,7 @@ li:not(:last-child) {
 }
 
 .overview-table tr td {
-  font-size: 18px;
+  font-size: 20px;
 }
 
 .overview-container {
@@ -73,17 +73,12 @@ button {
   font-weight: 700;
 }
 
-@media screen and (max-width: 600px) {
-
-
-  .overview-table {
-    border-radius: 0;
-    box-shadow: none;
-  }
-
+@media screen and (max-width: 970px) {
   .overview-table {
     border: 0;
-    width: 100%;
+    border-radius: 0;
+    box-shadow: none;
+    width: 60%;
   }
 
   .overview-table caption {
@@ -147,10 +142,20 @@ button {
   button {
     padding: 8px 16px;
     border-radius: 50px;
+    width: 200px;
     border: none;
     background-color: #FF5757;
     color: #fff;
     font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 970px) {
+  .overview-table {
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    width: 100%;
   }
 }
 
