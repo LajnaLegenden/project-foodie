@@ -37,6 +37,12 @@ footer {
 
 @media screen and (max-width: 600px) {
   footer {
+    justify-content: center;
+  }
+  .copyright {
+    margin: auto;
+  }
+  .policy{
     display: none;
   }
 }
