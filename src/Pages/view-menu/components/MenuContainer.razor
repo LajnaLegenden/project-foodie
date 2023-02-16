@@ -2,29 +2,30 @@
 @using project_foodie.Model;
 @using Newtonsoft.Json;
 <div class="radio-group">
-    <input type="radio" id="radio-1" name="group" @onclick="() => toggleClass(1)" />
-    <label for="radio-1">Kött</label>
-
-    <input type="radio" id="radio-2" name="group" @onclick="() => toggleClass(2)" />
-    <label for="radio-2">Fläsk</label>
-
-    <input type="radio" id="radio-3" name="group" @onclick="() => toggleClass(3)" />
-    <label for="radio-3">Kyckling</label>
-
-    <input type="radio" id="radio-4" name="group" @onclick="() => toggleClass(4)" />
-    <label for="radio-4">Vegetariskt</label>
-
-    <input type="radio" id="radio-5" name="group" @onclick="() => toggleClass(5)" />
+    <input type="radio" id="radio-5" name="group" checked @onclick="() => toggleClass(1)"/>
     <label for="radio-5">Visa Alla</label>
+
+    <input type="radio" id="radio-1" name="group" @onclick="() => toggleClass(2)" />
+    <label for="radio-1">Grundkost</label>
+
+    <input type="radio" id="radio-2" name="group" @onclick="() => toggleClass(3)" />
+    <label for="radio-2">Vegetariskt</label>
+
 </div>
 <div class="menu-container">
-    <div class="card-container">
-        <h2 class="meal-text">@dayMenu.type</h2>
-        @foreach (Dish dish in dayMenu.dishes)
-        {
-           
-           <Dishes dayMenu=@dayMenu dishData=@dish />
-        }
+    <h2 class="meal-text">@dayMenu.type</h2>
+    <div class="@interactable">
+        <div class="card-container">
+            @foreach (Dish dish in dayMenu.dishes)
+            {
+                <Dishes dayMenu=@dayMenu dishData=@dish wantFood=@boxChecked quantityContainer=@quantityContClass/>
+            }
+        </div>
+    </div>
+    
+    <div class="skip-container">
+        <input type="checkbox" class="skip-checkbox" name="skip" value="skip" @onchange="eventArgs => { CheckboxClicked(eventArgs.Value); }">
+        <label for="skip"> Jag vill avstå @(char.ToLower(dayMenu.type.ToString()[0]) + dayMenu.type.ToString().Substring(1)).</label><br>
     </div>
 </div>
 
@@ -33,28 +34,39 @@
     public DayMenu dayMenu { get; set; }
 
     string currentCategory = "all";
+    private string interactable = "clickable";
+    private bool boxChecked = false;
+    private string quantityContClass = "food-card-btn-container";
 
     void toggleClass(int type)
     {
         if (type == 1)
         {
-            currentCategory = "kött";
+            currentCategory = "all";
         }
         else if (type == 2)
-        {
-            currentCategory = "fläsk";
-        }
-        else if (type == 3)
-        {
-            currentCategory = "kyckling";
-        }
-        else if (type == 4)
         {
             currentCategory = "vegetariskt";
         }
         else
         {
-            currentCategory = "all";
+            currentCategory = "grundkost";
         };
+    }
+
+    void CheckboxClicked(object checkedValue) 
+    {
+        if ((bool)checkedValue) 
+        {
+            interactable = "unclickable";
+            boxChecked = true;
+            quantityContClass = "food-card-btn-container-no-food";
+        }
+        else 
+        {
+            interactable = "clickable";
+            boxChecked = false;
+            quantityContClass = "food-card-btn-container";
+        }
     }
 }

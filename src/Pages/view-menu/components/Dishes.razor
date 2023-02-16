@@ -21,59 +21,79 @@
             </div>
         </div>
         <div class="allergener">
-            <li>Stark</li>
-            <li>Gluttenfritt</li>
-            <li>Mjölkfri</li>
+            @foreach(Allergen element in dishData.Allergens) {
+                <li><span>@element.Name</span></li>
+            }
         </div>
-        <div class="food-card-btn-container">
-            @if (showInput)
-            {
-                <div class="btn-add-container">
-                    <button class="food-card-btn-decrement" @onclick="((e) => modifyCount(-1))"> - </button>
-                    <input type="text" class="text-add-placeholder" count="@count" placeholder="@count st"
-                        readonly="readonly" />
-                    <button class="food-card-btn-increment" @onclick="((e) => modifyCount(1))">+</button>
-                </div>
-            }
-            else
-            {
-                <button class="@ButtonClass food-card-btn" type="submit" @onclick="((e) => modifyCount(1))">Välj</button>
-            }
-
+        <div class="@quantityContainer">
+            <div class="btn-add-container">
+                <button class="food-card-btn-decrement" @onclick="((e) => modifyCount(-1))"><span>-</span></button>
+                <input type="text" class="text-add-placeholder" count="@count" placeholder="@count st" readonly="readonly" />
+                <button class="food-card-btn-increment" @onclick="((e) => modifyCount(1))"><span>+</span></button>
+            </div>
         </div>
     </div>
 </div>
 
 
-@if (PopupOpen) 
+@if (PopupOpen)
 {
-    <Contents DishName="@dishData.Name" OnClose="@PopupClose"/>
+    <Contents DishName="@dishData.Name" FoodContent="@foodContent" Allergens="@allergens" OnClose="@PopupClose"/>
 }
 
 @code {
     /*------- Popup (Modal dialog)--------*/
     public bool PopupOpen { get; set; }
 
-    private void PopupClose(bool accepted) 
+    private void PopupClose(bool accepted)
     {
         PopupOpen = false;
         StateHasChanged();
     }
-    private void OpenPopup() 
+    private void OpenPopup()
     {
         PopupOpen = true;
         StateHasChanged();
     }
+    /*----------------No food--------------*/
+    [Parameter]
+    public bool wantFood {get; set;}
+    [Parameter]
+    public string quantityContainer {get; set;}
+    protected override void OnParametersSet()
+    {
+        if (wantFood)
+        {
+            count = 1;
+            modifyCount(-1);
+        }
+    }
     /*-------------------------------------*/
+    List<string> foodContent = new List<string>();
+    List<string> allergens = new List<string>();
+    protected override async Task OnInitializedAsync() {
+        foodContent.Add("Nötfärs");
+        foodContent.Add("Gul lök");
+        foodContent.Add("Vitlök");
+        foodContent.Add("Ägg");
+        foodContent.Add("Salt");
+        foodContent.Add("Svartpeppar");
+        foodContent.Add("Potatis");
+        foodContent.Add("Smör");
+
+        allergens.Add("Stark");
+        allergens.Add("Gluttenfritt");
+        allergens.Add("Mjölkfri");
+    }
 
     [Parameter]
     public int id { get; set; }
     [Parameter]
     public Dish dishData { get; set; }
-
     [Parameter]
     public DayMenu dayMenu { get; set; }
-    private int count = 0;
+    [Parameter]
+    public int count { get; set; } = 0;
     private bool showInput = false;
     private string ButtonClass => count <= 0 ? "food-card-btn food-card-btn-add-amount" : "food-card-btn food-card-btn-add";
     private string dayString = "";
@@ -83,12 +103,12 @@
     private bool firstRender = true;
     //onAfterRenderAsync
 
-       protected override void OnAfterRender(bool firstRender)
+    protected override void OnAfterRender(bool firstRender)
     {
         if (firstRender)
         {
-        dayString = dayMenu.date.ToString("yyyy-MM-dd") + "-" + dayMenu.type + "-" + dayMenu.Id;
-        GetData();
+            dayString = dayMenu.date.ToString("yyyy-MM-dd") + "-" + dayMenu.type + "-" + dayMenu.Id;
+            GetData();
         }
     }
 
@@ -139,7 +159,6 @@
             //add dish
             obj[dayString][dishData.Id.ToString()] = count;
         }
-
         string json = JsonConvert.SerializeObject(obj);
         await localStorage.SetItemAsync("dishData", json);
         enforceCounter();
@@ -176,8 +195,6 @@
         }
         InvokeAsync(StateHasChanged);
     }
-
-
 }
 
 

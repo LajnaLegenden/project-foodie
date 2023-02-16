@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using project_foodie.Data;
 using project_foodie.Model;
 using Blazored.LocalStorage;
-
+using project_foodie.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 //Load env variables
@@ -17,10 +17,11 @@ builder.Services.AddServerSideBlazor();
 #region db
 //register db context
 builder.Services.AddDbContextFactory<DatabaseContext>();
-builder.Services.AddBlazoredLocalStorage();
 
 
 #endregion
+builder.Services.AddBlazoredLocalStorage();
+builder.Services.AddScoped<BrowserService>();
 
 var app = builder.Build();
 
@@ -38,7 +39,7 @@ app.UseRouting();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
-app.Run(); 
+app.Run();
 class Global
 {
     public static IHostEnvironment Environment { get; set; }
