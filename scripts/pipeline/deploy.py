@@ -15,8 +15,11 @@ def main():
 
     if(not u.hasOwnConfig(branch)):
         print("No config for branch " + branch)
-        container = client.containers.get(config['hostname'])
-        container.remove()
+        try:
+            container = client.containers.get(config['hostname'])
+            container.remove()
+        except docker.errors.NotFound:
+            pass
         print("Skipping deploy")
         exit(0)
 

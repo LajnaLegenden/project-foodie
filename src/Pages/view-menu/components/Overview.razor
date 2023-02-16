@@ -2,55 +2,51 @@
 @using Newtonsoft.Json;
 @using Newtonsoft.Json.Linq;
 
-<div>
+<div class="overview-container">
 <h1>Översikt över dina val</h1>
-<p>Thomas Andersson</p>
 <p>Beställningsdag: 2023-01-23</p>
+<p>Leverans: 2023-02-01</p>
 
 <table class="overview-table">
   <tr>
     <th>Veckodag</th>
-    <th>Frukost</th>
     <th>Lunch</th>
-    <th>Val</th>
-
+    <th>Lunch pris</th>
+    <th>Middag</th>
+    <th>Middag pris</th>
+    <th>Totalt</th>
+    <th></th>
   </tr>
-  <tr>
-    <td>Måndag</td>
-    <td>Klassisk Lasagne</td>
-    <td>Klassisk Chili Con Carne med ris</td>
+  @for (int i=0; i<2; i++) {
+    <tr>
+    <td data-label="Veckodag">Måndag</td>
+    <td data-label="Lunch">
+    <ul>
+        <li>
+            Klassisk Lasagne &nbsp;&nbsp;<b>x1</b>
+        </li>
+        <li>
+            Skinkstek med matvete &nbsp;&nbsp;<b>x1</b>
+        </li>
+    </ul>
+    </td>
+    <td data-label="Pris">100kr</td>
+    <td data-label="Middag">
+    <ul>
+        <li>
+            Köttbullar med potatis &nbsp;&nbsp;<b>x1</b>
+        </li>
+        <li>
+            Skaldjur med pasta &nbsp;&nbsp;<b>x2</b>
+        </li>
+    </ul>
+    </td>
+    <td data-label="Pris">160kr</td>
+    <td data-label="Totalt">260kr</td>
     <td><button class="change-dish-button">Ändra val</button></td>
   </tr>
-  <tr>
-    <td>Tisdag</td>
-    <td>Klassisk Lasagne</td>
-    <td>Klassisk Chili Con Carne med ris</td>
-    <td><button class="change-dish-button">Ändra val</button></td>
-  </tr>
-  <tr>
-    <td>IOnsdag</td>
-    <td>Klassisk Lasagne</td>
-    <td>Klassisk Chili Con Carne med ris</td>
-    <td><button class="change-dish-button">Ändra val</button></td>
-  </tr>
-  <tr>
-    <td>Torsdag</td>
-    <td>Klassisk Lasagne</td>
-    <td>Klassisk Chili Con Carne med ris</td>
-    <td><button class="change-dish-button">Ändra val</button></td>
-  </tr>
-  <tr>
-    <td>Lördag</td>
-    <td>Klassisk Lasagne</td>
-    <td>Klassisk Chili Con Carne med ris</td>
-    <td><button class="change-dish-button">Ändra val</button></td>
-  </tr>
-  <tr>
-    <td>Söndag</td>
-    <td>Klassisk Lasagne</td>
-    <td>Klassisk Chili Con Carne med ris</td>
-    <td><button class="change-dish-button">Ändra val</button></td>
-  </tr>
+  }
+  <h2 class="total-all-price">Total: 460kr</h2>
 </table>
 </div>
 @* <p>@dishName</p>

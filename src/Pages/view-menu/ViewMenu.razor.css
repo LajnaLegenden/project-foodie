@@ -43,7 +43,7 @@
     font-weight: bold;
     font-size: 32px;
     border:none;
-    width: 204px;
+    width: 297px;
     height: 74px;
     background-color: var(--btn-sucess, #067A46);
     margin-left: 10px;
@@ -51,51 +51,76 @@
     border-radius: 15px;
 }
 
-.radio-group {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    }
-    
-    input[type="radio"] {
-    display: none;
-    }
-    
-    input[type="radio"] + label {
-    display: inline-block;
-    padding: 10px 20px;
-    border: 2px solid #067A46;
-    border-radius: 4px;
-    margin-right: 20px;
-    cursor: pointer;
-    }
-    
-    input[type="radio"]:checked + label {
-    background-color: #067A46;
-    color: white;
-    }
-
-.information {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding: 16px 48px;
-    justify-content: space-around;
+.button-start-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 300px;
 }
 
-.text-week {
-    text-align: left;
-    color: #067A46;
+.overview-day-container {
+  display: none;
 }
 
-.text-dat {
-    text-align: center;
-}
-
-.shown {
-    display: block;
+.button-start {
+    font-weight: bold;
+    font-size: 32px;
+    border:none;
+    width: 297px;
+    height: 74px;
+    background-color: var(--btn-sucess, #067A46);
+    margin-left: 10px;
+    color: var(--btn-secondary-text-color, #000000);
+    border-radius: 15px;
 }
 
 .hidden {
     display: none;
+}
+
+.show {
+    display: block;
+}
+
+@media screen and (max-height: 1080px) {
+  .button-start-container { margin-bottom: 200px;}
+}
+
+@media screen and (max-width: 694px) {
+  .button-start-container { margin-bottom: 200px;}
+}
+
+@media screen and (max-width: 600px) {
+
+  .day-container {
+    /* flex-direction: column; */
+    flex-wrap: wrap;
+    gap: 0;
+    align-items: center;
+  }
+
+  .day-container h1 {
+    font-size: 24px;
+    margin: 4px;
+  }
+
+  .week-highlight{
+    width: 100%;
+    text-align: center;
+  }
+
+  .button-forward {
+    font-size: 18px;
+    width: 50%;
+  }
+
+  .button-back {
+    font-size: 18px;
+    width: 50%;
+  }
+
+  .button-container {
+    margin: 0;
+    margin-bottom: 20px;
+}
+
 }

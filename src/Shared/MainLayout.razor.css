@@ -5,6 +5,10 @@
     height: 100%;
 }
 
+body {
+  height: 100%;
+}
+
 main {
     flex: 1;
 }
@@ -29,4 +33,16 @@ footer {
     display: flex;
     gap: 40px;
     margin-right: 40px;
+}
+
+@media screen and (max-width: 600px) {
+  footer {
+    justify-content: center;
+  }
+  .copyright {
+    margin: auto;
+  }
+  .policy{
+    display: none;
+  }
 }
