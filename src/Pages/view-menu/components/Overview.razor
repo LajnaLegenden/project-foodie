@@ -3,9 +3,9 @@
 @using Newtonsoft.Json.Linq;
 @using project_foodie.Model
 
-<h1>Översikt över dina val</h1>
+@* <h1>Översikt över dina val</h1>
 <p>Thomas Andersson</p>
-<p>Beställningsdag: 2023-01-23</p>
+<p>Beställningsdag: 2023-01-23</p> *@
 
 @foreach (var dish in menu.dayMenus.First().dishes)
 {
@@ -13,14 +13,11 @@
 }
 
 
-@code {
-    private string jsonString;
-    private string DishName;
-    private int DishCount;
-    private int DishID;
-    private string DishMenuDate;
-    private string DishDescription;
+<p>@menu.dayMenus.First().date</p>
 
+
+
+@code {
     [Parameter]
     public Menu menu { get; set; }
 
@@ -30,20 +27,23 @@
     }
     private async Task GetData()
     {
-        var localStorageCount = await localStorage.GetItemAsync<string>("dishData");
-        //parse localStorageCount into json format
-        jsonString = JsonConvert.SerializeObject(localStorageCount);
-        // loop over day menu
+        var localStorageData = await localStorage.GetItemAsync<string>("dishData");
 
-        foreach (var dish in menu.dayMenus.First().dishes)
+
+        var localStorageObj = JObject.Parse(localStorageData);
+        Console.WriteLine(localStorageObj);
+
+        foreach (var keyValue in localStorageObj)
         {
-            foreach (var item in dish.GetType().GetProperties())
+
+            Console.WriteLine("\"Date\" " + keyValue.Key);
+
+            foreach (var idCount in (JObject)keyValue.Value)
             {
-                Console.WriteLine("{0} = {1}", item.Name, item.GetValue(dish));
+                Console.WriteLine("\"ID\" " + idCount.Key);
+                Console.WriteLine("\"Count\" " + idCount.Value);
             }
         }
-
-        //print
     }
 
 }
