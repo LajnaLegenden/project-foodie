@@ -74,3 +74,7 @@ input[type="radio"]:checked+label {
     font-size: 16px;
   }
 }
+
+.unclickable {
+    pointer-events: none;
+}

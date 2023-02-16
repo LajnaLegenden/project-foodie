@@ -14,14 +14,17 @@
 </div>
 <div class="menu-container">
     <h2 class="meal-text">@dayMenu.type</h2>
-    <div class="card-container">
-        @foreach (Dish dish in dayMenu.dishes)
-        {
-           <Dishes dayMenu=@dayMenu dishData=@dish />
-        }
+    <div class="@interactable">
+        <div class="card-container">
+            @foreach (Dish dish in dayMenu.dishes)
+            {
+                <Dishes dayMenu=@dayMenu dishData=@dish wantFood=@boxChecked quantityContainer=@quantityContClass/>
+            }
+        </div>
     </div>
+    
     <div class="skip-container">
-        <input type="checkbox" class="skip-checkbox" name="skip" value="skip">
+        <input type="checkbox" class="skip-checkbox" name="skip" value="skip" @onchange="eventArgs => { CheckboxClicked(eventArgs.Value); }">
         <label for="skip"> Jag vill avstå lunch.</label><br>
     </div>
 </div>
@@ -31,6 +34,9 @@
     public DayMenu dayMenu { get; set; }
 
     string currentCategory = "all";
+    private string interactable = "clickable";
+    private bool boxChecked = false;
+    private string quantityContClass = "food-card-btn-container";
 
     void toggleClass(int type)
     {
@@ -46,5 +52,21 @@
         {
             currentCategory = "grundkost";
         };
+    }
+
+    void CheckboxClicked(object checkedValue) 
+    {
+        if ((bool)checkedValue) 
+        {
+            interactable = "unclickable";
+            boxChecked = true;
+            quantityContClass = "food-card-btn-container-no-food";
+        }
+        else 
+        {
+            interactable = "clickable";
+            boxChecked = false;
+            quantityContClass = "food-card-btn-container";
+        }
     }
 }
