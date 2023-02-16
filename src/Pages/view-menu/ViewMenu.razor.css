@@ -51,12 +51,42 @@
     border-radius: 15px;
 }
 
+.button-start-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 300px;
+}
+
+.overview-day-container {
+  display: none;
+}
+
+.button-start {
+    font-weight: bold;
+    font-size: 32px;
+    border:none;
+    width: 297px;
+    height: 74px;
+    background-color: var(--btn-sucess, #067A46);
+    margin-left: 10px;
+    color: var(--btn-secondary-text-color, #000000);
+    border-radius: 15px;
+}
+
 .hidden {
     display: none;
 }
 
 .show {
     display: block;
+}
+
+@media screen and (max-height: 1080px) {
+  .button-start-container { margin-bottom: 200px;}
+}
+
+@media screen and (max-width: 694px) {
+  .button-start-container { margin-bottom: 200px;}
 }
 
 @media screen and (max-width: 600px) {
