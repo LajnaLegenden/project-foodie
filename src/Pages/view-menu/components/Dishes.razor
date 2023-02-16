@@ -73,38 +73,23 @@
     List<string> foodContent = new List<string>();
     List<string> allergens = new List<string>();
     private ICollection<Ingredient> ingredients;
-    private ICollection<Allergen> alle;
+
     protected override async Task OnInitializedAsync() {
         using (var db = new DatabaseContext())
         {
             DishRepository dr = new DishRepository(db);
             ingredients = await dr.getDishIngredients(dishData.Id);
-            alle = await dr.getDishAllergens(dishData.Id);
         } 
 
-        /*foreach(Allergen element in dishData.Allergens) 
+        foreach(Allergen element in dishData.Allergens) 
         {
             allergens.Add(element.Name);
-        }*/
-
-        foreach (Allergen element in alle) 
-        {
-           allergens.Add(element.Name);
         }
 
         foreach (Ingredient element in ingredients) 
         {
            foodContent.Add(element.Name);
         }
-
-        /*foodContent.Add("Nötfärs");
-        foodContent.Add("Gul lök");
-        foodContent.Add("Vitlök");
-        foodContent.Add("Ägg");
-        foodContent.Add("Salt");
-        foodContent.Add("Svartpeppar");
-        foodContent.Add("Potatis");
-        foodContent.Add("Smör");*/
     }
 
     [Parameter]
