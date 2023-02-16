@@ -1,66 +1,55 @@
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
+
 @using Newtonsoft.Json;
 @using Newtonsoft.Json.Linq;
-@using project_foodie.Model
+@using project_foodie.Model;
 @using project_foodie.Repository;
 
-<h1>@DishName</h1>
-<h1>@DishPrice</h1>
-<h1>@DishDescription</h1>
+
+@foreach (var dish in Dishes)
+{
+    <h2>@dish.Name</h2>
+    <p>@dish.description</p>
+    <p>@dish.Price</p>
+}
 
 @code {
-
-    public string DishName { get; set; }
-
-    public string DishDescription { get; set; }
-
-    public int DishPrice { get; set; }
-    public int id;
-
     [Parameter]
     public Menu menu { get; set; }
 
+    public List<Dish> Dishes { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
-        await GetData();
+        await LoadData();
     }
 
-    private async Task GetData()
+    private async Task LoadData()
     {
-        var localStorageData = await localStorage.GetItemAsync<string>("dishData");
+        Dishes = new List<Dish>();
 
+        var localStorageData = await localStorage.GetItemAsync<string>("dishData");
         var localStorageObj = JObject.Parse(localStorageData);
 
         foreach (var keyValue in localStorageObj)
         {
-
             foreach (var idCount in (JObject)keyValue.Value)
             {
-
                 if (int.TryParse(idCount.Key, out int id) && await GetById(id) is Dish dish)
                 {
-                    Console.WriteLine("---------------------");
-                    Console.WriteLine("DishName: " + dish.Name);
-                    Console.WriteLine("DishDescription: " + dish.description);
-                    Console.WriteLine("DishId: " + dish.Id);
-                    Console.WriteLine("DishPrice: " + dish.Price);
-                    Console.WriteLine("---------------------");
+                    Dishes.Add(dish);
                 }
             }
         }
     }
+
     private async Task<Dish> GetById(int id)
     {
         using (var db = new DatabaseContext())
         {
             DishRepository dr = new DishRepository(db);
             Dish dish = await dr.GetByIdAsync(id);
-
-            DishName = dish.Name;
-            DishDescription = dish.description;
-            DishPrice = dish.Price;
             return dish;
         }
     }
 }
-
