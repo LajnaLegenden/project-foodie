@@ -19,7 +19,7 @@
             <th>Totalt</th>
             <th></th>
         </tr>
-         @foreach (Row r in data)
+        @foreach (Row r in data)
         {
             <tr>
                 <td data-label="Veckodag">@convertToWeekday(r.dm.date)</td>
@@ -27,33 +27,35 @@
                     <ul>
                         @foreach (var item in r.dishCount)
                         {
-                            @if(item.dm.type == OrderType.Lunch){
+                            @if (item.dm.type == OrderType.Lunch)
+                            {
 
-                        <li>
-                            @getDishFromDmById(item.dishId, item.dm).Name x @item.Count
-                        </li>
+                                <li>
+                                    @getDishFromDmById(item.dishId, item.dm).Name x @item.Count
+                                </li>
                             }
                         }
                     </ul>
                 </td>
-                <td data-label="Pris">@r.lunchPrince:-</td>
+                <td data-label="Pris">@r.LunchPrice:-</td>
                 <td data-label="Middag">
                     <ul>
                         @foreach (var item in r.dishCount)
                         {
-                            @if(item.dm.type == OrderType.Dinner){
-                        <li>
-                               @getDishFromDmById(item.dishId, item.dm).Name x @item.Count
-                        </li>
+                            @if (item.dm.type == OrderType.Dinner)
+                            {
+                                <li>
+                                    @getDishFromDmById(item.dishId, item.dm).Name x @item.Count
+                                </li>
                             }
                         }
                     </ul>
                 </td>
-                <td data-label="Pris">@r.dinnerPrince:-</td>
-                <td data-label="Totalt">@(r.lunchPrince + r.dinnerPrince)</td>
+                <td data-label="Pris">@r.DinnerPrice:-</td>
+                <td data-label="Totalt">@(r.LunchPrice + r.DinnerPrice)</td>
                 <td><button class="change-dish-button">Ändra val</button></td>
             </tr>
-        } 
+        }
         <h2 class="total-all-price">Total: @getTotalPrice():- </h2>
     </table>
 </div>
@@ -68,29 +70,31 @@
 
     public List<Dish> Dishes { get; set; }
 
-        private List<Row> data;
+    private List<Row> data;
 
-        public class Row {
-            public DayMenu dm;
-            public (int Count, int dishId, DayMenu dm)[] dishCount;
-            public int lunchPrince;
-            public int dinnerPrince;
-        }
+    public class Row
+    {
+        public DayMenu dm;
+        public (int Count, int dishId, DayMenu dm)[] dishCount;
+        public int LunchPrice;
+        public int DinnerPrice;
+    }
 
     protected override async Task OnInitializedAsync()
     {
         await LoadData();
     }
-    private int getTotalPrice(){
-        int total = 0;
+    private int getTotalPrice()
+    {
+        int Total = 0;
         foreach (Row r in data)
         {
-            total += r.lunchPrince + r.dinnerPrince;
+            Total += r.LunchPrice + r.DinnerPrice;
         }
-        return total;
-        
+        return Total;
+
     }
-private string convertToWeekday(DateTime date)
+    private string convertToWeekday(DateTime date)
     {
         string weekday = "";
 
@@ -100,10 +104,11 @@ private string convertToWeekday(DateTime date)
         return weekday;
     }
 
-    private Dish getDishFromDmById(int id, DayMenu dm){
-        foreach(Dish d in dm.dishes)
+    private Dish getDishFromDmById(int id, DayMenu dm)
+    {
+        foreach (Dish d in dm.dishes)
         {
-            if(d.Id == id)
+            if (d.Id == id)
                 return d;
         }
         return null;
@@ -116,7 +121,7 @@ private string convertToWeekday(DateTime date)
 
         var localStorageData = await localStorage.GetItemAsync<string>("dishData");
         var localStorageObj = JObject.Parse(localStorageData);
-        foreach(DayMenu dm in menu.dayMenus)
+        foreach (DayMenu dm in menu.dayMenus)
         {
             string dayString = dm.date.ToString("yyyy-MM-dd") + "-" + dm.type + "-" + dm.Id;
             if (localStorageObj[dayString] != null)
@@ -125,73 +130,62 @@ private string convertToWeekday(DateTime date)
                 {
                     int dishId = Int32.Parse(item.Name);
                     int count = (int)item.Value;
-                    if(count == 0)
+                    if (count == 0)
                         continue;
-                
+
                     foreach (Row r in data)
                     {
                         if (r.dm.date == dm.date)
                         {
-                                r.dishCount.Append((count, dishId, dm));
-                            }
+                            r.dishCount.Append((count, dishId, dm));
+                        }
                     }
                     data.Add(new Row { dm = dm, dishCount = new (int Count, int dishId, DayMenu dm)[] { (count, dishId, dm) } });
 
                 }
-               
+
             }
-            }
-
-
-            List<Row> data2 = new List<Row>();
-
-            foreach (Row r in data)
-            {
-                //loop over data2
-                bool found = false;
-                foreach (Row r2 in data2)
-                {
-                    if (r2.dm.date == r.dm.date)
-                    {
-                        found = true;
-                        r2.dishCount = r2.dishCount.Concat(r.dishCount).ToArray();
-                    }
-                }
-                if (!found)
-                {
-                    data2.Add(r);
-                }
-            }
-
-            //calculate lunch and dinner price
-
-            foreach (Row r in data2)
-            {
-                foreach (var item in r.dishCount)
-                {
-                    if (item.dm.type == OrderType.Lunch)
-                    {
-                        r.lunchPrince += getDishFromDmById(item.dishId, item.dm).Price * item.Count;
-                    }
-                    else
-                    {
-                        r.dinnerPrince += getDishFromDmById(item.dishId, item.dm).Price * item.Count;
-                    }
-                }
-            }
-
-            data = data2;
         }
 
 
+        List<Row> data2 = new List<Row>();
 
-    private async Task<Dish> GetById(int id)
-    {
-        using (var db = new DatabaseContext())
+        foreach (Row r in data)
         {
-            DishRepository dr = new DishRepository(db);
-            Dish dish = await dr.GetByIdAsync(id);
-            return dish;
+            //loop over data2
+            bool found = false;
+            foreach (Row r2 in data2)
+            {
+                if (r2.dm.date == r.dm.date)
+                {
+                    found = true;
+                    r2.dishCount = r2.dishCount.Concat(r.dishCount).ToArray();
+                }
+            }
+            if (!found)
+            {
+                data2.Add(r);
+            }
         }
+
+        //calculate lunch and dinner price
+
+        foreach (Row r in data2)
+        {
+            foreach (var item in r.dishCount)
+            {
+                if (item.dm.type == OrderType.Lunch)
+                {
+                    r.LunchPrice += getDishFromDmById(item.dishId, item.dm).Price * item.Count;
+                }
+                else
+                {
+                    r.DinnerPrice += getDishFromDmById(item.dishId, item.dm).Price * item.Count;
+                }
+            }
+        }
+
+        data = data2;
     }
+
 }
