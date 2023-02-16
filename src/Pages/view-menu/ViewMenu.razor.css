@@ -43,7 +43,7 @@
     font-weight: bold;
     font-size: 32px;
     border:none;
-    width: 204px;
+    width: 297px;
     height: 74px;
     background-color: var(--btn-sucess, #067A46);
     margin-left: 10px;
@@ -57,4 +57,40 @@
 
 .show {
     display: block;
+}
+
+@media screen and (max-width: 600px) {
+
+  .day-container {
+    /* flex-direction: column; */
+    flex-wrap: wrap;
+    gap: 0;
+    align-items: center;
+  }
+
+  .day-container h1 {
+    font-size: 24px;
+    margin: 4px;
+  }
+
+  .week-highlight{
+    width: 100%;
+    text-align: center;
+  }
+
+  .button-forward {
+    font-size: 18px;
+    width: 50%;
+  }
+
+  .button-back {
+    font-size: 18px;
+    width: 50%;
+  }
+
+  .button-container {
+    margin: 0;
+    margin-bottom: 20px;
+}
+
 }
