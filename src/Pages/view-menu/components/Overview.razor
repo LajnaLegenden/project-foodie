@@ -13,7 +13,8 @@
     <th>Middag</th>
     <th></th>
   </tr>
-  <tr>
+  @for (int i=0; i<2; i++) {
+    <tr>
     <td data-label="Veckodag">Måndag</td>
     <td data-label="Lunch">
     <ul>
@@ -37,30 +38,7 @@
     </td>
     <td><button class="change-dish-button">Ändra val</button></td>
   </tr>
-  <tr>
-    <td data-label="Veckodag">Måndag</td>
-    <td data-label="Lunch">
-    <ul>
-        <li>
-            Klassisk Lasagne &nbsp;&nbsp;<b>x1</b>
-        </li>
-        <li>
-            Klassisk Lasagne &nbsp;&nbsp;<b>x1</b>
-        </li>
-    </ul>
-    </td>
-    <td data-label="Middag">
-    <ul>
-        <li>
-            Klassisk Lasagne &nbsp;&nbsp;<b>x1</b>
-        </li>
-        <li>
-            Klassisk Lasagne &nbsp;&nbsp;<b>x1</b>
-        </li>
-    </ul>
-    </td>
-    <td><button class="change-dish-button">Ändra val</button></td>
-  </tr>
+  }
 </table>
 </div>
 @* <p>@dishName</p>
