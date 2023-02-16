@@ -28,7 +28,7 @@
                 <td data-label="Lunch">
                     <ul>
                         <li>
-                            @dish.Name &nbsp;&nbsp;<b>x1</b>
+                            @dish.Name &nbsp;&nbsp;<b>@CurrentAmount</b>
                         </li>
                     </ul>
                 </td>
@@ -56,6 +56,8 @@
     [Parameter]
     public Menu menu { get; set; }
 
+    public int CurrentAmount { get; set; }
+
     public int TotalPrice { get; set; }
 
     public List<Dish> Dishes { get; set; }
@@ -82,6 +84,7 @@
                 {
                     if (idCount.Value.Value<int>() > 0)
                     {
+                        Console.WriteLine(keyValue);
                         Dishes.Add(dish);
                     }
                 }
