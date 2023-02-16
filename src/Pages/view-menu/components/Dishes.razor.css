@@ -79,6 +79,23 @@
     justify-content: center;
 }
 
+.food-card-btn-container-no-food {
+    display: flex;
+    justify-content: center;
+}
+
+.food-card-btn-container-no-food .btn-add-container {
+    background: rgba(94, 99, 97, 0.23);
+}
+
+.food-card-btn-container-no-food .food-card-btn-decrement {
+    background: #494949;
+}
+
+.food-card-btn-container-no-food .food-card-btn-increment {
+    background: #494949;
+}
+
 .food-card-btn {
     margin: 8px;
     width: 75%;
