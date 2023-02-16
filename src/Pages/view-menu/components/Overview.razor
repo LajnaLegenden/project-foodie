@@ -5,13 +5,13 @@
 @using project_foodie.Repository;
 
 <h1>@DishName</h1>
+<h1>@DishPrice</h1>
 
 @code {
 
     public string DishName { get; set; }
 
-    public JObject LocalStorageObj { get; private set; }
-
+    public int DishPrice { get; set; }
     public int id;
 
     [Parameter]
@@ -27,7 +27,6 @@
         var localStorageData = await localStorage.GetItemAsync<string>("dishData");
 
         var localStorageObj = JObject.Parse(localStorageData);
-        LocalStorageObj = JObject.Parse(localStorageData);
 
         foreach (var keyValue in localStorageObj)
         {
@@ -38,11 +37,12 @@
                 if (int.TryParse(idCount.Key, out int id) && await GetById(id) is Dish dish)
                 {
                     Console.WriteLine("DishName: " + dish.Name);
+                    Console.WriteLine("DishId: " + dish.Id);
+                    Console.WriteLine("DishPrice: " + dish.Price);
                 }
             }
         }
     }
-
     private async Task<Dish> GetById(int id)
     {
         using (var db = new DatabaseContext())
@@ -51,7 +51,9 @@
             Dish dish = await dr.GetByIdAsync(id);
 
             DishName = dish.Name;
+            DishPrice = dish.Price;
             return dish;
         }
     }
 }
+
