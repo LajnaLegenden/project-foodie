@@ -5,9 +5,9 @@ h1 {
 }
 
 p {
-  text-align: center;
   font-size: var(--p-font-default, 16px);
   font-weight: bold;
+  margin: 10px;
 }
 
 ul {
@@ -73,7 +73,11 @@ button {
   font-weight: 700;
 }
 
-@media screen and (max-width: 970px) {
+.total-all-price {
+  text-align: right;
+}
+
+@media screen and (max-width: 1500px) {
   .overview-table {
     border: 0;
     border-radius: 0;
@@ -158,4 +162,3 @@ button {
     width: 100%;
   }
 }
-

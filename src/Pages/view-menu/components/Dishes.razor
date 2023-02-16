@@ -146,7 +146,6 @@
             //add dish
             obj[dayString][dishData.Id.ToString()] = count;
         }
-
         string json = JsonConvert.SerializeObject(obj);
         await localStorage.SetItemAsync("dishData", json);
         enforceCounter();
@@ -184,13 +183,7 @@
         InvokeAsync(StateHasChanged);
     }
 
-    protected override void OnParametersSet()
-    {
-        if (count == 1)
-        {
-            modifyCount(-1);
-        }
-    }
+
 }
 
 

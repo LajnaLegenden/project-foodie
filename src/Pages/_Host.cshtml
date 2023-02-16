@@ -30,7 +30,40 @@
         <a href="" class="reload">Reload</a>
         <a class="dismiss">🗙</a>
     </div>
-
+    <script type="text/javascript">
+                state='desktop'
+        window.blazorOnLoad = function(dotNetHelper) {
+                window.addEventListener('resize', () => {
+                    if(window.innerWidth < 768){
+                        if(state != 'mobile'){
+                            state = 'mobile';
+                            dotNetHelper.invokeMethodAsync('setViewPort', 'mobile');
+                        }
+                        return 'mobile';
+                    } else if(window.innerWidth < 1024){
+                        if(state != 'tablet'){
+                            dotNetHelper.invokeMethodAsync('setViewPort', 'tablet');
+                            state = 'tablet';
+                        }
+                        return 'tablet';
+                    } else {
+                        if(state != 'desktop'){
+                            dotNetHelper.invokeMethodAsync('setViewPort', 'desktop');
+                            state = 'desktop';
+                        }
+                        return 'desktop';
+                    }
+                });
+        };
+        function scrollToTop() {
+            setTimeout(function() {
+                window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+                });
+            }, 350);
+        }
+    </script>
     <script src="_framework/blazor.server.js"></script>
 </body>
 </html>
