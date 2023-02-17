@@ -24,6 +24,8 @@
     public bool isDay { get; set; }
     [Parameter]
     public TimelineState state { get; set; }
+    [Parameter]
+    public string size { get; set; }
     //print the menu
     protected override void OnInitialized()
     {
@@ -37,9 +39,18 @@
     private string convertToWeekday(DateTime date)
     {
         string weekday = "";
-
-        weekday = date.ToString("ddd", new System.Globalization.CultureInfo("sv-SE"));
-        weekday = char.ToUpper(weekday[0]) + weekday.Substring(1);
+        if(size == "desktop"){
+            weekday = date.ToString("dddd", new System.Globalization.CultureInfo("sv-SE"));
+            weekday = char.ToUpper(weekday[0]) + weekday.Substring(1);
+        }
+        else if(size == "mobile"){
+            weekday = date.ToString("dddd", new System.Globalization.CultureInfo("sv-SE"));
+            weekday = char.ToUpper(weekday[0]) + weekday.Substring(1);
+        }
+        else{
+            weekday = date.ToString("ddd", new System.Globalization.CultureInfo("sv-SE"));
+            weekday = char.ToUpper(weekday[0]) + weekday.Substring(1);
+        }
 
         return weekday;
     }

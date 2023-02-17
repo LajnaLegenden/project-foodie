@@ -55,3 +55,9 @@
 .type.passed {
 opacity: 0.3;
 }
+
+.timeline-item.active {
+    color: white;
+    font-weight: bold;
+    background: #067A46;
+}
