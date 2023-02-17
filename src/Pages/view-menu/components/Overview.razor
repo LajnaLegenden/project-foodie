@@ -42,7 +42,7 @@
                     <ul>
                         @foreach (var item in r.dishCount)
                         {
-                            @if (item.dm.type == OrderType.Dinner)
+                            @if (item.dm.type == OrderType.Middag)
                             {
                                 <li>
                                     @getDishFromDmById(item.dishId, item.dm).Name x @item.Count

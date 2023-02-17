@@ -160,7 +160,7 @@
                 await dishRepository.AddIngredientToDishAsync(dish, rnd.Next(1, 70));
             }
             await dishRepository.AddAsync(dish);
-            await menuRepository.AddDayMenuAsync(menu, date, dish, OrderType.Dinner);
+            await menuRepository.AddDayMenuAsync(menu, date, dish, OrderType.Middag);
             Console.WriteLine("[FillDB]: Dish added to menu: " + dish.Name + "/" + menu.Name + "/" + date);
             }
         }
