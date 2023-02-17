@@ -60,7 +60,7 @@
 .timeline-line {
     border-top: 1px solid black;
     height: 100%;
-    width: 5em;
+    width: 3em;
 }
 
 .timeline-section {
@@ -97,4 +97,19 @@
     margin-top: 0.5em;
     width: 0.6em;
     margin-bottom: 0.3em;
+}
+
+.mobile-timeline {
+    display: flex;
+    justify-content: space-around;
+}
+
+.main {
+  font-size: 1.3em;
+  font-weight: 600;
+  margin-bottom: 0.2em;
+}
+
+.timeline-section.mobile {
+    width: 100%;
 }
