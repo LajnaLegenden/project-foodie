@@ -53,7 +53,6 @@ li:not(:last-child) {
 
 .overview-table:first-child {
   border-radius: 10px;
-
 }
 
 .overview-table td, .overview-table th {
@@ -75,6 +74,92 @@ button {
 
 .total-all-price {
   text-align: right;
+}
+
+@media screen and (max-width: 1500px) {
+  .overview-table {
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    width: 60%;
+  }
+
+  .overview-table caption {
+    font-size: 1.3em;
+  }
+
+  .overview-table th {
+    border: none;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+
+  .overview-table tr {
+    overflow: hidden;
+    border: 1px solid #ddd;
+    display: block;
+    margin-bottom: 1em;
+    border-radius: 10px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  }
+
+  .overview-table tr:first-child {
+    border: 0;
+    box-shadow: none;
+  }
+
+  .overview-table td {
+    border-bottom: 1px solid #ddd;
+    display: block;
+    font-size: .8em;
+    text-align: right;
+  }
+
+  .overview-table td::before {
+    /*
+    * aria-label has no advantage, it won't be read inside a .overview-table
+    content: attr(aria-label);
+    */
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  .overview-table td:last-child {
+    border-bottom: 0;
+    text-align: center;
+    vertical-align: center;
+  }
+
+  .overview-table td:first-child {
+    background-color: #067A46;
+    color: #fff;
+  }
+
+  button {
+    padding: 8px 16px;
+    border-radius: 50px;
+    width: 200px;
+    border: none;
+    background-color: #FF5757;
+    color: #fff;
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 970px) {
+  .overview-table {
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    width: 100%;
+  }
 }
 
 @media screen and (max-width: 1500px) {

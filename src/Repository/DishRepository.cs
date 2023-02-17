@@ -66,4 +66,15 @@ public class DishRepository
         dish.Ingredients.Add(ingredient);
         await _context.SaveChangesAsync();
     }
+
+    public async Task<ICollection<Ingredient>> getDishIngredients(int id)
+    {
+        return (await _context.Dishes.Include(d => d.Ingredients).FirstOrDefaultAsync(d => d.Id == id)).Ingredients;
+    }
+
+    public async Task<ICollection<Allergen>> getDishAllergens(int id)
+    {
+        return (await _context.Dishes.Include(d => d.Allergens).FirstOrDefaultAsync(d => d.Id == id)).Allergens;
+
+    }
 }

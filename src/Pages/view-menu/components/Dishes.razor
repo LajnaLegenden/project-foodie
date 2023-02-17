@@ -3,6 +3,7 @@
 @using Newtonsoft.Json;
 @using Newtonsoft.Json.Linq;
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
+@using project_foodie.Repository;
 
 
 
@@ -71,19 +72,24 @@
     /*-------------------------------------*/
     List<string> foodContent = new List<string>();
     List<string> allergens = new List<string>();
-    protected override async Task OnInitializedAsync() {
-        foodContent.Add("Nötfärs");
-        foodContent.Add("Gul lök");
-        foodContent.Add("Vitlök");
-        foodContent.Add("Ägg");
-        foodContent.Add("Salt");
-        foodContent.Add("Svartpeppar");
-        foodContent.Add("Potatis");
-        foodContent.Add("Smör");
+    private ICollection<Ingredient> ingredients;
 
-        allergens.Add("Stark");
-        allergens.Add("Gluttenfritt");
-        allergens.Add("Mjölkfri");
+    protected override async Task OnInitializedAsync() {
+        using (var db = new DatabaseContext())
+        {
+            DishRepository dr = new DishRepository(db);
+            ingredients = await dr.getDishIngredients(dishData.Id);
+        } 
+
+        foreach(Allergen element in dishData.Allergens) 
+        {
+            allergens.Add(element.Name);
+        }
+
+        foreach (Ingredient element in ingredients) 
+        {
+           foodContent.Add(element.Name);
+        }
     }
 
     [Parameter]
