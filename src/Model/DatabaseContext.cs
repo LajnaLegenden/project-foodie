@@ -16,18 +16,18 @@ public class DatabaseContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        
+
         DotNetEnv.Env.Load();
         string dbAddr = System.Environment.GetEnvironmentVariable("DBADDR");
         string dbUser = System.Environment.GetEnvironmentVariable("DBUSER");
         string dbName = System.Environment.GetEnvironmentVariable("DBNAME");
         string dbPass = System.Environment.GetEnvironmentVariable("DBPASS");
         Console.WriteLine(dbName);
-            string connectionString = $"server={dbAddr};user={dbUser};database={dbName};password={dbPass};";
-            var serverVersion = new MariaDbServerVersion(new Version(10, 6, 11));
+        string connectionString = $"server={dbAddr};user={dbUser};database={dbName};password={dbPass};";
+        var serverVersion = new MariaDbServerVersion(new Version(10, 6, 11));
 
-            optionsBuilder.UseMySql(connectionString, serverVersion).LogTo(Console.WriteLine, LogLevel.Error);
-      }
+        optionsBuilder.UseMySql(connectionString, serverVersion).LogTo(Console.WriteLine, LogLevel.Error);
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -49,7 +49,7 @@ public enum FoodType
 public enum OrderType
 {
     Lunch,
-    Dinner,
+    Middag,
     Unknown
 }
 
