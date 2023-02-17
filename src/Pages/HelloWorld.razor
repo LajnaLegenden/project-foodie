@@ -1,15 +1,25 @@
 @page "/test"
 @using project_foodie.Data
-@inject ExampleApiService ExampleApiService
-
+@using project_foodie.Model
 <h1>Test</h1>
 <p>@message</p>
 
-@code{
+@code {
 
     private string message;
 
     protected override async Task OnInitializedAsync()
     {
+        var db = new DatabaseContext();
+        Menu menu = new Menu(){
+            Name = "Test",
+            endDate = DateTime.Now,
+            startDate = DateTime.Now,
+            lastOrderDate = DateTime.Now
+        };
+
+        db.Menus.Add(menu);
+        await db.SaveChangesAsync();
+        message = "Test";
     }
 }

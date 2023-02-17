@@ -1,0 +1,207 @@
+@using project_foodie.Pages.view_menu.components;
+@using project_foodie.Model;
+@using Newtonsoft.Json;
+@using Newtonsoft.Json.Linq;
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@using project_foodie.Repository;
+
+
+
+<div class="food-card">
+    <div @onclick="() => OpenPopup()" class="food-card-img-container">
+
+    </div>
+    <div class="food-card-body">
+        <div class="food-card-upper-body">
+            <div class="food-card-food-container">
+                <p class="food-card-text">@dishData.Name</p>
+                <p class="food-card-text-extra">@dishData.description</p>
+            </div>
+            <div class="food-card-price-container">
+                <p class="food-card-price">@dishData.Price:-</p>
+            </div>
+        </div>
+        <div class="allergener">
+            @foreach(Allergen element in dishData.Allergens) {
+                <li><span>@element.Name</span></li>
+            }
+        </div>
+        <div class="@quantityContainer">
+            <div class="btn-add-container">
+                <button class="food-card-btn-decrement" @onclick="((e) => modifyCount(-1))"><span>-</span></button>
+                <input type="text" class="text-add-placeholder" count="@count" placeholder="@count st" readonly="readonly" />
+                <button class="food-card-btn-increment" @onclick="((e) => modifyCount(1))"><span>+</span></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@if (PopupOpen)
+{
+    <Contents DishName="@dishData.Name" FoodContent="@foodContent" Allergens="@allergens" OnClose="@PopupClose"/>
+}
+
+@code {
+    /*------- Popup (Modal dialog)--------*/
+    public bool PopupOpen { get; set; }
+
+    private void PopupClose(bool accepted)
+    {
+        PopupOpen = false;
+        StateHasChanged();
+    }
+    private void OpenPopup()
+    {
+        PopupOpen = true;
+        StateHasChanged();
+    }
+    /*----------------No food--------------*/
+    [Parameter]
+    public bool wantFood {get; set;}
+    [Parameter]
+    public string quantityContainer {get; set;}
+    protected override void OnParametersSet()
+    {
+        if (wantFood)
+        {
+            count = 1;
+            modifyCount(-1);
+        }
+    }
+    /*-------------------------------------*/
+    List<string> foodContent = new List<string>();
+    List<string> allergens = new List<string>();
+    private ICollection<Ingredient> ingredients;
+
+    protected override async Task OnInitializedAsync() {
+        using (var db = new DatabaseContext())
+        {
+            DishRepository dr = new DishRepository(db);
+            ingredients = await dr.getDishIngredients(dishData.Id);
+        } 
+
+        foreach(Allergen element in dishData.Allergens) 
+        {
+            allergens.Add(element.Name);
+        }
+
+        foreach (Ingredient element in ingredients) 
+        {
+           foodContent.Add(element.Name);
+        }
+    }
+
+    [Parameter]
+    public int id { get; set; }
+    [Parameter]
+    public Dish dishData { get; set; }
+    [Parameter]
+    public DayMenu dayMenu { get; set; }
+    [Parameter]
+    public int count { get; set; } = 0;
+    private bool showInput = false;
+    private string ButtonClass => count <= 0 ? "food-card-btn food-card-btn-add-amount" : "food-card-btn food-card-btn-add";
+    private string dayString = "";
+    private string jsonString;
+
+    public static int MAX_DISHES = 20;
+    private bool firstRender = true;
+    //onAfterRenderAsync
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            dayString = dayMenu.date.ToString("yyyy-MM-dd") + "-" + dayMenu.type + "-" + dayMenu.Id;
+            GetData();
+        }
+    }
+
+    private async void modifyCount(int value)
+    {
+        count += value;
+        //enforce max dishes and min dishes
+        if (count > MAX_DISHES)
+        {
+            count = MAX_DISHES;
+        }
+        else if (count < 0)
+        {
+            count = 0;
+        }
+
+        //check if key
+        var localStorageContent = await localStorage.GetItemAsync<string>("dishData");
+        if (localStorageContent == null)
+        {
+            //create key
+            await localStorage.SetItemAsync("dishData", "{}");
+            localStorageContent = "{}";
+        }
+        DateTime day = dayMenu.date;
+        string dayString = day.ToString("yyyy-MM-dd") + "-" + dayMenu.type + "-" + dayMenu.Id;
+        JObject obj = JObject.Parse(localStorageContent);
+        //save dish as array of object {dishId: 1, count: 2} with key date
+        //check if date exists
+        if (obj.ContainsKey(dayString))
+        {
+            //check if dish exists
+            if (obj[dayString][dishData.Id.ToString()] != null)
+            {
+                //update count
+                obj[dayString][dishData.Id.ToString()] = count;
+            }
+            else
+            {
+                //add dish
+                obj[dayString][dishData.Id.ToString()] = count;
+            }
+        }
+        else
+        {
+            //add date
+            obj[dayString] = new JObject();
+            //add dish
+            obj[dayString][dishData.Id.ToString()] = count;
+        }
+        string json = JsonConvert.SerializeObject(obj);
+        await localStorage.SetItemAsync("dishData", json);
+        enforceCounter();
+    }
+
+    private async Task GetData()
+    {
+        //parse json
+        var localStorageContent = await localStorage.GetItemAsync<string>("dishData");
+        if (localStorageContent != null)
+        {
+            JObject obj = JObject.Parse(localStorageContent);
+            DateTime day = dayMenu.date;
+            string dayString = day.ToString("yyyy-MM-dd") + "-" + dayMenu.type + "-" + dayMenu.Id;
+            if (obj.ContainsKey(dayString))
+            {
+                if (obj[dayString][dishData.Id.ToString()] != null)
+                {
+                    count = (int)obj[dayString][dishData.Id.ToString()];
+                    enforceCounter();
+                }
+            }
+        }
+    }
+    private void  enforceCounter()
+    {
+        if (count > 0)
+        {
+            showInput = true;
+        }
+        else
+        {
+            showInput = false;
+        }
+        InvokeAsync(StateHasChanged);
+    }
+}
+
+
+

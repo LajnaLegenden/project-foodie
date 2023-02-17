@@ -6,3 +6,8 @@ artifacts/
 .vscode/
 .dotnet/
 *.binlog
+__pycache__/
+data
+.idea
+.config
+.env

@@ -1,0 +1,48 @@
+.startContainer {
+    width: 35%;
+    text-align: center;
+    margin: auto;
+    height: 400px;
+}
+
+h1 {
+    color: #067A46;
+    font-size: 40px;
+}
+.h1-same {
+    margin-top: -20px;
+}
+
+p {
+    font-size: 30px;
+    line-height: 1.3;
+}
+
+span {
+    font-weight: bold;
+}
+
+.green {
+    color: #067A46;
+}
+
+.red {
+    color: red;
+}
+
+@media screen and (max-height: 1080px) {
+    .startContainer { height: 380px;}
+}
+
+@media screen and (max-width: 1505px) {
+    .startContainer { width: 80%;}
+}
+
+@media screen and (max-width: 694px) {
+    .startContainer {
+        width: 90%;
+        height: 280px;
+    }
+    h1 {font-size: 30px;}
+    p {font-size: 20px;}
+}

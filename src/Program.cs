@@ -1,13 +1,27 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.EntityFrameworkCore;
 using project_foodie.Data;
+using project_foodie.Model;
+using Blazored.LocalStorage;
+using project_foodie.Service;
 
 var builder = WebApplication.CreateBuilder(args);
+//Load env variables
+DotNetEnv.Env.Load();
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<ExampleApiService>();
+
+#region db
+//register db context
+builder.Services.AddDbContextFactory<DatabaseContext>();
+
+
+#endregion
+builder.Services.AddBlazoredLocalStorage();
+builder.Services.AddScoped<BrowserService>();
 
 var app = builder.Build();
 
@@ -26,3 +40,7 @@ app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
 app.Run();
+class Global
+{
+    public static IHostEnvironment Environment { get; set; }
+}

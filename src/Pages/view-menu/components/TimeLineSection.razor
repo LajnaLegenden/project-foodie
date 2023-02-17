@@ -1,0 +1,58 @@
+@using project_foodie.Pages.view_menu
+@using project_foodie.Model
+
+
+
+<div class="timeline-item @(showTypes ? "" : "hidden") @(isDay ? "day" : "type") @(state == TimelineState.Active ? "active" : state == TimelineState.Inactive ?"inactive" :"passed")">
+    @if (isDay)
+    {
+        @convertToWeekday(dm.date)
+    }
+    else
+    {
+        @dm.type
+    }
+</div>
+
+
+@code {
+    [Parameter]
+    public DayMenu dm { get; set; }
+    [Parameter]
+    public bool showTypes { get; set; }
+    [Parameter]
+    public bool isDay { get; set; }
+    [Parameter]
+    public TimelineState state { get; set; }
+    [Parameter]
+    public string size { get; set; }
+    //print the menu
+    protected override void OnInitialized()
+    {
+    }
+
+    public enum TimelineState
+    {
+        Active, Inactive, Completed
+    }
+
+    private string convertToWeekday(DateTime date)
+    {
+        string weekday = "";
+        if(size == "desktop"){
+            weekday = date.ToString("dddd", new System.Globalization.CultureInfo("sv-SE"));
+            weekday = char.ToUpper(weekday[0]) + weekday.Substring(1);
+        }
+        else if(size == "mobile"){
+            weekday = date.ToString("dddd", new System.Globalization.CultureInfo("sv-SE"));
+            weekday = char.ToUpper(weekday[0]) + weekday.Substring(1);
+        }
+        else{
+            weekday = date.ToString("ddd", new System.Globalization.CultureInfo("sv-SE"));
+            weekday = char.ToUpper(weekday[0]) + weekday.Substring(1);
+        }
+
+        return weekday;
+    }
+
+}

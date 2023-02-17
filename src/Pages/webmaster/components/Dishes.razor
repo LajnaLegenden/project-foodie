@@ -1,0 +1,60 @@
+@namespace project_foodie.Pages.Webmaster
+@using project_foodie.Model;
+@using project_foodie.Repository;
+@using Newtonsoft.Json;
+<div>
+
+    <table>
+        <caption>
+            @selectedDishId
+        </caption>
+        <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Price</th>
+            <th scope="col">IMG</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var dish in _allDishes.Select((value, i) => new { i, value }))
+        {
+            <tr @onclick="() => setDishId(dish.i)">
+                <th scope="row">@dish.value.Id</th>
+                <td>@dish.value.Name</td>
+                <td>@dish.value.Price</td>
+                <td>
+                    <img src="@dish.value.ImageUrl" alt="@dish.value.Name">
+                </td>
+            </tr>
+        }
+        </tbody>
+        <tfoot>
+        <tr>
+            <th scope="row" colspan="2">Total menus</th>
+            <td colspan="2">@_allDishes.Count</td>
+        </tr>
+        </tfoot>
+    </table>
+</div>
+
+@code {
+
+    private List<Dish> _allDishes;
+        private int selectedDishId = -1;
+
+    protected override async void OnInitialized()
+    {
+       using(var context = new DatabaseContext()){
+        DishRepository dishRepository = new DishRepository(context);
+        _allDishes = await dishRepository.GetAllAsync();
+       }
+       
+    }
+
+    void setDishId(int id)
+    {
+        selectedDishId = id;
+    }
+
+}

@@ -1,0 +1,181 @@
+@using project_foodie.Data
+@using project_foodie.Model
+@using System.Text.Json
+@using System;
+@using System.Linq;
+@using Microsoft.EntityFrameworkCore;
+@using project_foodie.Repository;
+@namespace project_foodie.Pages.Webmaster
+<h1 > Test </h1>
+<p > @message </p>
+<button @onclick = "FillDB" > Fill DB </button>
+<button @onclick = "clearDb" > Clear DB </button>
+
+@code {
+
+  private string message = "Hello, world!";
+  private Menu menu;
+
+  private void clearDb() {
+    var db = new DatabaseContext();
+    db.Database.EnsureDeleted();
+    db.Database.EnsureCreated();
+    message = "DB cleared";
+  }
+
+  private Ingredient CreateIngredient(string name) {
+    var Ingredient = new Ingredient() {
+      Name = name,
+        Allergens = new List < Allergen > ()
+    };
+
+    return Ingredient;
+  }
+
+  private string getDishName(){
+    string[] meat = {"Köttbullar", "Skinkstek", "Ryggbiff", "Skadjur", "Pizza"};
+    string[] carbs = {"potatis", "ris", "pasta", "potatisgratäng", "matvete"};
+
+    Random rnd = new Random();
+    int meatIndex = rnd.Next(0, meat.Length);
+    int carbsIndex = rnd.Next(0, carbs.Length);
+    return meat[meatIndex] + " med " + carbs[carbsIndex];
+  }
+
+  private int getPrice(){
+    Random rnd = new Random();
+    return rnd.Next(50, 100);
+  }
+
+  private async Task FillDB() {
+
+    using(var db = new DatabaseContext()) {
+      MenuRepository menuRepository = new MenuRepository(db);
+      AllergenRepository allergenRepository = new AllergenRepository(db);
+      IngredientRepository ingredientRepository = new IngredientRepository(db);
+      DishRepository dishRepository = new DishRepository(db);
+      Random rnd = new Random();
+
+      List < Allergen > allergens = new List < Allergen > () {
+        new Allergen() {
+            Name = "Baljväxter"
+          },
+          new Allergen() {
+            Name = "Laktos"
+          },
+          new Allergen() {
+            Name = "Gluten"
+          },
+          new Allergen() {
+            Name = "Nötter"
+          }
+      };
+
+     foreach(var allergen in allergens) {
+        //add allergen
+        await allergenRepository.AddAsync(allergen);
+      }
+
+      List < Menu > menus = new List < Menu > () {
+        new Menu() {
+            Name = "Vecka 8", lastOrderDate = new DateTime(2023, 2, 18), startDate = new DateTime(2023, 2, 20), endDate = new DateTime(2023, 2, 26)
+          },
+          new Menu() {
+            Name = "Vecka 9", lastOrderDate = new DateTime(2023, 2, 25), startDate = new DateTime(2023, 2, 27), endDate = new DateTime(2023, 3, 5)
+          },
+          new Menu() {
+            Name = "Vecka 10", lastOrderDate = new DateTime(2023, 3, 4), startDate = new DateTime(2023, 3, 6), endDate = new DateTime(2023, 3, 12)
+          }
+      };
+
+
+      // Create ingredients
+    for (int index = 0; index < 70; index ++){
+        Ingredient ingredient = CreateIngredient("Ingredient " + index);
+        await ingredientRepository.AddAsync(ingredient);
+        await ingredientRepository.AddAllergenToIngredientAsync(ingredient, rnd.Next(1, 5));
+    }
+
+      //loop over menus
+      foreach(var menu in menus) {
+        //add menu
+        await menuRepository.AddAsync(menu);
+        Console.WriteLine("Menu added: " + menu.Id);
+      }
+
+      //loop over menus
+      foreach(var menu in menus) {
+        //loop over dishes
+        for (int i = 0; i < 3; i ++) {
+
+            for (int index = 0; index < 7; index ++) {
+            //add dish to menu
+            DateTime date = menu.startDate.AddDays(index);
+            //Add dishes
+
+            Dish dish = new Dish() {
+                Name = getDishName(),
+                Price = getPrice(),
+                description = "Description " + index,
+                ImageUrl = "Image " + index
+            };
+            dish.Type = ((FoodType)  rnd.Next(1, 6));
+            dish.description = dish.Name;
+            dish.Ingredients = new List < Ingredient > ();
+
+            for (int j = 0; j < 2; j ++) {
+                await dishRepository.AddAllergenToDishAsync(dish, rnd.Next(1, 5));
+            }
+            for (int j = 0; j < 7; j ++) {
+                await dishRepository.AddIngredientToDishAsync(dish, rnd.Next(1, 70));
+            }
+            await dishRepository.AddAsync(dish);
+            await menuRepository.AddDayMenuAsync(menu, date, dish, OrderType.Lunch);
+            Console.WriteLine("[FillDB]: Dish added to menu: " + dish.Name + "/" + menu.Name + "/" + date);
+            }
+      }
+
+       for (int i = 0; i < 3; i ++) {
+
+            for (int index = 0; index < 7; index ++) {
+            //add dish to menu
+            @* Random rnd = new Random(); *@
+            DateTime date = menu.startDate.AddDays(index);
+            //Add dishes
+
+            Dish dish = new Dish() {
+                Name = getDishName(),
+                Price = getPrice(),
+                description = "Description " + index,
+                ImageUrl = "Image " + index
+            };
+            dish.Type = ((FoodType)  rnd.Next(1, 6));
+            dish.description = dish.Name;
+            dish.Ingredients = new List < Ingredient > ();
+
+            for (int j = 0; j < 2; j ++) {
+                await dishRepository.AddAllergenToDishAsync(dish, rnd.Next(1, 5));
+            }
+            for (int j = 0; j < 7; j ++) {
+                await dishRepository.AddIngredientToDishAsync(dish, rnd.Next(1, 70));
+            }
+            await dishRepository.AddAsync(dish);
+            await menuRepository.AddDayMenuAsync(menu, date, dish, OrderType.Middag);
+            Console.WriteLine("[FillDB]: Dish added to menu: " + dish.Name + "/" + menu.Name + "/" + date);
+            }
+        }
+      }
+    }
+
+    message = "Dishes added to menus";
+  }
+
+  async void getFirstMenu() {
+    using(var db = new DatabaseContext()) {
+      MenuRepository menuRepository = new MenuRepository(db);
+      menu = await menuRepository.GetByIdAsync(1);
+    }
+    //print menu
+    Console.WriteLine("Menu: " + menu.Name);
+  }
+}

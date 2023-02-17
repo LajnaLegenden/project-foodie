@@ -1,0 +1,6 @@
+#!/bin/bash
+dotnet tool install --global dotnet-ef
+export PATH="$PATH:/root/.dotnet/tools"
+dotnet ef database update --no-build
+cd /app/bin/release/project-foodie/
+dotnet project-foodie.dll --urls http://*:5000

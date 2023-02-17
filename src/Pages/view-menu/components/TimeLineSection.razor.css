@@ -1,0 +1,63 @@
+
+.timeline-line {
+    border-top: 1px solid black;
+    height: 100%;
+    margin-top: 0.8em;
+    width: 5em;
+}
+
+.timeline-dot-inner {
+    border-radius: 100%;
+    border: 1px solid black;
+    height: 0.6em;
+    margin-top: 0.5em;
+    width: 0.6em;
+    margin-bottom: 0.3em;
+}
+
+.timeline-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: 250ms all ease-in-out;
+    overflow: hidden;
+    width: 100%;
+    opacity: 1;
+}
+
+.hidden {
+    width: 0px;
+    opacity: 0;
+}
+
+.day {
+    font-size: 1.3em;
+    font-weight: 600;
+    margin-bottom: 0.2em;
+}
+
+.type {
+    font-size: 1.1em;
+    font-weight: 400;
+    margin-bottom: 0.2em;
+}
+
+.type.active {
+    color: white;
+    font-weight: bold;
+    background: #067A46;
+}
+.type.inactive {
+    color: grey;
+    opacity: 0.5;
+}
+.type.passed {
+opacity: 0.3;
+}
+
+.timeline-item.active {
+    color: white;
+    font-weight: bold;
+    background: #067A46;
+}
