@@ -44,12 +44,13 @@
     public int objectCount { get; set; }
     private async Task<int> GetObjectCount()
     {
-        //Get the object count from local storage and return it
+        //Only get objects from local storage if they have count > 0
         var localStorageContent = await localStorage.GetItemAsync<string>("dishData");
-        var dictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(localStorageContent);
-        Console.WriteLine(dictionary.Count);
-        objectCount = dictionary.Count;
-        return dictionary.Count;
-    }
+        var dictionary = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, int>>>(localStorageContent);
+        var filteredObjects = dictionary.Values.Where(obj => obj.Values.Any(count => count > 0));
+        var count = filteredObjects.Count();
+        objectCount = count;
 
+        return count;
+    }
 }
