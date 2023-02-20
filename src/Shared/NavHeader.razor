@@ -31,7 +31,7 @@
             <div class="nav-item">
                 <NavLink class="nav-link" href="#">
                     <button class="nav-kassan" @onclick="@GetObjectCount">
-                        Till Kassa <span class="nav-kassan-counter">@objectCount</span>
+                        Till Kassa <span class="nav-kassan-counter">@itemsCountInKassan</span>
                     </button>
                 </NavLink>
             </div>
@@ -40,16 +40,19 @@
 </div>
 
 @code {
-    [Parameter]
-    public int objectCount { get; set; }
+    // Declare a variable to store the count
+    public int itemsCountInKassan;
     private async Task<int> GetObjectCount()
     {
-        //Only get objects from local storage if they have count > 0
+        // Fetch the data from local storage
         var localStorageContent = await localStorage.GetItemAsync<string>("dishData");
+        // Deserialize the data
         var dictionary = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, int>>>(localStorageContent);
+        // Filter the data where count is greater than 0
         var filteredObjects = dictionary.Values.Where(obj => obj.Values.Any(count => count > 0));
+        // Count the data
         var count = filteredObjects.Count();
-        objectCount = count;
+        itemsCountInKassan = count;
 
         return count;
     }
