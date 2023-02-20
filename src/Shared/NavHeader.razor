@@ -1,3 +1,7 @@
+@using Newtonsoft.Json;
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@using System.Collections.Generic;
+
 <div class="header">
     <div class="logo">
         <h1>LOGO</h1>
@@ -26,11 +30,26 @@
             </div>
             <div class="nav-item">
                 <NavLink class="nav-link" href="#">
-                    <button class="nav-kassan">
-                        Till Kassa <span class="nav-kassan-counter">1</span>
+                    <button class="nav-kassan" @onclick="@GetObjectCount">
+                        Till Kassa <span class="nav-kassan-counter">@objectCount</span>
                     </button>
                 </NavLink>
             </div>
         </nav>
     </div>
 </div>
+
+@code {
+    [Parameter]
+    public int objectCount { get; set; }
+    private async Task<int> GetObjectCount()
+    {
+        //Get the object count from local storage and return it
+        var localStorageContent = await localStorage.GetItemAsync<string>("dishData");
+        var dictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(localStorageContent);
+        Console.WriteLine(dictionary.Count);
+        objectCount = dictionary.Count;
+        return dictionary.Count;
+    }
+
+}
