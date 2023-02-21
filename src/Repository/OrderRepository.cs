@@ -9,7 +9,7 @@ namespace project_foodie.Repository
             : base(databaseContext)
         {
         }
-        public async Task<IEnumerable<Order>> GetAllAsync()
+        public async Task<List<Order>> GetAllAsync()
         {
             return await FindAll()
                 .OrderBy(o => o.orderDate)

@@ -4,7 +4,7 @@ namespace project_foodie.Repository
 {
     public interface IOrderRepository : IRepositoryBase<Order>
     {
-        Task<IEnumerable<Order>> GetAllAsync();
+        Task<List<Order>> GetAllAsync();
         Task<Order> GetByIdAsync(int orderId);
         void AddOrder(Order order);
         void UpdateOrder(Order order);
