@@ -76,7 +76,7 @@
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if(!dataLoaded){
-            await LoadData();
+            data = await LocalStorage.LoadData(localStorage, menu);
             dataLoaded = true;
             StateHasChanged();
         }
