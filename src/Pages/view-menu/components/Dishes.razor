@@ -5,37 +5,37 @@
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @using project_foodie.Repository;
 
+@if (dishData.Name != "Ghost dish")
+{
+    <div class="food-card">
+        <div @onclick="() => OpenPopup()" class="food-card-img-container">
 
-
-<div class="food-card">
-    <div @onclick="() => OpenPopup()" class="food-card-img-container">
-
+        </div>
+        <div class="food-card-body">
+            <div class="food-card-upper-body">
+                <div class="food-card-food-container">
+                    <p class="food-card-text">@dishData.Name</p>
+                    <p class="food-card-text-extra">@dishData.description</p>
+                </div>
+                <div class="food-card-price-container">
+                    <p class="food-card-price">@dishData.Price:-</p>
+                </div>
+            </div>
+            <div class="allergener">
+                @foreach(Allergen element in dishData.Allergens) {
+                    <li><span>@element.Name</span></li>
+                }
+            </div>
+            <div class="@quantityContainer">
+                <div class="btn-add-container">
+                    <button class="food-card-btn-decrement" @onclick="((e) => modifyCount(-1))"><span>-</span></button>
+                    <input type="text" class="text-add-placeholder" count="@count" placeholder="@count st" readonly="readonly" />
+                    <button class="food-card-btn-increment" @onclick="((e) => modifyCount(1))"><span>+</span></button>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="food-card-body">
-        <div class="food-card-upper-body">
-            <div class="food-card-food-container">
-                <p class="food-card-text">@dishData.Name</p>
-                <p class="food-card-text-extra">@dishData.description</p>
-            </div>
-            <div class="food-card-price-container">
-                <p class="food-card-price">@dishData.Price:-</p>
-            </div>
-        </div>
-        <div class="allergener">
-            @foreach(Allergen element in dishData.Allergens) {
-                <li><span>@element.Name</span></li>
-            }
-        </div>
-        <div class="@quantityContainer">
-            <div class="btn-add-container">
-                <button class="food-card-btn-decrement" @onclick="((e) => modifyCount(-1))"><span>-</span></button>
-                <input type="text" class="text-add-placeholder" count="@count" placeholder="@count st" readonly="readonly" />
-                <button class="food-card-btn-increment" @onclick="((e) => modifyCount(1))"><span>+</span></button>
-            </div>
-        </div>
-    </div>
-</div>
-
+}
 
 @if (PopupOpen)
 {
@@ -58,15 +58,33 @@
     }
     /*----------------No food--------------*/
     string quantityContainer = "food-card-btn-container";
-    public void Clicked(List<int> ids)
+    public async void Clicked(List<int> ids)
     {
+        List<int> ghostDishId = new List<int>();
+        
         count = 0;
-        updateData(count, ids);
+        await updateData(count, ids);
+
+        if (dishData.Name == "Ghost dish") {
+            Console.WriteLine(dishData.Id);
+            ghostDishId.Add(dishData.Id);
+        }
+        await updateData(-1, ghostDishId);
+
         quantityContainer = "food-card-btn-container-no-food";
     }
-    public void Unclicked()
+    public async void Unclicked()
     {
+        List<int> ghostDishId = new List<int>();
+
         quantityContainer = "food-card-btn-container";
+        count = 0;
+
+        if (dishData.Name == "Ghost dish") {
+            Console.WriteLine(dishData.Id);
+            ghostDishId.Add(dishData.Id);
+        }
+        await updateData(count, ghostDishId);
     }
 
     /*-------------------------------------*/
@@ -118,7 +136,7 @@
         }
     }
 
-    private void modifyCount(int value)
+    private async void modifyCount(int value)
     {
         List<int> ids = new List<int>();
         ids.Add(dishData.Id);
@@ -134,7 +152,8 @@
             count = 0;
         }
         
-        updateData(count, ids);
+        await updateData(count, ids);
+        enforceCounter();
     }
 
     private async Task GetData()
@@ -169,10 +188,12 @@
         InvokeAsync(StateHasChanged);
     }
 
-    public async void updateData(int quantity, List<int> ids) 
+    public async Task updateData(int quantity, List<int> ids) 
     {
         foreach (var id in ids) 
         {
+            //Console.WriteLine(id);
+
             //check if key
             var localStorageContent = await localStorage.GetItemAsync<string>("dishData");
             if (localStorageContent == null)
@@ -209,9 +230,11 @@
                 //add dish
                 obj[dayString][id.ToString()] = quantity;
             }
+
+            Console.WriteLine(obj[dayString]);
+
             string json = JsonConvert.SerializeObject(obj);
             await localStorage.SetItemAsync("dishData", json);
-            enforceCounter();
         }
     }
 }

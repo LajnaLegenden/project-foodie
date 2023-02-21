@@ -10,7 +10,7 @@
             @foreach (Dish dish in dayMenu.dishes)
             {
                 if(dish.Type.ToString() == Category || Category == "all") {
-                  <Dishes @ref="dishCard" dayMenu=@dayMenu dishData=@dish />
+                    <Dishes @ref="dishCard" dayMenu=@dayMenu dishData=@dish />
                 }
             }
         </div>
@@ -62,7 +62,10 @@
 
             foreach (Dish dish in dayMenu.dishes)
             {
-                dishIds.Add(dish.Id);
+                if (dish.Name != "Ghost dish") 
+                {
+                    dishIds.Add(dish.Id);
+                }
             } 
 
             foreach (var reference in ComponentRefs) {
