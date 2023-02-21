@@ -228,7 +228,6 @@ bool showSelected(int  i) {
         var query = new Dictionary<string, string> { { "page", selectedIndex.ToString() } };
 
         NavManager.NavigateTo(QueryHelpers.AddQueryString(url, query));
-
         if (viewPort != "desktop") {
             await JSRuntime.InvokeVoidAsync("scrollToTop");
         }
