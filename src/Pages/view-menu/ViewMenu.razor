@@ -8,6 +8,8 @@
 @using project_foodie.Repository;
 @inject IJSRuntime JS;
 @inject IJSRuntime JSRuntime
+@using project_foodie.Service
+@inject BrowserService Service
 
 @if (loading)
 {
@@ -204,14 +206,18 @@ public static List<(DayMenu DayMenu, int Index)> getSortedDayMenus(Menu menu)
     {
         selectedIndex++;
         checkPageMax();
-        await JSRuntime.InvokeVoidAsync("scrollToTop");
+        if (viewPort != "desktop") {
+            await JSRuntime.InvokeVoidAsync("scrollToTop");
+        }
     }
 
     private async void prevPage()
     {
         selectedIndex--;
         checkPageMax();
-        await JSRuntime.InvokeVoidAsync("scrollToTop");
+        if (viewPort != "desktop") {
+            await JSRuntime.InvokeVoidAsync("scrollToTop");
+        }
     }
 
     private void checkPageMax(){
