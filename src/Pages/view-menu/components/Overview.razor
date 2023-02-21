@@ -73,14 +73,20 @@
 
     public bool dataLoaded = false;
 
-
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if(!dataLoaded){
-            data = await LocalStorage.LoadData(localStorage, menu);
+            await LoadData();
             dataLoaded = true;
             StateHasChanged();
         }
+    }
+
+    private string getModifyUrl(Row r)
+    {
+        // /order/id/page=r.index
+        string url = "/order/" + menu.Id + "?page=" + DayMenuHelper.getDayMenuIndex(menu, r.dm);
+        return url;
     }
 
     private int getTotalPrice()
@@ -112,5 +118,4 @@
         }
         return null;
     }
-
 }

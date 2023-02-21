@@ -1,15 +1,14 @@
+@page "/order/{menuId}"
 @page "/order"
-@using project_foodie.Data
 @using project_foodie.Pages.view_menu.components
+@using Microsoft.AspNetCore.WebUtilities
 @inject NavigationManager UriHelper
 @using project_foodie.Model;
-@using Newtonsoft.Json;
-@using System.Globalization;
 @using project_foodie.Repository;
+@using project_foodie.Modules;
 @inject IJSRuntime JS;
 @inject IJSRuntime JSRuntime
-@using project_foodie.Service
-@inject BrowserService Service
+@inject NavigationManager NavManager
 
 @if (loading)
 {
@@ -48,25 +47,25 @@ else
                     </EditForm>
                 </div>
             }
-            @foreach (var dayMenu in ViewMenu.getSortedDayMenus(_menu))
+            @foreach (var dayMenu in DayMenuHelper.getSortedDayMenus(_menu))
                 {
                     <div class="@(showSelected(dayMenu.Index) ? "shown" : "hidden")">
-                        <MenuContainer dayMenu=@dayMenu.DayMenu Category="@Category"/>
+                        <MenuContainer @ref="menuContainer" dayMenu=@dayMenu.DayMenu Category="@Category"/>
                     </div>
                 }
             @if(selectedIndex == overViewIndex){
-                <Overview menu="@_menu"/>
+                <Overview @ref="overview" menu="@_menu"/>
             }
 
             <div class="button-container">
-                <button @onclick="prevPage" class="button-back">@getBackButtonString()</button>
-                <button @onclick="nextPage" class="button-forward">@getNextButtonString()</button>
+                <button @onclick="() => setPage(selectedIndex -1, true)" class="button-back">@getBackButtonString()</button>
+                <button @onclick="() => setPage(selectedIndex + 1, true)" class="button-forward">@getNextButtonString()</button>
             </div>
         </div>
     }
     @if(selectedIndex == -1) {
         <div class="button-start-container">
-            <button @onclick="nextPage" class="button-start">Beställ här</button>
+            <button @onclick="() => setPage(selectedIndex +1)" class="button-start">Beställ här</button>
         </div>
     }
 }
@@ -76,8 +75,16 @@ else
     private int selectedIndex = -1;
     private int overViewIndex;
     private int confirmedViewIndex;
+    [Parameter]
+    public string menuId { get; set; }    
+    Overview overview;
+    MenuContainer menuContainer;
     private Menu _menu;
     private bool loading = true;
+    private bool shouldGoToOverview = false;
+
+    int returnButtonShenanigans = -1;
+    
     public string viewPort {get; set;} = "desktop";
     private DotNetObjectReference<ViewMenu> objRef;
     private string dayString => selectedIndex == overViewIndex ? "overview-day-container" : "viewmenu-day-container";
@@ -111,14 +118,31 @@ else
         if (firstRender)
         {
             var viewPort = await JS.InvokeAsync<string>("blazorOnLoad", objRef);
-                Console.WriteLine(System.Reflection.Assembly.GetExecutingAssembly().GetName().Name);
         }
     }
 
     protected override void OnInitialized()
     {
+        NavManager.LocationChanged += HandleLocationChanged;
         objRef = DotNetObjectReference.Create(this);
+        ReadQueryParams();
+       
+            }
+
+    private void HandleLocationChanged(object sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e) {
+        ReadQueryParams();
+        InvokeAsync(StateHasChanged);
     }
+
+    private void ReadQueryParams(){
+          var uri = NavManager.ToAbsoluteUri(NavManager.Uri);
+        if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("page", out var _page))
+        {
+         selectedIndex = Convert.ToInt32(_page);
+        }
+    }
+
+    
 
     //C#
     [JSInvokable]
@@ -129,17 +153,17 @@ else
     }
 
     string activeWeekday() {
-        if(selectedIndex == -1 || selectedIndex >= ViewMenu.getSortedDayMenus(_menu).Count) {
+        if(selectedIndex == -1 || selectedIndex >= DayMenuHelper.getSortedDayMenus(_menu).Count) {
             return "";
         }
-        return convertToWeekday(ViewMenu.getSortedDayMenus(_menu)[selectedIndex].DayMenu.date);
+        return convertToWeekday(DayMenuHelper.getSortedDayMenus(_menu)[selectedIndex].DayMenu.date);
     }
 
     string dateString() {
-        if(selectedIndex == -1 || selectedIndex >= ViewMenu.getSortedDayMenus(_menu).Count) {
+        if(selectedIndex == -1 || selectedIndex >= DayMenuHelper.getSortedDayMenus(_menu).Count) {
             return "";
         }
-        return dateFormat(ViewMenu.getSortedDayMenus(_menu)[selectedIndex].DayMenu.date);
+        return dateFormat(DayMenuHelper.getSortedDayMenus(_menu)[selectedIndex].DayMenu.date);
     }
 
 bool showSelected(int  i) {
@@ -171,25 +195,6 @@ bool showSelected(int  i) {
         }
 
     }
-public static List<(DayMenu DayMenu, int Index)> getSortedDayMenus(Menu menu)
-{
-    var indexedDayMenus = menu.dayMenus
-        .Select((d, i) => new { DayMenu = d, Index = i })
-        .OrderBy(di => di.DayMenu.date)
-        .ThenBy(di => di.DayMenu.type)
-        .ToList();
-
-    var sortedDayMenus = indexedDayMenus.Select(di => di.DayMenu).ToList();
-
-    var result = new List<(DayMenu DayMenu, int Index)>();
-
-    for (int i = 0; i < indexedDayMenus.Count(); i++)
-    {
-        result.Add((indexedDayMenus[i].DayMenu, i));
-    }
-
-    return result;
-}
 
     private string convertToWeekday(DateTime date)
     {
@@ -205,24 +210,37 @@ public static List<(DayMenu DayMenu, int Index)> getSortedDayMenus(Menu menu)
     {
         return date != null ? date.ToString("dd/M") : "";
     }
-
-    private async void nextPage()
+    private void setPage(int index = 0, bool isButton = false)
     {
-        selectedIndex++;
-        checkPageMax();
-        if (viewPort != "desktop") {
-            await JSRuntime.InvokeVoidAsync("scrollToTop");
-        }
-    }
+        int _index = index;
+       if(index == overViewIndex)
+           shouldGoToOverview = true;
+       
+    
 
-    private async void prevPage()
-    {
-        selectedIndex--;
-        checkPageMax();
+         if(isButton){
+            if(index == overViewIndex-1){
+                shouldGoToOverview = false;
+            }
+         }
+
+      
+
+         if(shouldGoToOverview){
+             index = overViewIndex;
+         }
+       selectedIndex = index;
+               checkPageMax();
+
+        string url = UrlHelper.RemoveQueryStringByKey(NavManager.Uri, "page");
+        var query = new Dictionary<string, string> { { "page", selectedIndex.ToString() } };
+
+        NavManager.NavigateTo(QueryHelpers.AddQueryString(url, query));
         if (viewPort != "desktop") {
-            await JSRuntime.InvokeVoidAsync("scrollToTop");
+            JSRuntime.InvokeVoidAsync("scrollToTop");
         }
-    }
+        }
+    
 
     private void checkPageMax(){
         if(selectedIndex < -1){
