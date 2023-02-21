@@ -212,7 +212,7 @@ bool showSelected(int  i) {
        if(index == overViewIndex)
            shouldGoToOverview = true;
        
-    }
+    
 
          if(isButton){
             if(index == overViewIndex-1){
@@ -233,10 +233,10 @@ bool showSelected(int  i) {
 
         NavManager.NavigateTo(QueryHelpers.AddQueryString(url, query));
         if (viewPort != "desktop") {
-            await JSRuntime.InvokeVoidAsync("scrollToTop");
+            JSRuntime.InvokeVoidAsync("scrollToTop");
         }
         }
-    }
+    
 
     private void checkPageMax(){
         if(selectedIndex < -1){
