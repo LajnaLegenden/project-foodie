@@ -1,6 +1,8 @@
 @using project_foodie.Pages.view_menu.components
 @using project_foodie.Model;
 @using Newtonsoft.Json;
+@using Newtonsoft.Json.Linq;
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
 
 
 <div class="menu-container">
@@ -17,7 +19,7 @@
     </div>
     
     <div class="skip-container">
-        <input type="checkbox" class="skip-checkbox" name="skip" value="skip" @onchange="eventArgs => { CheckboxClicked(eventArgs.Value); }">
+        <input type="checkbox" class="skip-checkbox" name="skip" value="skip" checked="@isChecked" @onchange="eventArgs => { CheckboxClicked(eventArgs.Value); }" />
         <label for="skip"> Jag vill avstå @(char.ToLower(dayMenu.type.ToString()[0]) + dayMenu.type.ToString().Substring(1)).</label><br>
     </div>
 </div>
@@ -49,6 +51,7 @@
     }
 
     /*------------------ No food ---------------------*/
+    private bool isChecked = false;
     List<Dishes> ComponentRefs = new List<Dishes>();
     Dishes dishCard {
         set { ComponentRefs.Add(value); }
@@ -59,9 +62,11 @@
         {
             List<int> dishIds = new List<int>();
             interactable = "unclickable";
+            isChecked = true;
 
             foreach (Dish dish in dayMenu.dishes)
             {
+                // Get all dish id:s except ghost dish
                 if (dish.Name != "Ghost dish") 
                 {
                     dishIds.Add(dish.Id);
@@ -75,8 +80,33 @@
         else 
         {
             interactable = "clickable";
+            isChecked = false;
             foreach (var reference in ComponentRefs) {
                 reference.Unclicked();
+            }
+        }
+    }
+
+    protected override async Task OnInitializedAsync() 
+    {
+        var localStorageContent = await localStorage.GetItemAsync<string>("dishData");
+        if (localStorageContent != null)
+        {
+            JObject obj = JObject.Parse(localStorageContent);
+            DateTime day = dayMenu.date;
+            string dayString = day.ToString("yyyy-MM-dd") + "-" + dayMenu.type + "-" + dayMenu.Id;
+            if (obj.ContainsKey(dayString))
+            {
+                foreach (Dish dish in dayMenu.dishes) 
+                {
+                    if (obj[dayString][dish.Id.ToString()] != null)
+                    {
+                        if (int.Parse(obj[dayString][dish.Id.ToString()].ToString()) == -1) 
+                        { 
+                            CheckboxClicked(true);
+                        }
+                    }
+                }
             }
         }
     }
