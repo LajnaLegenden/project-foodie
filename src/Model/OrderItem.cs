@@ -10,4 +10,6 @@ public class OrderItem
     public required Order order { get; set; }
     public required Dish dish { get; set; }
     public required int quantity { get; set; }
+    public DateTime date { get; set; }
+    public OrderType type { get; set; }
 }
