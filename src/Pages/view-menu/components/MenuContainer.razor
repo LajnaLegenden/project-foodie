@@ -10,7 +10,7 @@
             @foreach (Dish dish in dayMenu.dishes)
             {
                 if(dish.Type.ToString() == Category || Category == "all") {
-                  <Dishes dayMenu=@dayMenu dishData=@dish wantFood=@boxChecked quantityContainer=@quantityContClass/>
+                  <Dishes @ref="dishCard" dayMenu=@dayMenu dishData=@dish />
                 }
             }
         </div>
@@ -31,8 +31,6 @@
 
     string currentCategory = "all";
     private string interactable = "clickable";
-    private bool boxChecked = false;
-    private string quantityContClass = "food-card-btn-container";
 
     void toggleClass(int type)
     {
@@ -50,19 +48,34 @@
         };
     }
 
+    /*------------------ No food ---------------------*/
+    List<Dishes> ComponentRefs = new List<Dishes>();
+    Dishes dishCard {
+        set { ComponentRefs.Add(value); }
+    }
     void CheckboxClicked(object checkedValue) 
     {
         if ((bool)checkedValue) 
         {
+            List<int> dishIds = new List<int>();
             interactable = "unclickable";
-            boxChecked = true;
-            quantityContClass = "food-card-btn-container-no-food";
+
+            foreach (Dish dish in dayMenu.dishes)
+            {
+                dishIds.Add(dish.Id);
+            } 
+
+            foreach (var reference in ComponentRefs) {
+                reference.Clicked(dishIds);
+            }
         }
         else 
         {
             interactable = "clickable";
-            boxChecked = false;
-            quantityContClass = "food-card-btn-container";
+            foreach (var reference in ComponentRefs) {
+                reference.Unclicked();
+            }
         }
     }
+    /*---------------------------------------------------*/
 }
