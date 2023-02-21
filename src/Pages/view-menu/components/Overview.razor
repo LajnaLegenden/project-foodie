@@ -3,6 +3,8 @@
 @using Newtonsoft.Json.Linq;
 @using project_foodie.Model;
 @using project_foodie.Repository;
+@using project_foodie.Modules;
+@if(dataLoaded){
 
 <div class="overview-container">
     <h1>Översikt över dina val</h1>
@@ -53,12 +55,15 @@
                 </td>
                 <td data-label="Pris">@r.DinnerPrice:-</td>
                 <td data-label="Totalt">@(r.LunchPrice + r.DinnerPrice):-</td>
-                <td><button class="change-dish-button">Ändra val</button></td>
+                <td><a class="change-dish-button" href="@getModifyUrl(r)">Ändra val</a></td>
             </tr>
         }
         <h2 class="total-all-price">Total: @getTotalPrice():- </h2>
     </table>
 </div>
+} else {
+    <p>Loading...</p>
+}
 
 @code {
     [Parameter]
@@ -72,6 +77,7 @@
 
     private List<Row> data;
 
+        bool dataLoaded = false;
     public class Row
     {
         public DayMenu dm;
@@ -80,9 +86,20 @@
         public int DinnerPrice;
     }
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await LoadData();
+        if(!dataLoaded){
+            await LoadData();
+            dataLoaded = true;
+            StateHasChanged();
+        }
+    }
+
+    private string getModifyUrl(Row r)
+    {
+        // /order/id/page=r.index
+        string url = "/order/" + menu.Id + "?page=" + DayMenuHelper.getDayMenuIndex(menu, r.dm);
+        return url;
     }
     private int getTotalPrice()
     {
@@ -116,10 +133,13 @@
 
     private async Task LoadData()
     {
-
         data = new List<Row>();
 
         var localStorageData = await localStorage.GetItemAsync<string>("dishData");
+        // Check if localstorage is empty
+        if (localStorageData == null) {
+            return;
+        }
         var localStorageObj = JObject.Parse(localStorageData);
         foreach (DayMenu dm in menu.dayMenus)
         {
