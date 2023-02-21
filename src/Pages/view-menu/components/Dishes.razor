@@ -57,18 +57,18 @@
         StateHasChanged();
     }
     /*----------------No food--------------*/
-    [Parameter]
-    public bool wantFood {get; set;}
-    [Parameter]
-    public string quantityContainer {get; set;}
-    protected override void OnParametersSet()
+    string quantityContainer = "food-card-btn-container";
+    public void Clicked(List<int> ids)
     {
-        if (wantFood)
-        {
-            count = 1;
-            modifyCount(-1);
-        }
+        count = 0;
+        updateData(count, ids);
+        quantityContainer = "food-card-btn-container-no-food";
     }
+    public void Unclicked()
+    {
+        quantityContainer = "food-card-btn-container";
+    }
+
     /*-------------------------------------*/
     List<string> foodContent = new List<string>();
     List<string> allergens = new List<string>();
@@ -118,8 +118,11 @@
         }
     }
 
-    private async void modifyCount(int value)
+    private void modifyCount(int value)
     {
+        List<int> ids = new List<int>();
+        ids.Add(dishData.Id);
+
         count += value;
         //enforce max dishes and min dishes
         if (count > MAX_DISHES)
@@ -130,44 +133,8 @@
         {
             count = 0;
         }
-
-        //check if key
-        var localStorageContent = await localStorage.GetItemAsync<string>("dishData");
-        if (localStorageContent == null)
-        {
-            //create key
-            await localStorage.SetItemAsync("dishData", "{}");
-            localStorageContent = "{}";
-        }
-        DateTime day = dayMenu.date;
-        string dayString = day.ToString("yyyy-MM-dd") + "-" + dayMenu.type + "-" + dayMenu.Id;
-        JObject obj = JObject.Parse(localStorageContent);
-        //save dish as array of object {dishId: 1, count: 2} with key date
-        //check if date exists
-        if (obj.ContainsKey(dayString))
-        {
-            //check if dish exists
-            if (obj[dayString][dishData.Id.ToString()] != null)
-            {
-                //update count
-                obj[dayString][dishData.Id.ToString()] = count;
-            }
-            else
-            {
-                //add dish
-                obj[dayString][dishData.Id.ToString()] = count;
-            }
-        }
-        else
-        {
-            //add date
-            obj[dayString] = new JObject();
-            //add dish
-            obj[dayString][dishData.Id.ToString()] = count;
-        }
-        string json = JsonConvert.SerializeObject(obj);
-        await localStorage.SetItemAsync("dishData", json);
-        enforceCounter();
+        
+        updateData(count, ids);
     }
 
     private async Task GetData()
@@ -189,7 +156,7 @@
             }
         }
     }
-    private void  enforceCounter()
+    private void enforceCounter()
     {
         if (count > 0)
         {
@@ -200,6 +167,52 @@
             showInput = false;
         }
         InvokeAsync(StateHasChanged);
+    }
+
+    public async void updateData(int quantity, List<int> ids) 
+    {
+        foreach (var id in ids) 
+        {
+            //check if key
+            var localStorageContent = await localStorage.GetItemAsync<string>("dishData");
+            if (localStorageContent == null)
+            {
+                //create key
+                await localStorage.SetItemAsync("dishData", "{}");
+                localStorageContent = "{}";
+            }
+
+            DateTime day = dayMenu.date;
+            string dayString = day.ToString("yyyy-MM-dd") + "-" + dayMenu.type + "-" + dayMenu.Id;
+            JObject obj = JObject.Parse(localStorageContent);
+
+            //save dish as array of object {dishId: 1, count: 2} with key date
+            //check if date exists
+            if (obj.ContainsKey(dayString))
+            {
+                //check if dish exists
+                if (obj[dayString][id.ToString()] != null)
+                {
+                    //update count
+                    obj[dayString][id.ToString()] = quantity;
+                }
+                else
+                {
+                    //add dish
+                    obj[dayString][id.ToString()] = quantity;
+                }
+            }
+            else
+            {
+                //add date
+                obj[dayString] = new JObject();
+                //add dish
+                obj[dayString][id.ToString()] = quantity;
+            }
+            string json = JsonConvert.SerializeObject(obj);
+            await localStorage.SetItemAsync("dishData", json);
+            enforceCounter();
+        }
     }
 }
 
