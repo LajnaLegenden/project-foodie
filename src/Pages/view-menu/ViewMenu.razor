@@ -229,7 +229,7 @@ bool showSelected(int  i) {
 
         NavManager.NavigateTo(QueryHelpers.AddQueryString(url, query));
         if (viewPort != "desktop") {
-            await JSRuntime.InvokeVoidAsync("scrollToTop");
+            JSRuntime.InvokeVoidAsync("scrollToTop");
         }
     }
 
