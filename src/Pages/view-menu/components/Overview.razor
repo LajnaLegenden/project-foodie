@@ -82,7 +82,7 @@
         }
     }
 
-    private string getModifyUrl(Row r)
+    private string getModifyUrl(LocalStorage.Row r)
     {
         // /order/id/page=r.index
         string url = "/order/" + menu.Id + "?page=" + DayMenuHelper.getDayMenuIndex(menu, r.dm);
