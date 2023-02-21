@@ -136,6 +136,10 @@
         data = new List<Row>();
 
         var localStorageData = await localStorage.GetItemAsync<string>("dishData");
+        // Check if localstorage is empty
+        if (localStorageData == null) {
+            return;
+        }
         var localStorageObj = JObject.Parse(localStorageData);
         foreach (DayMenu dm in menu.dayMenus)
         {
