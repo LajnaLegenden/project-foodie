@@ -9,7 +9,7 @@
     [Parameter]
     public DateTime[] dates {get; set;} = new DateTime[4]; 
 
-    protected override async Task OnInitializedAsync()
+    protected override  void OnInitialized()
     {
         DateTime date = dates[0];
         DateTime activeDate = dates[1];

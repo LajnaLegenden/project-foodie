@@ -60,7 +60,7 @@ li:not(:last-child) {
   padding: 8px;
 }
 
-button {
+a {
   padding: 8px 16px;
 	border-radius: 50px;
 	border: none;
@@ -142,7 +142,7 @@ button {
     color: #fff;
   }
 
-  button {
+  a {
     padding: 8px 16px;
     border-radius: 50px;
     width: 200px;
@@ -228,7 +228,7 @@ button {
     color: #fff;
   }
 
-  button {
+  a {
     padding: 8px 16px;
     border-radius: 50px;
     width: 200px;
