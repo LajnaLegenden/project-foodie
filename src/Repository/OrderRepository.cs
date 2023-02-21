@@ -1,42 +1,57 @@
 using Microsoft.EntityFrameworkCore;
 using project_foodie.Model;
-namespace project_foodie.Repository;
 
-public class OrderRepository
+namespace project_foodie.Repository
 {
-    private readonly DatabaseContext _context;
-
-    public OrderRepository(DatabaseContext context)
+    public class OrderRepository : RepositoryBase<Order>, IOrderRepository
     {
-        _context = context;
-    }
+        public OrderRepository(DatabaseContext databaseContext)
+            : base(databaseContext)
+        {
+        }
+        public async Task<IEnumerable<Order>> GetAllAsync()
+        {
+            return await FindAll()
+                .OrderBy(o => o.orderDate)
+                .ToListAsync();
+        }
+        public async Task<Order> GetByIdAsync(int orderId)
+        {
+            return await FindByCondition(order => order.Id.Equals(orderId))
+            .Include(o => o.orderItems)
+            .Include(o => o.menu)
+            .FirstOrDefaultAsync();
+        }
+        public void AddOrder(Order order)
+        {
+            Create(order);
+        }
+        public void UpdateOrder(Order order)
+        {
+            Update(order);
+        }
+        public void DeleteOrder(Order order)
+        {
+            Delete(order);
+        }
+        // Create orderItem and add to order
+        public void AddOrderItem(Order order, Dish dish, int quantity, DateTime date, OrderType type)
+        {
+            //if order.orderItems is null, create new list
+            if (order.orderItems == null)
+            {
+                order.orderItems = new List<OrderItem>();
+            }
 
-    public async Task<Order> GetByIdAsync(int id)
-    {
-        return await _context.Orders.Include(o => o.orderItems).Include(o => o.menu).FirstOrDefaultAsync(o => o.Id == id);
+            OrderItem orderItem = new OrderItem()
+            {
+                order = order,
+                dish = dish,
+                quantity = quantity,
+                date = date,
+                type = type
+            };
+            order.orderItems.Add(orderItem);
+        }
     }
-
-    public async Task AddAsync(Order order)
-    {
-        _context.Orders.Add(order);
-        await _context.SaveChangesAsync();
-    }
-
-    public async Task UpdateAsync(Order order)
-    {
-        _context.Orders.Update(order);
-        await _context.SaveChangesAsync();
-    }
-
-    public async Task DeleteAsync(Order order)
-    {
-        _context.Orders.Remove(order);
-        await _context.SaveChangesAsync();
-    }
-
-    public async Task<List<Order>> GetAllAsync()
-    {
-        return await _context.Orders.Include(o => o.orderItems).ThenInclude(oi => oi.dish).ToListAsync();
-    }
-
 }
