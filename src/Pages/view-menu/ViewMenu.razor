@@ -9,6 +9,7 @@
 @inject IJSRuntime JS;
 @inject IJSRuntime JSRuntime
 @inject NavigationManager NavManager
+
 @if (loading)
 {
     <p>Loading</p>
@@ -210,6 +211,8 @@ bool showSelected(int  i) {
         int _index = index;
        if(index == overViewIndex)
            shouldGoToOverview = true;
+       
+    }
 
          if(isButton){
             if(index == overViewIndex-1){
@@ -223,13 +226,15 @@ bool showSelected(int  i) {
              index = overViewIndex;
          }
        selectedIndex = index;
-        checkPageMax();
+               checkPageMax();
+
         string url = UrlHelper.RemoveQueryStringByKey(NavManager.Uri, "page");
         var query = new Dictionary<string, string> { { "page", selectedIndex.ToString() } };
 
         NavManager.NavigateTo(QueryHelpers.AddQueryString(url, query));
         if (viewPort != "desktop") {
-            JSRuntime.InvokeVoidAsync("scrollToTop");
+            await JSRuntime.InvokeVoidAsync("scrollToTop");
+        }
         }
     }
 
