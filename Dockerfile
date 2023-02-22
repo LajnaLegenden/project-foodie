@@ -1,6 +1,11 @@
 # Set the base image to the official .NET SDK 7 image
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 
+# Install Node.js
+RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
+RUN apt-get install -y nodejs
+
+
 # Set the working directory to /app
 WORKDIR /app
 COPY app/init /app/init
@@ -16,13 +21,13 @@ COPY src/ .
 
 # Build the project
 RUN dotnet publish -c Release -o  /app/bin/release/project-foodie/
-
+RUN ls -la /app/bin/release/project-foodie/
+RUN npx postcss /app/bin/release/project-foodie/wwwroot/css/site.css -o /app/bin/release/project-foodie/wwwroot/css/site.css
+RUN npx postcss /app/bin/release/project-foodie/wwwroot/css/project-foodie.styles.css -o /app/bin/release/project-foodie/wwwroot/css/project-foodie.styles.css
 ENV DBADDR ${DBADDR}
 ENV DBNAME ${DBNAME}
 ENV DBUSER ${DBUSER}
 ENV DBPASS ${DBPASS}
-RUN ls -la
-RUN ls -la /app/bin/release/project-foodie/
 
 # Start the application
 
