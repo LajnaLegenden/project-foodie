@@ -6,6 +6,7 @@ RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
 RUN apt-get install -y nodejs
 
 
+
 # Set the working directory to /app
 WORKDIR /app
 COPY app/init /app/init
@@ -22,13 +23,15 @@ COPY src/ .
 # Build the project
 RUN dotnet publish -c Release -o  /app/bin/release/project-foodie/
 RUN ls -la /app/bin/release/project-foodie/
-RUN npx postcss /app/bin/release/project-foodie/wwwroot/css/site.css -o /app/bin/release/project-foodie/wwwroot/css/site.css
-RUN npx postcss /app/bin/release/project-foodie/wwwroot/css/project-foodie.styles.css -o /app/bin/release/project-foodie/wwwroot/css/project-foodie.styles.css
+WORKDIR /app/bin/release/project-foodie/
+RUN npm install
+RUN npx postcss wwwroot/css/site.css -o wwwroot/css/site.css
+RUN npx postcss wwwroot/css/project-foodie.styles.css -o wwwroot/css/project-foodie.styles.css
 ENV DBADDR ${DBADDR}
 ENV DBNAME ${DBNAME}
 ENV DBUSER ${DBUSER}
 ENV DBPASS ${DBPASS}
-
+WORKDIR /app
 # Start the application
 
 ENTRYPOINT ["/app/init"]

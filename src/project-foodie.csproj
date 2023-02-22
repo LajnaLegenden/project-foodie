@@ -6,8 +6,8 @@
     <RootNamespace>project_foodie</RootNamespace>
   </PropertyGroup>
   <Target Name="CopyPackageJson" AfterTargets="Publish">
-    <Copy SourceFiles="package.json" DestinationFolder="$(OutDir)" />
-    <Copy SourceFiles="postcss.config.js" DestinationFolder="$(OutDir)" />
+    <Copy SourceFiles="package.json" DestinationFolder="$(PublishDir)" />
+    <Copy SourceFiles="postcss.config.js" DestinationFolder="$(PublishDir)" />
   </Target>
 
 
