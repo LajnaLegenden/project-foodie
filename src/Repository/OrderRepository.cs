@@ -13,6 +13,8 @@ namespace project_foodie.Repository
         {
             return await FindAll()
                 .OrderBy(o => o.orderDate)
+                .Include(o => o.orderItems)
+                .Include(o => o.menu)
                 .ToListAsync();
         }
         public async Task<Order> GetByIdAsync(int orderId)
