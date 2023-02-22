@@ -42,7 +42,7 @@
         Active, Inactive, Completed
     }
 
-      private string getModifyUrl(DayMenu r)
+    private string getModifyUrl(DayMenu r)
     {
         // /order/id/page=r.index
         string url = "/order/" + menu.Id + "?page=" + DayMenuHelper.getDayMenuIndex(menu, r);

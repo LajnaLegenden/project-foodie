@@ -44,10 +44,14 @@
 }
 
 .type.active {
-    color: white;
     font-weight: bold;
     background: #067A46;
 }
+
+.type.active a {
+    color: white;
+}
+
 .type.inactive {
     color: grey;
     opacity: 0.5;
