@@ -13,10 +13,10 @@ namespace project_foodie.Repository
             DatabaseContext = databaseContext;
         }
 
-        public IQueryable<T> FindAll() => DatabaseContext.Set<T>().AsNoTracking();
+        public IQueryable<T> FindAll() => DatabaseContext.Set<T>();
 
         public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression) =>
-            DatabaseContext.Set<T>().Where(expression).AsNoTracking();
+            DatabaseContext.Set<T>().Where(expression);
 
         public void Create(T entity) => DatabaseContext.Set<T>().Add(entity);
 
