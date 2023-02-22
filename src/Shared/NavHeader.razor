@@ -1,6 +1,7 @@
 @using Newtonsoft.Json;
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @using System.Collections.Generic;
+@using project_foodie.Model;
 
 <div class="header">
     <div class="logo">
@@ -29,7 +30,7 @@
                 </NavLink>
             </div>
             <div class="nav-item">
-                <NavLink class="nav-link" href="order?page=14">
+                <NavLink class="nav-link" href="@GetLastUrl()">
                     <button class="nav-kassan">
                         <span>Icon</span>
                         Varukorg <span class="nav-kassan-counter">@itemsCountInKassan</span>
@@ -41,6 +42,19 @@
 </div>
 
 @code {
+
+    private Menu _menu;
+
+    private string GetLastUrl()
+    {
+        if (_menu == null)
+        {
+            return "";
+        }
+        return "/order/" + _menu.Id + "/?page=" + _menu.dayMenus.Count;
+    }
+
+
     private int itemsCountInKassan;
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -50,6 +64,7 @@
             StateHasChanged();
         }
     }
+
 
     private async Task<int> GetObjectCount()
     {
