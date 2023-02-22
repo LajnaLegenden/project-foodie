@@ -30,7 +30,7 @@ namespace project_foodie.Modules
             var localStorageData = await localStorage.GetItemAsync<string>("dishData");
             // Check if localstorage is empty
             if (localStorageData == null) {
-                return null;
+                return new List<Row>();
             }
             var localStorageObj = JObject.Parse(localStorageData);
             foreach (DayMenu dm in menu.dayMenus)
