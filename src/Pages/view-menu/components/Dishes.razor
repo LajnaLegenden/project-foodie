@@ -5,7 +5,7 @@
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @using project_foodie.Repository;
 
-@if (dishData.Name != "Ghost dish")
+@if (dishData.Name != "GHOST_DISH_DISABLE_MEAL")
 {
     <div class="food-card">
         <div @onclick="() => OpenPopup()" class="food-card-img-container">
@@ -66,7 +66,7 @@
 
         await updateData(count, ids);
 
-        if (dishData.Name == "Ghost dish") {
+        if (dishData.Name == "GHOST_DISH_DISABLE_MEAL") {
             ghostDishId.Add(dishData.Id);
         }
         await updateData(-1, ghostDishId);
@@ -77,7 +77,7 @@
         quantityContainer = "food-card-btn-container";
         count = 0;
 
-        if (dishData.Name == "Ghost dish") {
+        if (dishData.Name == "GHOST_DISH_DISABLE_MEAL") {
             ghostDishId.Add(dishData.Id);
         }
         await updateData(count, ghostDishId);
