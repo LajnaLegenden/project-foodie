@@ -1,9 +1,8 @@
 @using project_foodie.Pages.view_menu.components;
 @using project_foodie.Model
 @using project_foodie.Service
+@using project_foodie.Modules
 @inject IJSRuntime JS
-@inject BrowserService Service
-
 
 @if(state != "mobile"){
 <div class="timeline-container">
@@ -12,7 +11,9 @@
         TimeLineSection.TimelineState tableState = state == "tablet" && shouldShowTypes(sections[i]) ? TimeLineSection.TimelineState.Active : TimeLineSection.TimelineState.Inactive;
         <div class="timeline-section @(getClass(i))">
             <div class="timeline-entry">
-                <TimeLineSection dm="@sections[i].DayMenu" showTypes="true" size="@state" isDay="true" state="tableState"/>
+               
+                    <TimeLineSection menu=@menu dm="@sections[i].DayMenu" showTypes="true" size="@state" isDay="true" state="tableState" />
+
                 @for (int j = 0; j < dayMenuPerSection; j++)
                 {
                    @if(state == "desktop"){
@@ -22,7 +23,7 @@
                     TimeLineSection.TimelineState sectionState = currentIndex == sections[i + j].Index ?
                     TimeLineSection.TimelineState.Active : currentIndex > sections[i + j].Index ?
                     TimeLineSection.TimelineState.Completed : TimeLineSection.TimelineState.Inactive;
-                    <TimeLineSection dm="@sections[i+j].DayMenu" showTypes="@shouldShowTypes(sections[i])" isDay="false"
+                    <TimeLineSection  menu=@menu dm="@sections[i+j].DayMenu" showTypes="@shouldShowTypes(sections[i])" isDay="false"
                         state="sectionState"  />
                    }
                 }
@@ -62,14 +63,12 @@
     private List<(DayMenu DayMenu, int Index)> sections;
     private int dayMenuPerSection = 2;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        sections = ViewMenu.getSortedDayMenus(menu);
-        dayMenuPerSection = getNumberOfSameDateDayMenus(0);
+        sections = DayMenuHelper.getSortedDayMenus(menu);
+        dayMenuPerSection = DayMenuHelper.getNumberOfSameDateDayMenus(0,sections);
        
     }
-
-
 
     private string getClass(int index)
     {
@@ -80,7 +79,6 @@
         return "";
 
     }
-
     private string getDay(int index, int offset)
     {
         if (index + offset < 0 || index + offset >= menu.dayMenus.Count)
@@ -121,29 +119,4 @@
         }
         return false;
     }
-
-    //function to get number of DayMenus with same date
-    private int getNumberOfSameDateDayMenus(int index)
-    {
-        int count = 0;
-        DateTime date = sections[index].DayMenu.date;
-
-        for (int i = 0; i < sections.Count; i++)
-        {
-            if (sections[i].DayMenu.date == date)
-            {
-                count++;
-            }
-            else
-            {
-                break;
-            }
-        }
-
-        return count;
-    }
-
-
-
-
 }

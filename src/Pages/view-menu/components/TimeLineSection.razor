@@ -1,9 +1,11 @@
 @using project_foodie.Pages.view_menu
 @using project_foodie.Model
+@using project_foodie.Modules
 
 
 
 <div class="timeline-item @(showTypes ? "" : "hidden") @(isDay ? "day" : "type") @(state == TimelineState.Active ? "active" : state == TimelineState.Inactive ?"inactive" :"passed")">
+   <a href="@getModifyUrl(dm)">
     @if (isDay)
     {
         @convertToWeekday(dm.date)
@@ -12,6 +14,7 @@
     {
         @dm.type
     }
+   </a>
 </div>
 
 
@@ -27,6 +30,9 @@
     [Parameter]
     public string size { get; set; }
     //print the menu
+    [Parameter]
+    public Menu menu { get; set; }
+    //print the menu
     protected override void OnInitialized()
     {
     }
@@ -34,6 +40,13 @@
     public enum TimelineState
     {
         Active, Inactive, Completed
+    }
+
+      private string getModifyUrl(DayMenu r)
+    {
+        // /order/id/page=r.index
+        string url = "/order/" + menu.Id + "?page=" + DayMenuHelper.getDayMenuIndex(menu, r);
+        return url;
     }
 
     private string convertToWeekday(DateTime date)
