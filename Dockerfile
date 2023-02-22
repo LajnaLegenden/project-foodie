@@ -26,7 +26,7 @@ RUN ls -la /app/bin/release/project-foodie/
 WORKDIR /app/bin/release/project-foodie/
 RUN npm install
 RUN npx postcss wwwroot/css/site.css -o wwwroot/css/site.css
-RUN npx postcss wwwroot/css/project-foodie.styles.css -o wwwroot/css/project-foodie.styles.css
+RUN npx postcss wwwroot/project-foodie.styles.css -o wwwroot/project-foodie.styles.css
 ENV DBADDR ${DBADDR}
 ENV DBNAME ${DBNAME}
 ENV DBUSER ${DBUSER}
