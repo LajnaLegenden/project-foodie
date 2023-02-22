@@ -12,6 +12,9 @@
 
     </div>
     <div class="food-card-body">
+    <div class="info-button">
+        <button class="food-card-btn-info" @onclick="() => OpenPopup()"><span>i</span>
+    </button></div>
         <div class="food-card-upper-body">
             <div class="food-card-food-container">
                 <p class="food-card-text">@dishData.Name</p>
@@ -79,14 +82,14 @@
         {
             DishRepository dr = new DishRepository(db);
             ingredients = await dr.getDishIngredients(dishData.Id);
-        } 
+        }
 
-        foreach(Allergen element in dishData.Allergens) 
+        foreach(Allergen element in dishData.Allergens)
         {
             allergens.Add(element.Name);
         }
 
-        foreach (Ingredient element in ingredients) 
+        foreach (Ingredient element in ingredients)
         {
            foodContent.Add(element.Name);
         }
@@ -133,7 +136,7 @@
         {
             count = 0;
         }
-        
+
         updateData(count, ids);
     }
 
@@ -169,9 +172,9 @@
         InvokeAsync(StateHasChanged);
     }
 
-    public async void updateData(int quantity, List<int> ids) 
+    public async void updateData(int quantity, List<int> ids)
     {
-        foreach (var id in ids) 
+        foreach (var id in ids)
         {
             //check if key
             var localStorageContent = await localStorage.GetItemAsync<string>("dishData");
