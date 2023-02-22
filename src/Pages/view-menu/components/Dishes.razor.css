@@ -4,6 +4,13 @@
     background: #FCFCFC;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 5px;
+    position: relative;
+}
+
+.info-button {
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
 .food-card-img-container {
@@ -130,7 +137,8 @@
 }
 
 .food-card-btn-increment,
-.food-card-btn-decrement {
+.food-card-btn-decrement,
+.food-card-btn-info {
     color: white;
     border-radius: 100%;
     width: 40px;
@@ -139,6 +147,14 @@
     filter: var(--filter-shadow-default, drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)));
     margin-top: 3px;
     font-size: 30px;
+    cursor: pointer;
+}
+
+.food-card-btn-info {
+    margin: 8px;
+    color: var(--btn-sucess, #006B38);
+    font-weight: 700;
+    border: 4px solid var(--btn-sucess, #006B38);
 }
 
 .food-card-btn-increment {
@@ -176,7 +192,7 @@
 :-ms-input-placeholder { /* Internet Explorer 10-11 */
     color: var(--text-color-primary, #000000);
   }
-  
+
 ::-ms-input-placeholder { /* Microsoft Edge */
     color: var(--text-color-primary, #000000);
 }
