@@ -135,8 +135,8 @@
             }
       }
 
-       for (int i = 0; i < 3; i ++) {
-
+       for (int i = 0; i < 3; i ++) 
+       {
             for (int index = 0; index < 7; index ++) {
             //add dish to menu
             @* Random rnd = new Random(); *@
@@ -163,6 +163,17 @@
             await menuRepository.AddDayMenuAsync(menu, date, dish, OrderType.Middag);
             Console.WriteLine("[FillDB]: Dish added to menu: " + dish.Name + "/" + menu.Name + "/" + date);
             }
+        }
+        var ghostDish = new Dish() {
+          Name = "Ghost dish",
+          Price = 0,
+          description = ""
+        };
+        ghostDish.Type = FoodType.Unknown;
+        await dishRepository.AddAsync(ghostDish);
+        for (int i = 0; i < 7; i++) {
+          await menuRepository.AddDayMenuAsync(menu, menu.startDate.AddDays(i), ghostDish, OrderType.Lunch);
+          await menuRepository.AddDayMenuAsync(menu, menu.startDate.AddDays(i), ghostDish, OrderType.Middag);
         }
       }
     }
