@@ -14,22 +14,27 @@ main {
 }
 
 article {
-    margin: 0em 2em 0em 2em;
+    margin: 1em 2em 2em 2em;
+    height: calc(100% - 80px);
 }
 
 footer {
     display: flex;
     justify-content: space-between;
     height: 120px;
+    width: 100%;
     border-top: 1px solid #CDCDCD;
     font-size: 30px;
+    background: white;
 }
 
 .copyright {
+    margin-top: 10px;
     margin-left: 40px;
 }
 
 .policy {
+    margin-top: 10px;
     display: flex;
     gap: 40px;
     margin-right: 40px;
@@ -44,5 +49,9 @@ footer {
   }
   .policy{
     display: none;
+  }
+
+  article {
+      margin: 1em;
   }
 }
