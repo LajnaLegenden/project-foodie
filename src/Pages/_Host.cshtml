@@ -5,18 +5,20 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <base href="~/" />
     <link href="css/site.css" rel="stylesheet" />
     <link href="project-foodie.styles.css" rel="stylesheet" />
-    <link rel="icon" type="image/png" href="favicon.png"/>
+    <link rel="icon" type="image/png" href="favicon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
 </head>
+
 <body>
     <component type="typeof(App)" render-mode="ServerPrerendered" />
 
@@ -31,58 +33,75 @@
         <a class="dismiss">🗙</a>
     </div>
     <script type="text/javascript">
-                state='desktop'
-        window.blazorOnLoad = function(dotNetHelper) {
-                window.addEventListener('resize', () => {
-                    if(window.innerWidth < 768){
-                        if(state != 'mobile'){
-                            state = 'mobile';
-                            dotNetHelper.invokeMethodAsync('setViewPort', 'mobile');
-                        }
-                        return 'mobile';
-                    } else if(window.innerWidth < 1024){
-                        if(state != 'tablet'){
-                            dotNetHelper.invokeMethodAsync('setViewPort', 'tablet');
-                            state = 'tablet';
-                        }
-                        return 'tablet';
-                    } else {
-                        if(state != 'desktop'){
-                            dotNetHelper.invokeMethodAsync('setViewPort', 'desktop');
-                            state = 'desktop';
-                        }
-                        return 'desktop';
+        state = 'desktop'
+        window.blazorOnLoad = function (dotNetHelper) {
+            window.addEventListener('resize', () => {
+                if (window.innerWidth < 768) {
+                    if (state != 'mobile') {
+                        state = 'mobile';
+                        dotNetHelper.invokeMethodAsync('setViewPort', 'mobile');
                     }
-                });
-                if(window.innerWidth < 768){
-                        if(state != 'mobile'){
-                            state = 'mobile';
-                            dotNetHelper.invokeMethodAsync('setViewPort', 'mobile');
-                        }
-                        return 'mobile';
-                    } else if(window.innerWidth < 1024){
-                        if(state != 'tablet'){
-                            dotNetHelper.invokeMethodAsync('setViewPort', 'tablet');
-                            state = 'tablet';
-                        }
-                        return 'tablet';
-                    } else {
-                        if(state != 'desktop'){
-                            dotNetHelper.invokeMethodAsync('setViewPort', 'desktop');
-                            state = 'desktop';
-                        }
-                        return 'desktop';
+                    return 'mobile';
+                } else if (window.innerWidth < 1024) {
+                    if (state != 'tablet') {
+                        dotNetHelper.invokeMethodAsync('setViewPort', 'tablet');
+                        state = 'tablet';
                     }
+                    return 'tablet';
+                } else {
+                    if (state != 'desktop') {
+                        dotNetHelper.invokeMethodAsync('setViewPort', 'desktop');
+                        state = 'desktop';
+                    }
+                    return 'desktop';
+                }
+            });
+            if (window.innerWidth < 768) {
+                if (state != 'mobile') {
+                    state = 'mobile';
+                    dotNetHelper.invokeMethodAsync('setViewPort', 'mobile');
+                }
+                return 'mobile';
+            } else if (window.innerWidth < 1024) {
+                if (state != 'tablet') {
+                    dotNetHelper.invokeMethodAsync('setViewPort', 'tablet');
+                    state = 'tablet';
+                }
+                return 'tablet';
+            } else {
+                if (state != 'desktop') {
+                    dotNetHelper.invokeMethodAsync('setViewPort', 'desktop');
+                    state = 'desktop';
+                }
+                return 'desktop';
+            }
         };
         function scrollToTop() {
-            setTimeout(function() {
+            setTimeout(function () {
                 window.scrollTo({
-                top: 0,
-                behavior: "smooth"
+                    top: 0,
+                    behavior: "smooth"
                 });
             }, 350);
         }
+        function getLocalStorageCount() {
+            const localStorageContent = JSON.parse(localStorage.getItem('dishData'));
+
+            if (!localStorageContent) {
+                return 0;
+            }
+
+            const filteredObjects = Object.values(localStorageContent)
+                .filter(obj => Object.values(obj).some(count => count > 0));
+
+            return filteredObjects.length;
+        }
+        window.addEventListener('storage', () => {
+            const count = getLocalStorageCount();
+            console.log(`Number of objects in local storage: ${count}`);
+        });
     </script>
     <script src="_framework/blazor.server.js"></script>
 </body>
+
 </html>
