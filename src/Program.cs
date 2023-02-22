@@ -5,6 +5,7 @@ using project_foodie.Data;
 using project_foodie.Model;
 using Blazored.LocalStorage;
 using project_foodie.Service;
+using project_foodie.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 //Load env variables
@@ -18,6 +19,7 @@ builder.Services.AddServerSideBlazor();
 //register db context
 builder.Services.AddDbContextFactory<DatabaseContext>();
 
+builder.Services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
 
 #endregion
 builder.Services.AddBlazoredLocalStorage();

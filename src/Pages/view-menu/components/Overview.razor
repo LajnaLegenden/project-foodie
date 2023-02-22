@@ -29,29 +29,42 @@
                         <ul>
                             @foreach (var item in r.dishCount)
                             {
-                                @if (item.dm.type == OrderType.Lunch)
+                                if (item.dm.type == OrderType.Lunch)
                                 {
-
-                                    <li>
-                                        @getDishFromDmById(item.dishId, item.dm).Name x @item.Count
-                                    </li>
+                                if (item.Count == -1) 
+                                {
+                                    <li>Överhoppad</li>
+                                }
+                                else 
+                                {
+                                        <li>
+                                            @getDishFromDmById(item.dishId, item.dm).Name x @item.Count
+                                        </li>
+                                    }
                                 }
                             }
-                        </ul>
+                    </ul>
                     </td>
                     <td data-label="Pris">@r.LunchPrice:-</td>
                     <td data-label="Middag">
                         <ul>
                             @foreach (var item in r.dishCount)
                             {
-                                @if (item.dm.type == OrderType.Middag)
+                                if (item.dm.type == OrderType.Middag)
                                 {
-                                    <li>
-                                        @getDishFromDmById(item.dishId, item.dm).Name x @item.Count
-                                    </li>
+                                if (item.Count == -1) 
+                                {
+                                    <li>Överhoppad</li>
+                                }
+                                else 
+                                {
+                                        <li>
+                                            @getDishFromDmById(item.dishId, item.dm).Name x @item.Count
+                                        </li>
+                                    }
                                 }
                             }
-                        </ul>
+                    </ul>
                     </td>
                     <td data-label="Pris">@r.DinnerPrice:-</td>
                     <td data-label="Totalt">@(r.LunchPrice + r.DinnerPrice):-</td>
