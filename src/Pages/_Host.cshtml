@@ -98,7 +98,7 @@
         }
         window.addEventListener('storage', () => {
             const count = getLocalStorageCount();
-            console.log(`Number of objects in local storage: ${count}`);
+            dotNetHelper.invokeMethodAsync('Project.Foodie', 'UpdateLocalStorageCount');
         });
     </script>
     <script src="_framework/blazor.server.js"></script>
