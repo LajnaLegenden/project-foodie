@@ -11,3 +11,4 @@ data
 .idea
 .config
 .env
+node_modules

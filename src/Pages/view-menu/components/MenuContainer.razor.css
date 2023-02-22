@@ -25,7 +25,7 @@ h2 {
 .skip-container {
     display: flex;
     justify-content: center;
-    margin: 40px;
+    margin: 25px;
 }
 
 .skip-container label {
