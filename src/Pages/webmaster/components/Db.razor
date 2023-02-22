@@ -54,6 +54,9 @@
       AllergenRepository allergenRepository = new AllergenRepository(db);
       IngredientRepository ingredientRepository = new IngredientRepository(db);
       DishRepository dishRepository = new DishRepository(db);
+      OrderRepository orderRepository = new OrderRepository(db);
+      IRepositoryWrapper repository = new RepositoryWrapper(db);
+
       Random rnd = new Random();
 
       List < Allergen > allergens = new List < Allergen > () {
@@ -104,71 +107,86 @@
       }
 
       //loop over menus
-      foreach(var menu in menus) {
-        //loop over dishes
+        foreach(var menu in menus) {
+            Order order = new Order() {
+                userId = 1,
+                menu = menu,
+                orderDate = menu.lastOrderDate,
+                orderItems = new List < OrderItem > ()
+            };
+            repository.Order.AddOrder(order);
+            //loop over dishes
+            for (int i = 0; i < 3; i ++) {
+
+                for (int index = 0; index < 7; index ++) {
+                //add dish to menu
+                DateTime date = menu.startDate.AddDays(index);
+                //Add dishes
+
+                Dish dish = new Dish() {
+                    Name = getDishName(),
+                    Price = getPrice(),
+                    description = "Description " + index,
+                    ImageUrl = "Image " + index
+                };
+                dish.Type = ((FoodType)  rnd.Next(1, 6));
+                dish.description = dish.Name;
+                dish.Ingredients = new List < Ingredient > ();
+
+                for (int j = 0; j < 2; j ++) {
+                    await dishRepository.AddAllergenToDishAsync(dish, rnd.Next(1, 5));
+                }
+                for (int j = 0; j < 7; j ++) {
+                    await dishRepository.AddIngredientToDishAsync(dish, rnd.Next(1, 70));
+                }
+                await dishRepository.AddAsync(dish);
+                await menuRepository.AddDayMenuAsync(menu, date, dish, OrderType.Lunch);
+                Console.WriteLine("[FillDB]: Dish added to menu: " + dish.Name + "/" + menu.Name + "/" + date);
+                if (i == 2) {
+                    repository.Order.AddOrderItem(order, dish, rnd.Next(1, 10), date, OrderType.Lunch);
+                }
+                }
+        }
+
         for (int i = 0; i < 3; i ++) {
 
-            for (int index = 0; index < 7; index ++) {
-            //add dish to menu
-            DateTime date = menu.startDate.AddDays(index);
-            //Add dishes
+                for (int index = 0; index < 7; index ++) {
+                    //add dish to menu
+                    @* Random rnd = new Random(); *@
+                    DateTime date = menu.startDate.AddDays(index);
+                    //Add dishes
 
-            Dish dish = new Dish() {
-                Name = getDishName(),
-                Price = getPrice(),
-                description = "Description " + index,
-                ImageUrl = "Image " + index
-            };
-            dish.Type = ((FoodType)  rnd.Next(1, 6));
-            dish.description = dish.Name;
-            dish.Ingredients = new List < Ingredient > ();
+                    Dish dish = new Dish() {
+                        Name = getDishName(),
+                        Price = getPrice(),
+                        description = "Description " + index,
+                        ImageUrl = "Image " + index
+                    };
+                    dish.Type = ((FoodType)  rnd.Next(1, 6));
+                    dish.description = dish.Name;
+                    dish.Ingredients = new List < Ingredient > ();
 
-            for (int j = 0; j < 2; j ++) {
-                await dishRepository.AddAllergenToDishAsync(dish, rnd.Next(1, 5));
-            }
-            for (int j = 0; j < 7; j ++) {
-                await dishRepository.AddIngredientToDishAsync(dish, rnd.Next(1, 70));
-            }
-            await dishRepository.AddAsync(dish);
-            await menuRepository.AddDayMenuAsync(menu, date, dish, OrderType.Lunch);
-            Console.WriteLine("[FillDB]: Dish added to menu: " + dish.Name + "/" + menu.Name + "/" + date);
-            }
-      }
+                    for (int j = 0; j < 2; j ++) {
+                        await dishRepository.AddAllergenToDishAsync(dish, rnd.Next(1, 5));
+                    }
+                    for (int j = 0; j < 7; j ++) {
+                        await dishRepository.AddIngredientToDishAsync(dish, rnd.Next(1, 70));
+                    }
+                    await dishRepository.AddAsync(dish);
+                    await menuRepository.AddDayMenuAsync(menu, date, dish, OrderType.Middag);
+                    Console.WriteLine("[FillDB]: Dish added to menu: " + dish.Name + "/" + menu.Name + "/" + date);
 
-       for (int i = 0; i < 3; i ++) {
-
-            for (int index = 0; index < 7; index ++) {
-            //add dish to menu
-            @* Random rnd = new Random(); *@
-            DateTime date = menu.startDate.AddDays(index);
-            //Add dishes
-
-            Dish dish = new Dish() {
-                Name = getDishName(),
-                Price = getPrice(),
-                description = "Description " + index,
-                ImageUrl = "Image " + index
-            };
-            dish.Type = ((FoodType)  rnd.Next(1, 6));
-            dish.description = dish.Name;
-            dish.Ingredients = new List < Ingredient > ();
-
-            for (int j = 0; j < 2; j ++) {
-                await dishRepository.AddAllergenToDishAsync(dish, rnd.Next(1, 5));
+                    if (i == 1) {
+                        repository.Order.AddOrderItem(order, dish, rnd.Next(1, 10), date, OrderType.Middag);
+                    }
+                }
             }
-            for (int j = 0; j < 7; j ++) {
-                await dishRepository.AddIngredientToDishAsync(dish, rnd.Next(1, 70));
-            }
-            await dishRepository.AddAsync(dish);
-            await menuRepository.AddDayMenuAsync(menu, date, dish, OrderType.Middag);
-            Console.WriteLine("[FillDB]: Dish added to menu: " + dish.Name + "/" + menu.Name + "/" + date);
-            }
+
         }
+        await repository.SaveAsync();
       }
     }
 
-    message = "Dishes added to menus";
-  }
 
   async void getFirstMenu() {
     using(var db = new DatabaseContext()) {
