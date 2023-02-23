@@ -30,6 +30,34 @@
         <a href="" class="reload">Reload</a>
         <a class="dismiss">🗙</a>
     </div>
+    <script type="module">
+        import { confetti } from "https://cdn.jsdelivr.net/npm/tsparticles-confetti/+esm";
+        window.confettis = () => {
+            const end = Date.now() + 1100;
+            const colors = ["#067A46", "#ffffff"];
+            (function frame() {
+                confetti({
+                particleCount: 2,
+                angle: 60,
+                spread: 95,
+                origin: { x: 0 },
+                colors: colors
+                });
+
+                confetti({
+                particleCount: 2,
+                angle: 120,
+                spread: 95,
+                origin: { x: 1 },
+                colors: colors
+                });
+
+                if (Date.now() < end) {
+                requestAnimationFrame(frame);
+                }
+            })();
+        };
+    </script>
     <script type="text/javascript">
                 state='desktop'
         window.blazorOnLoad = function(dotNetHelper) {
