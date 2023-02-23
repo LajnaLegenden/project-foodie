@@ -9,6 +9,7 @@ h1 {
     color: #067A46;
     font-size: 40px;
 }
+
 .h1-same {
     margin-top: -20px;
 }
@@ -26,16 +27,21 @@ span {
     color: #067A46;
 }
 
+/**/
 .red {
     color: red;
 }
 
 @media screen and (max-height: 1080px) {
-    .startContainer { height: 380px;}
+    .startContainer {
+        height: 380px;
+    }
 }
 
 @media screen and (max-width: 1505px) {
-    .startContainer { width: 80%;}
+    .startContainer {
+        width: 80%;
+    }
 }
 
 @media screen and (max-width: 694px) {
@@ -43,6 +49,12 @@ span {
         width: 90%;
         height: 280px;
     }
-    h1 {font-size: 30px;}
-    p {font-size: 20px;}
+
+    h1 {
+        font-size: 30px;
+    }
+
+    p {
+        font-size: 20px;
+    }
 }
