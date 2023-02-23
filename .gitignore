@@ -9,6 +9,5 @@ artifacts/
 __pycache__/
 data
 .idea
-.config
 .env
 node_modules
