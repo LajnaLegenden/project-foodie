@@ -1,6 +1,7 @@
 @using Newtonsoft.Json;
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @using System.Collections.Generic;
+@inject CartService CartService
 
 <div class="header">
     <div class="logo">
@@ -32,7 +33,7 @@
                 <NavLink class="nav-link" href="/order?page=14">
                     <button class="nav-kassan">
                         <span>Icon</span>
-                        Varukorg <span class="nav-kassan-counter">@itemsCountInKassan</span>
+                        Varukorg <span class="nav-kassan-counter">@cartCount</span>
                     </button>
                 </NavLink>
             </div>
@@ -44,33 +45,27 @@
 
 
     private int itemsCountInKassan;
+    private int cartCount;
+
+
+    protected async override void OnInitialized()
+    {
+        cartCount = await CartService.GetObjectCount();
+        CartService.SetCartCount(cartCount);
+        CartService.CartCountChanged += HandleCartCountChanged;
+    }
+
+    private void HandleCartCountChanged(object sender, EventArgs e)
+    {
+        cartCount = CartService.GetCartCount();
+        StateHasChanged();
+    }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            itemsCountInKassan = await GetObjectCount();
+            itemsCountInKassan = await CartService.GetObjectCount();
             StateHasChanged();
-        }
-    }
-
-    private async Task<int> GetObjectCount()
-    {
-        // Fetch the data from local storage
-        var localStorageContent = await localStorage.GetItemAsync<string>("dishData");
-        // Check if the data is empty
-        if (localStorageContent == null)
-        {
-            return 0;
-        }
-        else
-        {
-            // Deserialize the data
-            var dictionary = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, int>>>(localStorageContent);
-            // Filter the data where count is greater than 0
-            var filteredObjects = dictionary.Values.Where(obj => obj.Values.Any(count => count > 0));
-            // Count the data and return the count
-            var itemsCount = filteredObjects.Count();
-            return itemsCount;
         }
     }
 }

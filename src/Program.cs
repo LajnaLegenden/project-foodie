@@ -7,6 +7,7 @@ using Blazored.LocalStorage;
 using project_foodie.Service;
 
 var builder = WebApplication.CreateBuilder(args);
+
 //Load env variables
 DotNetEnv.Env.Load();
 
@@ -18,10 +19,10 @@ builder.Services.AddServerSideBlazor();
 //register db context
 builder.Services.AddDbContextFactory<DatabaseContext>();
 
-
 #endregion
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddScoped<BrowserService>();
+builder.Services.AddScoped<CartService>();
 
 var app = builder.Build();
 
@@ -31,7 +32,6 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error");
 }
 
-
 app.UseStaticFiles();
 
 app.UseRouting();
@@ -40,6 +40,7 @@ app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
 app.Run();
+
 class Global
 {
     public static IHostEnvironment Environment { get; set; }
