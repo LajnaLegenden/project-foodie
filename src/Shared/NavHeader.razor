@@ -43,11 +43,11 @@
 
 @code {
 
-
+    // Variable to hold the cart count
     private int itemsCountInKassan;
     private int cartCount;
 
-
+    // OnInitializedAsync is called when the component is first rendered
     protected async override void OnInitialized()
     {
         cartCount = await CartService.GetObjectCount();
@@ -55,11 +55,13 @@
         CartService.CartCountChanged += HandleCartCountChanged;
     }
 
+    // Handle the event when the cart count changes
     private void HandleCartCountChanged(object sender, EventArgs e)
     {
         cartCount = CartService.GetCartCount();
         StateHasChanged();
     }
+    // OnAfterRenderAsync is called after the component has been rendered
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
