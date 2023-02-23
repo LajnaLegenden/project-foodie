@@ -1,8 +1,6 @@
 @using Newtonsoft.Json;
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @using System.Collections.Generic;
-@using project_foodie.Model;
-@inject IJSRuntime JSRuntime
 
 <div class="header">
     <div class="logo">
@@ -31,10 +29,10 @@
                 </NavLink>
             </div>
             <div class="nav-item">
-                <NavLink class="nav-link" href="#">
+                <NavLink class="nav-link" href="/order?page=14">
                     <button class="nav-kassan">
                         <span>Icon</span>
-                        Varukorg <span class="nav-kassan-counter">@count</span>
+                        Varukorg <span class="nav-kassan-counter">@itemsCountInKassan</span>
                     </button>
                 </NavLink>
             </div>
@@ -43,30 +41,36 @@
 </div>
 
 @code {
-    int count;
-    bool firstRender = true;
 
+
+    private int itemsCountInKassan;
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            int localStorageCount = await JSRuntime.InvokeAsync<int>("getLocalStorageCount");
-            count = localStorageCount;
+            itemsCountInKassan = await GetObjectCount();
+            StateHasChanged();
         }
-
     }
 
-    private async ValueTask<int> GetLocalStorageCount()
+    private async Task<int> GetObjectCount()
     {
-        int localStorageCount = await JSRuntime.InvokeAsync<int>("getLocalStorageCount");
-        return localStorageCount;
+        // Fetch the data from local storage
+        var localStorageContent = await localStorage.GetItemAsync<string>("dishData");
+        // Check if the data is empty
+        if (localStorageContent == null)
+        {
+            return 0;
+        }
+        else
+        {
+            // Deserialize the data
+            var dictionary = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, int>>>(localStorageContent);
+            // Filter the data where count is greater than 0
+            var filteredObjects = dictionary.Values.Where(obj => obj.Values.Any(count => count > 0));
+            // Count the data and return the count
+            var itemsCount = filteredObjects.Count();
+            return itemsCount;
+        }
     }
-
-    [JSInvokable]
-    public async Task UpdateLocalStorageCount()
-    {
-        count = await GetLocalStorageCount();
-        StateHasChanged();
-    }
-
 }
