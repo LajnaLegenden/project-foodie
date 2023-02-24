@@ -7,6 +7,8 @@
 @using Newtonsoft.Json;
 @using Newtonsoft.Json.Linq;
 @inject NavigationManager NavManager
+@inject IJSRuntime JSRuntime
+@using Microsoft.JSInterop
 
 @if (dataLoaded) {
     <div class="confirmedContainer">
@@ -59,6 +61,7 @@
             dataLoaded = true;
             StateHasChanged();
         }
+        await JSRuntime.InvokeVoidAsync("confettis");
     }
 
     private string getOrderDate() {
