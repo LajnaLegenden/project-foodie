@@ -8,6 +8,7 @@ using project_foodie.Service;
 using project_foodie.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
+
 //Load env variables
 DotNetEnv.Env.Load();
 
@@ -24,6 +25,7 @@ builder.Services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
 #endregion
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddScoped<BrowserService>();
+builder.Services.AddScoped<CartService>();
 
 var app = builder.Build();
 
@@ -33,7 +35,6 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error");
 }
 
-
 app.UseStaticFiles();
 
 app.UseRouting();
@@ -42,6 +43,7 @@ app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
 app.Run();
+
 class Global
 {
     public static IHostEnvironment Environment { get; set; }
