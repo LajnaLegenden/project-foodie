@@ -1,8 +1,13 @@
+/* 
+path: src/Pages/view-menu/components/Dishes.razor.css
+*/
+
 .food-card {
     width: 300px;
     height: 391px;
     background: #FCFCFC;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    -webkit-box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 5px;
 }
 
@@ -44,9 +49,13 @@
 }
 
 .allergener {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     border-top: 1px solid #DBDBDB;
-    align-items: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
     padding: 0px;
     gap: 5px;
     margin-top: 16px;
@@ -65,8 +74,11 @@
 }
 
 .food-card-upper-body {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    justify-content: space-around;
+    -ms-flex-pack: distribute;
+        justify-content: space-around;
     width: 100%;
 }
 
@@ -75,13 +87,21 @@
 }
 
 .food-card-btn-container {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    justify-content: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
 }
 
 .food-card-btn-container-no-food {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    justify-content: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
 }
 
 .food-card-btn-container-no-food .btn-add-container {
@@ -109,9 +129,16 @@
 
 .btn-add-container {
     height: 45px;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    flex-direction: row;
-    justify-content: center;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
     width: 180px;
     margin: 5px;
     border-radius: 25px;
@@ -136,7 +163,8 @@
     width: 40px;
     height: 40px;
     border: none;
-    filter: var(--filter-shadow-default, drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)));
+    -webkit-filter: var(--filter-shadow-default, drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)));
+            filter: var(--filter-shadow-default, drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)));
     margin-top: 3px;
     font-size: 30px;
 }
@@ -166,6 +194,26 @@
 .text-add-placeholder:focus {
     border: none;
     background: none;
+}
+
+::-webkit-input-placeholder {
+    color: var(--text-color-primary, #000000);
+    opacity: 1;
+}
+
+::-moz-placeholder {
+    color: var(--text-color-primary, #000000);
+    opacity: 1;
+}
+
+:-ms-input-placeholder {
+    color: var(--text-color-primary, #000000);
+    opacity: 1;
+}
+
+::-ms-input-placeholder {
+    color: var(--text-color-primary, #000000);
+    opacity: 1;
 }
 
 ::placeholder {
