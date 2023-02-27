@@ -1,22 +1,39 @@
 @using project_foodie.Model;
 
-<tr>
-    <th>Beställningsnummer</th>
-    <th>Orderdatum</th>
-    <th>Totalsumma</th>
-    <th>Leveransvecka</th>
-    <th>Status</th>
-</tr>
-<tr>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <button>Visa detaljer</button>
-</tr>
+<div>
+    <h4>Beställningsnummer</h4>
+    <p>@orderData.Id</p>
+    <h4>Orderdatum</h4>
+    <p>@orderData.orderDate.ToString("yyyy-MM-dd")</p>
+    <h4>Totalsumma</h4>
+    <p></p>
+    <h4>Leveransvecka</h4>
+    <p></p>
+    <h4>Status</h4>
+    <p></p>
+    <button onclick="@showDetails">Visa detaljer</button>
+</div>
+
+@if (detailsVisible)
+{
+    <table>
+        <tr>
+            <th>Veckodag</th>
+            <th>Måltid</th>
+            <th>Maträtt</th>
+            <th>Antal</th>
+            <th>Pris</th>
+        </tr>
+    </table>
+}
 
 @code {
     [Parameter]
     public Order orderData { get; set; }
+    private bool detailsVisible = false;
+    
+    private void showDetails() 
+    {
+        detailsVisible ^= true;
+    }
 }

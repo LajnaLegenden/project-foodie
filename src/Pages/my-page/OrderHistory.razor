@@ -5,12 +5,10 @@
 
 <h1 class="order-history-title">Mina beställningar</h1>
 <div class="order-history-container">
-    <table class="order-history-table">
-            @foreach (var order in orders)
-            {
-                <OrderTable orderData="@order"/>
-            }
-    </table>
+    @foreach (var order in orders)
+    {
+        <OrderTable orderData="@order"/>
+    }
 </div>
 
 @code {
