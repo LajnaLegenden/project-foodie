@@ -1,0 +1,15 @@
+    Menu associatedMenu;
+    ICollection<Dish> associatedDishes;
+    protected override async Task OnInitializedAsync()
+    {
+        //Console.WriteLine(orderData.menu);
+        using (var db = new DatabaseContext()) 
+        {   
+            MenuRepository mr = new MenuRepository(db);
+            associatedMenu = await mr.GetByIdAsync(orderData.menu.Id);
+        }
+        foreach (var day in associatedMenu.dayMenus)
+        {
+            associatedDishes = day.dishes;
+        }
+    }
