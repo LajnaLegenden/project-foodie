@@ -1,0 +1,22 @@
+@using project_foodie.Model;
+
+<tr>
+    <th>Beställningsnummer</th>
+    <th>Orderdatum</th>
+    <th>Totalsumma</th>
+    <th>Leveransvecka</th>
+    <th>Status</th>
+</tr>
+<tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <button>Visa detaljer</button>
+</tr>
+
+@code {
+    [Parameter]
+    public Order orderData { get; set; }
+}
