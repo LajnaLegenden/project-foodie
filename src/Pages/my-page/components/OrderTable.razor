@@ -1,19 +1,23 @@
 @using project_foodie.Model;
 @using System.Globalization;
 
-<div>
-    <h4>Beställningsnummer</h4>
-    <p>@orderData.Id</p>
-    <h4>Orderdatum</h4>
-    <p>@orderData.orderDate.ToString("yyyy-MM-dd")</p>
-    <h4>Leveransvecka</h4>
-    <p>@weekNr</p>
-    <h4>Totalsumma</h4>
-    <p>@totalPrice</p>
-    <h4>Status</h4>
-    <p>@orderStatus</p>
-    <button onclick="@showDetails">Visa detaljer</button>
-</div>
+<table class="order-table">
+    <tr>
+        <th>Beställningsnummer</th>
+        <th>Orderdatum</th>
+        <th>Leveransvecka</th>
+        <th>Totalsumma</th>
+        <th>Status</th>
+        <td rowspan="2"><button class="details-button" onclick="@showDetails">Visa detaljer</button></td>
+    </tr>
+    <tr>
+        <td>@orderData.Id</td>
+        <td>@orderData.orderDate.ToString("yyyy-MM-dd")</td>
+        <td>@weekNr</td>
+        <td>@totalPrice :-</td>
+        <td>@orderStatus</td>
+    </tr>
+</table>
 
 @if (detailsVisible)
 {
