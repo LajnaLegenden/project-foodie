@@ -135,7 +135,7 @@ else
     }
 
     private void ReadQueryParams(){
-          var uri = NavManager.ToAbsoluteUri(NavManager.Uri);
+        var uri = NavManager.ToAbsoluteUri(NavManager.Uri);
         if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("page", out var _page))
         {
          selectedIndex = Convert.ToInt32(_page);
