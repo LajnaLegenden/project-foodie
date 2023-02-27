@@ -1,6 +1,6 @@
 # Set the base image to the official .NET SDK 7 image
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
-
+ENV HUSKY 0
 # Install Node.js
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
 RUN apt-get install -y nodejs

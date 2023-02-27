@@ -1,10 +1,21 @@
+/* Path: src/Pages/view-menu/components/Timeline.razor.css */
+
+
 .timeline-container {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     width: 90%;
-    justify-content: space-around;
+    -ms-flex-pack: distribute;
+        justify-content: space-around;
     display: flex;
-    flex-direction: row;
-    align-items: center;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
     margin: auto;
 }
 
@@ -64,19 +75,41 @@
 }
 
 .timeline-section {
+    -webkit-transition: 250ms all ease-in-out;
+    -o-transition: 250ms all ease-in-out;
     transition: 250ms all ease-in-out;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
     width: calc(70%/6);
 }
 
 .timeline-entry {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-transition: 250ms all ease-in-out;
+    -o-transition: 250ms all ease-in-out;
     transition: 250ms all ease-in-out;
     overflow: hidden;
     width: 100%;
@@ -100,8 +133,11 @@
 }
 
 .mobile-timeline {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    justify-content: space-around;
+    -ms-flex-pack: distribute;
+        justify-content: space-around;
 }
 
 .main {

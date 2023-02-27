@@ -6,6 +6,12 @@ namespace project_foodie.Modules
 {
     public static class UrlHelper
     {
+        /// <summary>
+        /// Removes the query string by key.
+        /// </summary>
+        /// <param name="url">The URL.</param>
+        /// <param name="key">The key.</param>
+        /// <returns>pagePathWithoutQueryString</returns>
         public static string RemoveQueryStringByKey(string url, string key)
         {
             var uri = new Uri(url);
