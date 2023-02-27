@@ -14,6 +14,7 @@ namespace project_foodie.Repository
             return await FindAll()
                 .OrderBy(o => o.orderDate)
                 .Include(o => o.orderItems)
+                .ThenInclude(o => o.dish)
                 .Include(o => o.menu)
                 .ToListAsync();
         }

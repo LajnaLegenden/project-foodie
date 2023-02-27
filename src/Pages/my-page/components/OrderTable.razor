@@ -1,16 +1,17 @@
 @using project_foodie.Model;
+@using System.Globalization;
 
 <div>
     <h4>Beställningsnummer</h4>
     <p>@orderData.Id</p>
     <h4>Orderdatum</h4>
     <p>@orderData.orderDate.ToString("yyyy-MM-dd")</p>
-    <h4>Totalsumma</h4>
-    <p></p>
     <h4>Leveransvecka</h4>
-    <p></p>
+    <p>@weekNr</p>
+    <h4>Totalsumma</h4>
+    <p>@totalPrice</p>
     <h4>Status</h4>
-    <p></p>
+    <p>@orderStatus</p>
     <button onclick="@showDetails">Visa detaljer</button>
 </div>
 
@@ -31,9 +32,29 @@
     [Parameter]
     public Order orderData { get; set; }
     private bool detailsVisible = false;
+    private int totalPrice = 0;
+    private int weekNr;
+    private string orderStatus = "Beställd";
     
     private void showDetails() 
     {
         detailsVisible ^= true;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var currentCulture = CultureInfo.CurrentCulture;
+
+        // Get week of order (delivery week)
+        for (DateTime date = orderData.menu.startDate; date < orderData.menu.endDate; date = date.AddDays(1)) 
+        {
+            weekNr = currentCulture.Calendar.GetWeekOfYear(date, currentCulture.DateTimeFormat.CalendarWeekRule, currentCulture.DateTimeFormat.FirstDayOfWeek);
+        }
+
+        // Calculate total price for order
+        foreach (var orderItem in orderData.orderItems)
+        {
+            totalPrice += orderItem.dish.Price;
+        }
     }
 }
