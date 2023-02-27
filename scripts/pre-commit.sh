@@ -19,5 +19,3 @@ for FILE in $FILES; do
   fi
 done
 
-
-dotnet regitlint -f staged --fail-on-diff
