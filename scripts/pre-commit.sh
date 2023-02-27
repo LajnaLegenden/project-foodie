@@ -18,3 +18,6 @@ for FILE in $FILES; do
     git add $FILE
   fi
 done
+
+
+dotnet regitlint -f staged --fail-on-diff
