@@ -87,8 +87,10 @@
         }
     }
 
-    protected override async Task OnInitializedAsync() 
+    protected override async Task OnAfterRenderAsync(bool firstRender) 
     {
+        if(!firstRender)
+            return;
         var localStorageContent = await localStorage.GetItemAsync<string>("dishData");
         if (localStorageContent != null)
         {

@@ -10,6 +10,7 @@
 @inject IJSRuntime JSRuntime
 @inject NavigationManager NavManager
 
+<div>
 @if (loading)
 {
     <p>Loading</p>
@@ -69,6 +70,7 @@ else
         </div>
     }
 }
+</div>
 
 @code {
     public string Category = "all";
