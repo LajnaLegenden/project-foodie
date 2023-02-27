@@ -39,12 +39,12 @@
     <div class="timeline-container">
             <div class="timeline-section mobile">
                 <div class="timeline-entry">
-                    <TimeLineSection dm="@sections[currentIndex].DayMenu" showTypes="true" size="@state" isDay="true" state="TimeLineSection.TimelineState.Inactive" />
+                    <TimeLineSection menu=@menu dm="@sections[currentIndex].DayMenu" showTypes="true" size="@state" isDay="true" state="TimeLineSection.TimelineState.Inactive" />
                    
                     @foreach (var item in getSameDateDayMenus(currentIndex))
                     {
                         TimeLineSection.TimelineState sectionState = currentIndex == item.Index ? TimeLineSection.TimelineState.Active : currentIndex > item.Index ? TimeLineSection.TimelineState.Completed : TimeLineSection.TimelineState.Inactive;
-                        <TimeLineSection dm="@item.DayMenu" showTypes="true" isDay="false" state="sectionState" />
+                        <TimeLineSection menu=@menu dm="@item.DayMenu" showTypes="true" isDay="false" state="sectionState" />
                     }
                 </div>
             </div>

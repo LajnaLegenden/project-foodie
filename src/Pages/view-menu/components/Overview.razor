@@ -4,107 +4,108 @@
 @using project_foodie.Model;
 @using project_foodie.Repository;
 @using project_foodie.Modules;
-@if(dataLoaded){
 
-<div class="overview-container">
-    <h1>Översikt över dina val</h1>
-    <p>Beställningsdag: 2023-01-23</p>
-    <p>Leverans: 2023-02-01</p>
+@if (dataLoaded) {
+    <div class="overview-container">
+        <h1>Översikt över dina val</h1>
+        <p>Beställningsdag: 2023-01-23</p>
+        <p>Leverans: 2023-02-01</p>
 
-    <table class="overview-table">
-        <tr>
-            <th>Veckodag</th>
-            <th>Lunch</th>
-            <th>Lunch pris</th>
-            <th>Middag</th>
-            <th>Middag pris</th>
-            <th>Totalt</th>
-            <th></th>
-        </tr>
-        @foreach (Row r in data)
-        {
+        <table class="overview-table">
             <tr>
-                <td data-label="Veckodag">@convertToWeekday(r.dm.date)</td>
-                <td data-label="Lunch">
-                    <ul>
-                        @foreach (var item in r.dishCount)
-                        {
-                            @if (item.dm.type == OrderType.Lunch)
-                            {
-
-                                <li>
-                                    @getDishFromDmById(item.dishId, item.dm).Name x @item.Count
-                                </li>
-                            }
-                        }
-                    </ul>
-                </td>
-                <td data-label="Pris">@r.LunchPrice:-</td>
-                <td data-label="Middag">
-                    <ul>
-                        @foreach (var item in r.dishCount)
-                        {
-                            @if (item.dm.type == OrderType.Middag)
-                            {
-                                <li>
-                                    @getDishFromDmById(item.dishId, item.dm).Name x @item.Count
-                                </li>
-                            }
-                        }
-                    </ul>
-                </td>
-                <td data-label="Pris">@r.DinnerPrice:-</td>
-                <td data-label="Totalt">@(r.LunchPrice + r.DinnerPrice):-</td>
-                <td><a class="change-dish-button" href="@getModifyUrl(r)">Ändra val</a></td>
+                <th>Veckodag</th>
+                <th>Lunch</th>
+                <th>Lunch pris</th>
+                <th>Middag</th>
+                <th>Middag pris</th>
+                <th>Totalt</th>
+                <th></th>
             </tr>
-        }
-        <h2 class="total-all-price">Total: @getTotalPrice():- </h2>
-    </table>
-</div>
+            @foreach (LocalStorage.Row r in data)
+            {
+                <tr>
+                    <td data-label="Veckodag">@convertToWeekday(r.dm.date)</td>
+                    <td data-label="Lunch">
+                        <ul>
+                            @foreach (var item in r.dishCount)
+                            {
+                                if (item.dm.type == OrderType.Lunch)
+                                {
+                                if (item.Count == -1) 
+                                {
+                                    <li>Överhoppad</li>
+                                }
+                                else 
+                                {
+                                        <li>
+                                            @getDishFromDmById(item.dishId, item.dm).Name x @item.Count
+                                        </li>
+                                    }
+                                }
+                            }
+                    </ul>
+                    </td>
+                    <td data-label="Pris">@r.LunchPrice:-</td>
+                    <td data-label="Middag">
+                        <ul>
+                            @foreach (var item in r.dishCount)
+                            {
+                                if (item.dm.type == OrderType.Middag)
+                                {
+                                if (item.Count == -1) 
+                                {
+                                    <li>Överhoppad</li>
+                                }
+                                else 
+                                {
+                                        <li>
+                                            @getDishFromDmById(item.dishId, item.dm).Name x @item.Count
+                                        </li>
+                                    }
+                                }
+                            }
+                    </ul>
+                    </td>
+                    <td data-label="Pris">@r.DinnerPrice:-</td>
+                    <td data-label="Totalt">@(r.LunchPrice + r.DinnerPrice):-</td>
+                    <td><button class="change-dish-button">Ändra val</button></td>
+                </tr>
+            }
+            <h2 class="total-all-price">Total: @getTotalPrice():- </h2>
+        </table>
+    </div>
 } else {
-    <p>Loading...</p>
+    <h1>Loading</h1>
 }
 
 @code {
     [Parameter]
     public Menu menu { get; set; }
 
-    public int CurrentAmount { get; set; }
+    private List<LocalStorage.Row> data;
 
-    public int TotalPrice { get; set; }
-
-    public List<Dish> Dishes { get; set; }
-
-    private List<Row> data;
-
-        bool dataLoaded = false;
-    public class Row
-    {
-        public DayMenu dm;
-        public (int Count, int dishId, DayMenu dm)[] dishCount;
-        public int LunchPrice;
-        public int DinnerPrice;
-    }
+    public bool dataLoaded = false;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if(!dataLoaded){
-            await LoadData();
+            data = await LocalStorage.LoadData(localStorage, menu);
             dataLoaded = true;
             StateHasChanged();
         }
     }
 
-    private string getModifyUrl(Row r)
+    private string getModifyUrl(LocalStorage.Row r)
     {
         // /order/id/page=r.index
         string url = "/order/" + menu.Id + "?page=" + DayMenuHelper.getDayMenuIndex(menu, r.dm);
         return url;
     }
+
     private int getTotalPrice()
     {
         int Total = 0;
-        foreach (Row r in data)
+        foreach (LocalStorage.Row r in data)
         {
             Total += r.LunchPrice + r.DinnerPrice;
         }
@@ -130,82 +131,4 @@
         }
         return null;
     }
-
-    private async Task LoadData()
-    {
-        data = new List<Row>();
-
-        var localStorageData = await localStorage.GetItemAsync<string>("dishData");
-        // Check if localstorage is empty
-        if (localStorageData == null) {
-            return;
-        }
-        var localStorageObj = JObject.Parse(localStorageData);
-        foreach (DayMenu dm in menu.dayMenus)
-        {
-            string dayString = dm.date.ToString("yyyy-MM-dd") + "-" + dm.type + "-" + dm.Id;
-            if (localStorageObj[dayString] != null)
-            {
-                foreach (JProperty item in localStorageObj[dayString])
-                {
-                    int dishId = Int32.Parse(item.Name);
-                    int count = (int)item.Value;
-                    if (count == 0)
-                        continue;
-
-                    foreach (Row r in data)
-                    {
-                        if (r.dm.date == dm.date)
-                        {
-                            r.dishCount.Append((count, dishId, dm));
-                        }
-                    }
-                    data.Add(new Row { dm = dm, dishCount = new (int Count, int dishId, DayMenu dm)[] { (count, dishId, dm) } });
-
-                }
-
-            }
-        }
-
-
-        List<Row> data2 = new List<Row>();
-
-        foreach (Row r in data)
-        {
-            //loop over data2
-            bool found = false;
-            foreach (Row r2 in data2)
-            {
-                if (r2.dm.date == r.dm.date)
-                {
-                    found = true;
-                    r2.dishCount = r2.dishCount.Concat(r.dishCount).ToArray();
-                }
-            }
-            if (!found)
-            {
-                data2.Add(r);
-            }
-        }
-
-        //calculate lunch and dinner price
-
-        foreach (Row r in data2)
-        {
-            foreach (var item in r.dishCount)
-            {
-                if (item.dm.type == OrderType.Lunch)
-                {
-                    r.LunchPrice += getDishFromDmById(item.dishId, item.dm).Price * item.Count;
-                }
-                else
-                {
-                    r.DinnerPrice += getDishFromDmById(item.dishId, item.dm).Price * item.Count;
-                }
-            }
-        }
-
-        data = data2;
-    }
-
 }
