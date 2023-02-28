@@ -10,6 +10,7 @@
 @inject IJSRuntime JSRuntime
 @inject NavigationManager NavManager
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject CartService CartService
 
 <div>
 @if (loading)
@@ -106,6 +107,7 @@ else
             setPage(selectedIndex + 1, true);
             //Clear local storage once order is saved
             await localStorage.ClearAsync();
+            CartService.AddToCart();
         }
         catch (DbUpdateConcurrencyException e) {
             // TODO: Log error
@@ -117,6 +119,7 @@ else
             Console.WriteLine(e);
         }
     }
+
     private List<Categories> categoryList = new()
         {
             new Categories()

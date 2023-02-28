@@ -30,7 +30,7 @@
                 <div class="inputs">
                     <h2>Thomas Andersson</h2>
                     <h2>@order.orderDate</h2>
-                    <h2>@order.orderItems.Count</h2>
+                    <h2>@getNumberOfMeals()</h2>
                     <h2>2023-03-06</h2>
                     <h2>@getTotalPrice():-</h2>
                 </div>
@@ -56,6 +56,7 @@
 
     public bool dataLoaded = false;
 
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if(!dataLoaded){
@@ -72,6 +73,23 @@
         foreach (OrderItem item in order.orderItems)
         {
             Total += item.dish.Price * item.quantity;
+        }
+        return Total;
+    }
+
+    private int getNumberOfMeals()
+    {
+        OrderItem _prevOrderItem = null;
+        int Total = 0;
+        foreach (OrderItem item in order.orderItems)
+        {
+            //Count number of meals (more orderItems can be created per meal)
+            if (_prevOrderItem != null && (_prevOrderItem.date == item.date && _prevOrderItem.type == item.type))
+            {
+                continue;
+            }  
+            Total += 1; 
+            _prevOrderItem = item;
         }
         return Total;
     }
