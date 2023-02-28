@@ -1,0 +1,185 @@
+
+.modal-background {
+  background-color: rgba(0, 0, 0, 0.6);
+	width: 100vw;
+	height: 100%;
+	position: fixed;
+	left: 0;
+	top: 0;
+	z-index: 9;
+	opacity: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal-card {
+	background-color: #fff;
+	max-width: 40em;
+	width: 100%;
+	border-radius: 10px 10px 10px 10px;
+	z-index: 999;
+	pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.card-image {
+  height: 10em;
+  width: 100%;
+  border-radius: 10px 10px 0px 0px;
+  background-color: #067A46;
+}
+
+.card-header {
+  text-align: center;
+}
+
+.card-header h1 {
+  font-size: 2.4em;
+}
+
+.card-body {
+	display: flex;
+  flex-direction: column;
+  max-height: 24em;
+  overflow-y: auto;
+  width: 80%;
+}
+
+.content-container {
+	display: flex;
+  flex-direction: row;
+}
+
+.content {
+	/* flex: 1; */
+  padding: 0;
+  margin: 0 2em;
+}
+
+.content p, h2 {
+  font-size: 1.4em;
+}
+
+.content ul {
+  padding-left: 24px;
+  margin-top: 0;
+  font-size: 1.4em;
+}
+
+/* .content:first-child {
+    margin-right: 20px;
+} */
+
+.nutrition-table {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1em;
+}
+
+.nutrition-table table {
+  border-collapse: collapse;
+  width: 90%;
+  font-size: 1.4em;
+}
+
+.nutrition-table td, th {
+  padding: 0.5em;
+}
+
+.nutrition-table tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+.alignright { text-align: right; }
+
+.alignleft { text-align: left; }
+
+.card-body::-webkit-scrollbar {
+   width: 1em;
+}
+
+.card-body::-webkit-scrollbar-track {
+   -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+   border-radius: 10px;
+}
+
+.card-body::-webkit-scrollbar-thumb {
+   border-radius: 10px;
+   background-color: #067A46;
+   -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+}
+
+.card-button {
+  margin-bottom: 38px;
+}
+
+.close-button {
+	width: 300px;
+	height: 50px;
+	border-radius: 10px 10px 10px 10px;
+	border: none;
+	margin-top: 32px;
+	background-color: #FF5757;
+	color: #fff;
+	font-size: 24px;
+	cursor: pointer;
+}
+
+@media screen and (max-width: 600px) {
+  .modal-card {
+    background-color: #fff;
+    width: 80%;
+  }
+
+  .card-image {
+    height: 130px;
+  }
+
+  .content {
+    margin: 0 0.5em;
+  }
+
+  .nutrition-table table {
+    width: 90%;
+    font-size: 1.2em;
+  }
+
+  .card-body {
+    width: 100%;
+  }
+
+  .card-body::-webkit-scrollbar {
+    width: 0.5em;
+  }
+
+  .content-container {
+    justify-content: center;
+    /* align-items: center; */
+    flex-direction: column;
+    margin-left: 20%;
+  }
+
+  .card-button {
+    width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .close-button {
+    width: 80%;
+  }
+
+  .content ul {
+    /* font-size: 1.2em; */
+  }
+
+}

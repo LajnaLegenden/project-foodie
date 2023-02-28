@@ -1,0 +1,25 @@
+
+<div class="modal-background">
+    <div class="modal-card">
+        <div class="card-header">
+        </div>
+        <div class="card-body" style="text-align: center">
+            <h2>Error</h2>
+            <p>Database error</p>
+        </div>
+        <div class="card-button">
+            <button class="close-button" onclick="@ModalClose">Stäng ner</button>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    [Parameter]
+    public EventCallback<bool> OnClose {get; set;}
+
+    private Task ModalClose()
+    {
+        return OnClose.InvokeAsync(false);
+    }
+}
