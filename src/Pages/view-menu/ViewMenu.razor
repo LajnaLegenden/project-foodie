@@ -9,6 +9,7 @@
 @inject IJSRuntime JS;
 @inject IJSRuntime JSRuntime
 @inject NavigationManager NavManager
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
 
 <div>
 @if (loading)
@@ -20,7 +21,7 @@ else
     @if(selectedIndex == -1) {
         <ViewStart menuInfo=@_menu/>
     } else if (selectedIndex == confirmedViewIndex) {
-        <Confirmed menu="@_menu"/>
+        <Confirmed menu="@_menu" order="@_newOrder"/>
     } else {
         @if(selectedIndex != overViewIndex) {
             <Timeline menu="@_menu" currentIndex="@selectedIndex" state="@viewPort"/>
@@ -60,13 +61,18 @@ else
 
             <div class="button-container">
                 <button @onclick="() => setPage(selectedIndex -1, true)" class="button-back">@getBackButtonString()</button>
+            @if(selectedIndex == overViewIndex){
+                <button @onclick="@SaveOrder" class="button-forward">Beställ här</button>
+            } else {
                 <button @onclick="() => setPage(selectedIndex + 1, true)" class="button-forward">@getNextButtonString()</button>
+            }
+
             </div>
         </div>
     }
     @if(selectedIndex == -1) {
         <div class="button-start-container">
-            <button @onclick="() => setPage(selectedIndex +1)" class="button-start">Beställ här</button>
+            <button @onclick="() => setPage(selectedIndex + 1, true)" class="button-start">Beställ här</button>
         </div>
     }
 }
@@ -84,6 +90,7 @@ else
     private Menu _menu;
     private bool loading = true;
     private bool shouldGoToOverview = false;
+    public Order _newOrder = null;
 
     int returnButtonShenanigans = -1;
     
@@ -91,7 +98,25 @@ else
     private DotNetObjectReference<ViewMenu> objRef;
     private string dayString => selectedIndex == overViewIndex ? "overview-day-container" : "viewmenu-day-container";
 
-
+    // Uses SaveOrder from Overview.razor
+    private async Task SaveOrder() {
+        try
+        {
+            _newOrder = await overview?.SaveOrder();
+            setPage(selectedIndex + 1, true);
+            //Clear local storage once order is saved
+            await localStorage.ClearAsync();
+        }
+        catch (DbUpdateConcurrencyException e) {
+            // TODO: Log error
+            Console.WriteLine(e);
+        }
+            catch (DbUpdateException e)
+        {
+            // TODO: Log error
+            Console.WriteLine(e);
+        }
+    }
     private List<Categories> categoryList = new()
         {
             new Categories()
