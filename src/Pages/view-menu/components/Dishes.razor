@@ -30,11 +30,16 @@
                 }
             </div>
             <div class="@quantityContainer">
-                <div class="btn-add-container">
-                    <button class="food-card-btn-decrement" @onclick="((e) => modifyCount(-1))"><span>-</span></button>
-                    <input type="text" class="text-add-placeholder" count="@count" placeholder="@count st" readonly="readonly" />
-                    <button class="food-card-btn-increment" @onclick="((e) => modifyCount(1))"><span>+</span></button>
-                </div>
+            @if (showInput)
+                {
+                    <div class="btn-add-container">
+                        <button class="food-card-btn-decrement" @onclick="((e) => modifyCount(-1))"><span>-</span></button>
+                        <input type="text" class="text-add-placeholder" count="@count" placeholder="@count st" readonly="readonly" />
+                        <button class="food-card-btn-increment" @onclick="((e) => modifyCount(1))"><span>+</span></button>
+                    </div>
+                } else {
+                    <button class="@ButtonClass food-card-btn" type="submit" @onclick="((e) => modifyCount(1))">Välj</button>
+            }
             </div>
         </div>
     </div>
