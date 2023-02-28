@@ -21,7 +21,7 @@ else
     @if(selectedIndex == -1) {
         <ViewStart menuInfo=@_menu/>
     } else if (selectedIndex == confirmedViewIndex) {
-        <Confirmed menu="@_menu" order="@_newOrder"/>
+        <Confirmed menu="@_menu" order="@newOrder"/>
     } else {
         @if(selectedIndex != overViewIndex) {
             <Timeline menu="@_menu" currentIndex="@selectedIndex" state="@viewPort"/>
@@ -90,7 +90,7 @@ else
     private Menu _menu;
     private bool loading = true;
     private bool shouldGoToOverview = false;
-    public Order _newOrder = null;
+    public Order newOrder = null;
 
     int returnButtonShenanigans = -1;
     
@@ -102,7 +102,7 @@ else
     private async Task SaveOrder() {
         try
         {
-            _newOrder = await overview?.SaveOrder();
+            newOrder = await overview?.SaveOrder();
             setPage(selectedIndex + 1, true);
             //Clear local storage once order is saved
             await localStorage.ClearAsync();
