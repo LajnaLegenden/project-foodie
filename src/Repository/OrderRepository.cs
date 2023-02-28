@@ -16,13 +16,16 @@ namespace project_foodie.Repository
                 .Include(o => o.orderItems)
                 .ThenInclude(o => o.dish)
                 .Include(o => o.menu)
+                .ThenInclude(o => o.dayMenus)
                 .ToListAsync();
         }
         public async Task<Order> GetByIdAsync(int orderId)
         {
             return await FindByCondition(order => order.Id.Equals(orderId))
             .Include(o => o.orderItems)
+            .ThenInclude(o => o.dish)
             .Include(o => o.menu)
+            .ThenInclude(o => o.dayMenus)
             .FirstOrDefaultAsync();
         }
         public void AddOrder(Order order)
