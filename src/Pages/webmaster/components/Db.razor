@@ -181,18 +181,17 @@
                     }
                 }
             }
-
-        }
-        var ghostDish = new Dish() {
-          Name = "GHOST_DISH_DISABLE_MEAL",
-          Price = 0,
-          description = ""
-        };
-        ghostDish.Type = FoodType.Unknown;
-        await dishRepository.AddAsync(ghostDish);
-        for (int i = 0; i < 7; i++) {
-          await menuRepository.AddDayMenuAsync(menu, menu.startDate.AddDays(i), ghostDish, OrderType.Lunch);
-          await menuRepository.AddDayMenuAsync(menu, menu.startDate.AddDays(i), ghostDish, OrderType.Middag);
+          var ghostDish = new Dish() {
+            Name = "GHOST_DISH_DISABLE_MEAL",
+            Price = 0,
+            description = ""
+          };
+          ghostDish.Type = FoodType.Unknown;
+          await dishRepository.AddAsync(ghostDish);
+          for (int i = 0; i < 7; i++) {
+            await menuRepository.AddDayMenuAsync(menu, menu.startDate.AddDays(i), ghostDish, OrderType.Lunch);
+            await menuRepository.AddDayMenuAsync(menu, menu.startDate.AddDays(i), ghostDish, OrderType.Middag);
+          }
         }
         await repository.SaveAsync();
       }
