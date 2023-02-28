@@ -4,6 +4,7 @@
 @using Newtonsoft.Json.Linq;
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @using project_foodie.Repository;
+@inject CartService CartService
 
 @if (dishData.Name != "GHOST_DISH_DISABLE_MEAL")
 {
@@ -29,11 +30,16 @@
                 }
             </div>
             <div class="@quantityContainer">
-                <div class="btn-add-container">
-                    <button class="food-card-btn-decrement" @onclick="((e) => modifyCount(-1))"><span>-</span></button>
-                    <input type="text" class="text-add-placeholder" count="@count" placeholder="@count st" readonly="readonly" />
-                    <button class="food-card-btn-increment" @onclick="((e) => modifyCount(1))"><span>+</span></button>
-                </div>
+            @if (showInput)
+                {
+                    <div class="btn-add-container">
+                        <button class="food-card-btn-decrement" @onclick="((e) => modifyCount(-1))"><span>-</span></button>
+                        <input type="text" class="text-add-placeholder" count="@count" placeholder="@count st" readonly="readonly" />
+                        <button class="food-card-btn-increment" @onclick="((e) => modifyCount(1))"><span>+</span></button>
+                    </div>
+                } else {
+                    <button class="@ButtonClass food-card-btn" type="submit" @onclick="((e) => modifyCount(1))">Välj</button>
+            }
             </div>
         </div>
     </div>
@@ -41,7 +47,7 @@
 
 @if (PopupOpen)
 {
-    <Contents DishName="@dishData.Name" FoodContent="@foodContent" Allergens="@allergens" OnClose="@PopupClose"/>
+    <Contents DishName="@dishData.Name" FoodContent="@foodContent" Allergens="@allergens" OnClose="@PopupClose" />
 }
 
 @code {
@@ -90,21 +96,22 @@
     List<string> allergens = new List<string>();
     private ICollection<Ingredient> ingredients;
 
-    protected override async Task OnInitializedAsync() {
+    protected override async Task OnInitializedAsync()
+    {
         using (var db = new DatabaseContext())
         {
             DishRepository dr = new DishRepository(db);
             ingredients = await dr.getDishIngredients(dishData.Id);
         }
 
-        foreach(Allergen element in dishData.Allergens)
+        foreach (Allergen element in dishData.Allergens)
         {
             allergens.Add(element.Name);
         }
 
         foreach (Ingredient element in ingredients)
         {
-           foodContent.Add(element.Name);
+            foodContent.Add(element.Name);
         }
     }
 
@@ -149,7 +156,6 @@
         {
             count = 0;
         }
-        
         await updateData(count, ids);
         enforceCounter();
     }
@@ -186,7 +192,7 @@
         InvokeAsync(StateHasChanged);
     }
 
-    public async Task updateData(int quantity, List<int> ids) 
+    public async Task updateData(int quantity, List<int> ids)
     {
         foreach (var id in ids)
         {
@@ -196,6 +202,7 @@
             {
                 //create key
                 await localStorage.SetItemAsync("dishData", "{}");
+                CartService.AddToCart();
                 localStorageContent = "{}";
             }
 
@@ -229,6 +236,8 @@
 
             string json = JsonConvert.SerializeObject(obj);
             await localStorage.SetItemAsync("dishData", json);
+            CartService.AddToCart();
+            enforceCounter();
         }
     }
 }

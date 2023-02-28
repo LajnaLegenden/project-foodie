@@ -1,0 +1,24 @@
+@page "/me/order_history"
+@using project_foodie.Pages.my_page.components
+@using project_foodie.Model;
+@using project_foodie.Repository;
+
+<h1 class="order-history-title">Mina beställningar</h1>
+<div class="order-history-container">
+    @foreach (var order in orders)
+    {
+        <OrderTable orderData="@order"/>
+    }
+</div>
+
+@code {
+    List<Order> orders = new List<Order>();
+    protected override async Task OnInitializedAsync()
+    {
+        using (var db = new DatabaseContext()) 
+        {
+            RepositoryWrapper repository = new RepositoryWrapper(db);
+            orders = await repository.Order.GetAllAsync();
+        }
+    }
+}

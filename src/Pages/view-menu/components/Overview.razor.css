@@ -1,3 +1,7 @@
+/*
+path: src/Pages/view-menu/components/MenuContainer.razor.css
+*/
+
 h1 {
   text-align: center;
   font-size: var(--h1-font-default, 40px);
@@ -27,9 +31,16 @@ li:not(:last-child) {
 
 .overview-container {
   width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   margin-bottom: 64px;
 
 }
@@ -39,7 +50,8 @@ li:not(:last-child) {
   border-radius: 10px;
   overflow: hidden;
   border-radius: 10px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  -webkit-box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+          box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 .overview-table th {
@@ -80,7 +92,8 @@ a {
   .overview-table {
     border: 0;
     border-radius: 0;
-    box-shadow: none;
+    -webkit-box-shadow: none;
+            box-shadow: none;
     width: 60%;
   }
 
@@ -105,12 +118,14 @@ a {
     display: block;
     margin-bottom: 1em;
     border-radius: 10px;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    -webkit-box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   }
 
   .overview-table tr:first-child {
     border: 0;
-    box-shadow: none;
+    -webkit-box-shadow: none;
+            box-shadow: none;
   }
 
   .overview-table td {
@@ -157,7 +172,8 @@ a {
   .overview-table {
     border: 0;
     border-radius: 0;
-    box-shadow: none;
+    -webkit-box-shadow: none;
+            box-shadow: none;
     width: 100%;
   }
 }
@@ -166,7 +182,8 @@ a {
   .overview-table {
     border: 0;
     border-radius: 0;
-    box-shadow: none;
+    -webkit-box-shadow: none;
+            box-shadow: none;
     width: 60%;
   }
 
@@ -191,12 +208,14 @@ a {
     display: block;
     margin-bottom: 1em;
     border-radius: 10px;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    -webkit-box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   }
 
   .overview-table tr:first-child {
     border: 0;
-    box-shadow: none;
+    -webkit-box-shadow: none;
+            box-shadow: none;
   }
 
   .overview-table td {
@@ -243,7 +262,8 @@ a {
   .overview-table {
     border: 0;
     border-radius: 0;
-    box-shadow: none;
+    -webkit-box-shadow: none;
+            box-shadow: none;
     width: 100%;
   }
 }

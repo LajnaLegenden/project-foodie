@@ -1,8 +1,13 @@
+/* 
+path: src/Pages/view-menu/components/Dishes.razor.css
+*/
+
 .food-card {
     width: 300px;
     height: 391px;
     background: #FCFCFC;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    -webkit-box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 5px;
     position: relative;
 }
@@ -51,9 +56,13 @@
 }
 
 .allergener {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     border-top: 1px solid #DBDBDB;
-    align-items: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
     padding: 0px;
     gap: 5px;
     margin-top: 16px;
@@ -72,8 +81,11 @@
 }
 
 .food-card-upper-body {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    justify-content: space-around;
+    -ms-flex-pack: distribute;
+        justify-content: space-around;
     width: 100%;
 }
 
@@ -82,13 +94,21 @@
 }
 
 .food-card-btn-container {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    justify-content: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
 }
 
 .food-card-btn-container-no-food {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    justify-content: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
 }
 
 .food-card-btn-container-no-food .btn-add-container {
@@ -107,7 +127,12 @@
     margin: 8px;
     width: 75%;
     height: 40px;
-    border: 1px solid gray;
+    border: none;
+    border-radius: 100px;
+    background: #C3DED2;
+    font-size: 17px;
+    font-weight: 600;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
 }
 
 .food-card-text-add-amount {
@@ -116,14 +141,22 @@
 
 .btn-add-container {
     height: 45px;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    flex-direction: row;
-    justify-content: center;
-    width: 180px;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    width: 75%;
     margin: 5px;
     border-radius: 25px;
     background: rgba(6, 122, 70, 0.23);
     line-height: 1.5em;
+    justify-content: space-between;
 }
 
 .text-add-placeholder {
@@ -141,11 +174,12 @@
 .food-card-btn-info {
     color: white;
     border-radius: 100%;
-    width: 40px;
-    height: 40px;
+    width: 38px;
+    height: 38px;
     border: none;
-    filter: var(--filter-shadow-default, drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)));
-    margin-top: 3px;
+    -webkit-filter: var(--filter-shadow-default, drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)));
+            filter: var(--filter-shadow-default, drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)));
+    margin-top: 3.5px;
     font-size: 30px;
     cursor: pointer;
 }
@@ -160,6 +194,7 @@
 .food-card-btn-increment {
     float: right;
     background: var(--btn-sucess, #006B38);
+    margin-right: 3.5px;
 }
 
 .food-card-btn-increment span {
@@ -177,11 +212,32 @@
 .food-card-btn-decrement {
     float: left;
     background: #b10000;
+    margin-left: 3.5px;
 }
 
 .text-add-placeholder:focus {
     border: none;
     background: none;
+}
+
+::-webkit-input-placeholder {
+    color: var(--text-color-primary, #000000);
+    opacity: 1;
+}
+
+::-moz-placeholder {
+    color: var(--text-color-primary, #000000);
+    opacity: 1;
+}
+
+:-ms-input-placeholder {
+    color: var(--text-color-primary, #000000);
+    opacity: 1;
+}
+
+::-ms-input-placeholder {
+    color: var(--text-color-primary, #000000);
+    opacity: 1;
 }
 
 ::placeholder {
