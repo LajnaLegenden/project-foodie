@@ -1,0 +1,64 @@
+@using project_foodie.Model;
+@using System.Globalization;
+
+<table class="order-table">
+    <tr>
+        <th>Beställningsnummer</th>
+        <th>Orderdatum</th>
+        <th>Leveransvecka</th>
+        <th>Totalsumma</th>
+        <th>Status</th>
+        <td rowspan="2"><button class="details-button" onclick="@showDetails">Visa detaljer</button></td>
+    </tr>
+    <tr>
+        <td>@orderData.Id</td>
+        <td>@orderData.orderDate.ToString("yyyy-MM-dd")</td>
+        <td>@weekNr</td>
+        <td>@totalPrice :-</td>
+        <td>@orderStatus</td>
+    </tr>
+</table>
+
+@if (detailsVisible)
+{
+    <table>
+        <tr>
+            <th>Veckodag</th>
+            <th>Måltid</th>
+            <th>Maträtt</th>
+            <th>Antal</th>
+            <th>Pris</th>
+        </tr>
+    </table>
+}
+
+@code {
+    [Parameter]
+    public Order orderData { get; set; }
+    private bool detailsVisible = false;
+    private int totalPrice = 0;
+    private int weekNr;
+    private string orderStatus = "Beställd";
+    
+    private void showDetails() 
+    {
+        detailsVisible ^= true;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var currentCulture = CultureInfo.CurrentCulture;
+
+        // Get week of order (delivery week)
+        for (DateTime date = orderData.menu.startDate; date < orderData.menu.endDate; date = date.AddDays(1)) 
+        {
+            weekNr = currentCulture.Calendar.GetWeekOfYear(date, currentCulture.DateTimeFormat.CalendarWeekRule, currentCulture.DateTimeFormat.FirstDayOfWeek);
+        }
+
+        // Calculate total price for order
+        foreach (var orderItem in orderData.orderItems)
+        {
+            totalPrice += orderItem.dish.Price;
+        }
+    }
+}
