@@ -23,7 +23,7 @@ jobs:
         id: cleanup
         uses: ArturWincenciak/ReSharper_CleanupCode@v4.14
         with:
-          solution: 'ReSharperCleanupCodeDemo.sln'
+          solution: 'project-foodie.sln'
           fail_on_reformat_needed: 'no'
           auto_commit: 'yes'
           jb_cleanup_code_arg: '--verbosity=INFO --profile=Built-in: Full Cleanup --exclude=**UnitTests/**.*'
