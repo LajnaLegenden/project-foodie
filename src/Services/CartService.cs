@@ -42,10 +42,7 @@ public class CartService
         // Fetch the data from local storage
         var localStorageContent = await _localStorage.GetItemAsync<string>("dishData");
         // Check if the data is empty
-        if (localStorageContent == null)
-        {
-            return 0;
-        }
+        if (localStorageContent == null) return 0;
 
         // Deserialize the data
         var dictionary = JsonConvert.DeserializeObject<
