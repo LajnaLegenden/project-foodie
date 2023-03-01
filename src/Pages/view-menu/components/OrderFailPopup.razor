@@ -1,4 +1,3 @@
-
 <div class="modal-background">
     <div class="modal-card">
         <div class="card-header">
@@ -15,11 +14,13 @@
 
 
 @code {
+
     [Parameter]
-    public EventCallback<bool> OnClose {get; set;}
+    public EventCallback<bool> OnClose { get; set; }
 
     private Task ModalClose()
     {
         return OnClose.InvokeAsync(false);
     }
+
 }

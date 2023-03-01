@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using project_foodie.Model;
+
 namespace project_foodie.Repository;
+
 public class IngredientRepository
 {
     private readonly DatabaseContext _context;
@@ -45,14 +47,12 @@ public class IngredientRepository
 
     public async Task AddAllergenToIngredientAsync(Ingredient ingredient, int allergenId)
     {
-        Allergen allergen = _context.Allergens.FirstOrDefault(a => a.Id == allergenId);
+        var allergen = _context.Allergens.FirstOrDefault(a => a.Id == allergenId);
 
-        Console.WriteLine("[AddIngredientToDishAsync]: Trying to add " + allergen.Name + " to menu " + ingredient.Name + "");
+        Console.WriteLine("[AddIngredientToDishAsync]: Trying to add " + allergen.Name + " to menu " + ingredient.Name +
+                          "");
         //if dish.Allergens is null, create new list
-        if (ingredient.Allergens == null)
-        {
-            ingredient.Allergens = new List<Allergen>();
-        }
+        if (ingredient.Allergens == null) ingredient.Allergens = new List<Allergen>();
 
         ingredient.Allergens.Add(allergen);
         await _context.SaveChangesAsync();

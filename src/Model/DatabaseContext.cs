@@ -1,7 +1,6 @@
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using DotNetEnv;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
 namespace project_foodie.Model;
@@ -16,13 +15,12 @@ public class DatabaseContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-
-        DotNetEnv.Env.Load();
-        string dbAddr = System.Environment.GetEnvironmentVariable("DBADDR");
-        string dbUser = System.Environment.GetEnvironmentVariable("DBUSER");
-        string dbName = System.Environment.GetEnvironmentVariable("DBNAME");
-        string dbPass = System.Environment.GetEnvironmentVariable("DBPASS");
-        string connectionString = $"server={dbAddr};user={dbUser};database={dbName};password={dbPass};";
+        Env.Load();
+        var dbAddr = Environment.GetEnvironmentVariable("DBADDR");
+        var dbUser = Environment.GetEnvironmentVariable("DBUSER");
+        var dbName = Environment.GetEnvironmentVariable("DBNAME");
+        var dbPass = Environment.GetEnvironmentVariable("DBPASS");
+        var connectionString = $"server={dbAddr};user={dbUser};database={dbName};password={dbPass};";
         var serverVersion = new MariaDbServerVersion(new Version(10, 6, 11));
 
         optionsBuilder.UseMySql(connectionString, serverVersion).LogTo(Console.WriteLine, LogLevel.Error);
@@ -30,7 +28,6 @@ public class DatabaseContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-
     }
 }
 
@@ -52,19 +49,18 @@ public enum OrderType
     Unknown
 }
 
-
 public class OrderItemOrder
 {
     public int OrderItemId { get; set; }
+
     // The OrderItem property is used to access the OrderItem class and its methods.
     // The OrderItem class is used to store information about an order item.
-    [Required]
-    public OrderItem OrderItem { get; set; }
+    [Required] public OrderItem OrderItem { get; set; }
 
 
     public int OrderId { get; set; }
-    [Required]
-    public Order Order { get; set; }
+
+    [Required] public Order Order { get; set; }
 }
 
 // connection tables
@@ -98,12 +94,12 @@ public class AllergenDish
 public class DishMenu
 {
     public int DishId { get; set; }
-    [JsonIgnore]
-    public Dish Dish { get; set; }
+
+    [JsonIgnore] public Dish Dish { get; set; }
 
     public int MenuId { get; set; }
-    [JsonIgnore]
-    public Menu Menu { get; set; }
+
+    [JsonIgnore] public Menu Menu { get; set; }
 }
 
 public class DishOrder

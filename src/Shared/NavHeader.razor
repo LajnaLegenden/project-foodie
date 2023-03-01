@@ -1,6 +1,4 @@
-@using Newtonsoft.Json;
-@inject Blazored.LocalStorage.ILocalStorageService localStorage
-@using System.Collections.Generic;
+@inject ILocalStorageService localStorage
 @inject CartService CartService
 
 <div class="header">
@@ -33,7 +31,9 @@
                 <NavLink class="nav-link" href="/order?page=14">
                     <div class="nav-kassan">
                         <img src="/images/shopping-basket.svg" width="50px" height="50px"/>
-                        <span class="nav-kassan-counter"><p>@cartCount</p></span>
+                        <span class="nav-kassan-counter">
+                            <p>@cartCount</p>
+                        </span>
                     </div>
                 </NavLink>
             </div>
@@ -48,7 +48,7 @@
     private int cartCount;
 
     // OnInitializedAsync is called when the component is first rendered
-    protected async override void OnInitialized()
+    protected override async void OnInitialized()
     {
         cartCount = await CartService.GetObjectCount();
         CartService.SetCartCount(cartCount);
@@ -61,6 +61,7 @@
         cartCount = CartService.GetCartCount();
         StateHasChanged();
     }
+
     // OnAfterRenderAsync is called after the component has been rendered
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -70,4 +71,5 @@
             StateHasChanged();
         }
     }
+
 }

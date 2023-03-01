@@ -1,8 +1,7 @@
-namespace project_foodie.Repository
+namespace project_foodie.Repository;
+
+public interface IRepositoryWrapper
 {
-    public interface IRepositoryWrapper
-    {
-        IOrderRepository Order { get; }
-        Task SaveAsync();
-    }
+    IOrderRepository Order { get; }
+    Task SaveAsync();
 }

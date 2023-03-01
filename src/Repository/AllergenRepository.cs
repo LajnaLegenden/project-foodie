@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using project_foodie.Model;
+
 namespace project_foodie.Repository;
+
 public class AllergenRepository
 {
     private readonly DatabaseContext _context;
