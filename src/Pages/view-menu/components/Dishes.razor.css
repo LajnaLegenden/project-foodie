@@ -22,6 +22,7 @@ path: src/Pages/view-menu/components/Dishes.razor.css
     height: 177px;
     border-radius: 5px 5px 0px 0px;
     background-color: #067A46;
+    cursor: pointer;
 }
 
 .food-card-upper-body {
@@ -133,6 +134,7 @@ path: src/Pages/view-menu/components/Dishes.razor.css
     font-size: 17px;
     font-weight: 600;
     box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
 }
 
 .food-card-text-add-amount {
@@ -167,6 +169,7 @@ path: src/Pages/view-menu/components/Dishes.razor.css
     color: var(--text-color-primary, #000000);
     font-weight: bold;
     font-size: 18px;
+    cursor: default;
 }
 
 .food-card-btn-increment,
