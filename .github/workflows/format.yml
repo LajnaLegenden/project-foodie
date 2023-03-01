@@ -17,7 +17,7 @@ jobs:
           dotnet-version: 7.0.x
 
       - name: Restore Dependencies
-        run: dotnet restore ReSharperCleanupCodeDemo.sln
+        run: dotnet restore project-foodie.sln
           
       - name: Cleanup Code
         id: cleanup
