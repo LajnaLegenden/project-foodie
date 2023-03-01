@@ -19,6 +19,18 @@ namespace project_foodie.Repository
                 .ThenInclude(o => o.dayMenus)
                 .ToListAsync();
         }
+        public List<Order> GetPage(int page, int pageSize)
+        {
+            return FindAll()
+                .OrderBy(o => o.orderDate)
+                .Include(o => o.orderItems)
+                .ThenInclude(o => o.dish)
+                .Include(o => o.menu)
+                .ToList()
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+        }
         public async Task<Order> GetByIdAsync(int orderId)
         {
             return await FindByCondition(order => order.Id.Equals(orderId))
@@ -58,6 +70,11 @@ namespace project_foodie.Repository
                 type = type
             };
             order.orderItems.Add(orderItem);
+        }
+
+        public int GetNumberOfOrders()
+        {
+            return FindAll().Count();
         }
     }
 }
