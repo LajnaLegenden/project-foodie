@@ -2,9 +2,14 @@
     background-color: #FAFAFA ;
     border-radius: 20px;
     padding: 20px;
+    border-bottom: 1px solid #E0E0E0;
 }
 
 .details-button {
     padding: 20px 10px 20px 10px;
     margin-left: 20px;
+}
+
+td {
+    text-align: center;
 }

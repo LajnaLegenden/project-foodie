@@ -22,7 +22,8 @@ a, .btn-link {
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+  -webkit-box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+          box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 .content {
@@ -44,7 +45,8 @@ a, .btn-link {
 #blazor-error-ui {
     background: lightyellow;
     bottom: 0;
-    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
     display: none;
     left: 0;
     padding: 0.6rem 1.25rem 0.7rem 1.25rem;
@@ -89,12 +91,15 @@ a, .btn-link {
     --div-timeline-blocked: black;
     --div-timeline-done: #067A46;
 
+    /*Colors*/
+    --primary-color: #067A46;
+
     /* Default fonts */
     --h1-font-default: 40px;
     --h2-font-default: 30px;
     --p-font-default: 20px;
 
-    --text-color-primary: black;
+    --text-color-primary: #067A46;
     --text-color-secondary: white;
 
     /* Default border */
