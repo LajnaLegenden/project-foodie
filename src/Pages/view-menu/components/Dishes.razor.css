@@ -16,6 +16,13 @@ path: src/Pages/view-menu/components/Dishes.razor.css
   position: absolute;
   top: 0;
   right: 0;
+  margin-right: 5px;
+  margin-top: 5px;
+}
+
+.info-button img {
+    box-shadow: rgba(0, 0, 0, 0.3) 4px 8px 24px;
+    border-radius: 100%;
 }
 
 .food-card-img-container {
@@ -122,6 +129,10 @@ path: src/Pages/view-menu/components/Dishes.razor.css
 
 .food-card-btn-container-no-food .food-card-btn-increment {
     background: #494949;
+}
+
+.food-card-btn-container-no-food .food-card-btn {
+    background: #adadad;
 }
 
 .food-card-btn {
