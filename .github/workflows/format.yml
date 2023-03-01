@@ -1,0 +1,12 @@
+name: auto-format
+on: pull_request
+jobs:
+  format:
+    # Check if the PR is not from a fork
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cleanup Code
+        uses: ArturWincenciak/ReSharper_CleanupCode@v2.0
+        with:
+          solution: 'project-foodie.sln'
