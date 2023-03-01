@@ -1,5 +1,6 @@
 @using project_foodie.Model;
 @using System.Globalization;
+@using project_foodie.Modules;
 
 <table class="order-table">
     <tr>
@@ -13,7 +14,7 @@
     <tr>
         <td>@orderData.Id</td>
         <td>@orderData.orderDate.ToString("yyyy-MM-dd")</td>
-        <td>@weekNr</td>
+        <td>Vecka @weekNr</td>
         <td>@totalPrice :-</td>
         <td>@orderStatus</td>
     </tr>
@@ -21,14 +22,67 @@
 
 @if (detailsVisible)
 {
-    <table>
-        <tr>
-            <th>Veckodag</th>
-            <th>Måltid</th>
-            <th>Maträtt</th>
-            <th>Antal</th>
-            <th>Pris</th>
-        </tr>
+    <table class="order-details-table">
+        <thead>
+            <tr>
+                <th>Veckodag</th>
+                <th>Måltid</th>
+                <th>Maträtt</th>
+                <th>Antal</th>
+                <th>Pris</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var dayMenu in DayMenuHelper.getSortedDayMenus(orderData.menu))
+            {
+                @foreach(var orderItem in orderData.orderItems)
+                {
+                    @if(orderItem.date == dayMenu.DayMenu.date && orderItem.type == dayMenu.DayMenu.type)
+                    {
+                        <tr>
+                            @if (previousDate == dayMenu.DayMenu.date)
+                            {
+                                <td></td>
+                                @if (previousType == dayMenu.DayMenu.type)
+                                {
+                                    <td></td>
+                                    <td>@orderItem.dish.Name</td>
+                                    <td>@orderItem.quantity</td>
+                                    <td>@orderItem.dish.Price:-</td>
+                                }
+                                else
+                                {
+                                    <td>@dayMenu.DayMenu.type</td>
+                                    <td>@orderItem.dish.Name</td>
+                                    <td>@orderItem.quantity</td>
+                                    <td>@orderItem.dish.Price:-</td>
+                                }
+                            }
+                            else
+                            {
+                                <td>@DayMenuHelper.convertToWeekday(dayMenu.DayMenu.date)</td>
+                                @if (previousType == dayMenu.DayMenu.type)
+                                {
+                                    <td></td>
+                                    <td>@orderItem.dish.Name</td>
+                                    <td>@orderItem.quantity</td>
+                                    <td>@orderItem.dish.Price:-</td>
+                                }
+                                else
+                                {
+                                    <td>@dayMenu.DayMenu.type</td>
+                                    <td>@orderItem.dish.Name</td>
+                                    <td>@orderItem.quantity</td>
+                                    <td>@orderItem.dish.Price:-</td>
+                                }
+                            }
+                        </tr>
+                        previousDate = dayMenu.DayMenu.date;
+                        previousType = dayMenu.DayMenu.type;
+                    }
+                }
+            }
+        </tbody>
     </table>
 }
 
@@ -39,6 +93,8 @@
     private int totalPrice = 0;
     private int weekNr;
     private string orderStatus = "Beställd";
+    private DateTime previousDate;
+    private OrderType previousType = OrderType.Unknown;
     
     private void showDetails() 
     {
@@ -58,7 +114,7 @@
         // Calculate total price for order
         foreach (var orderItem in orderData.orderItems)
         {
-            totalPrice += orderItem.dish.Price;
+            totalPrice += (orderItem.dish.Price * orderItem.quantity);
         }
     }
 }

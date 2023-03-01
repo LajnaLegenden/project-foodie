@@ -16,6 +16,7 @@ namespace project_foodie.Repository
                 .Include(o => o.orderItems)
                 .ThenInclude(o => o.dish)
                 .Include(o => o.menu)
+                .ThenInclude(o => o.dayMenus)
                 .ToListAsync();
         }
         public List<Order> GetPage(int page, int pageSize)
@@ -34,7 +35,9 @@ namespace project_foodie.Repository
         {
             return await FindByCondition(order => order.Id.Equals(orderId))
             .Include(o => o.orderItems)
+            .ThenInclude(o => o.dish)
             .Include(o => o.menu)
+            .ThenInclude(o => o.dayMenus)
             .FirstOrDefaultAsync();
         }
         public void AddOrder(Order order)

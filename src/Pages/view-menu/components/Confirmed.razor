@@ -23,14 +23,14 @@
                 <div class="parameters">
                     <h2>Namn:</h2>
                     <h2>Beställningsdag:</h2>
-                    <h2>Antal beställda dagar:</h2>
+                    <h2>Antal beställda måltider:</h2>
                     <h2>Leveransdatum:</h2>
                     <h2>Totalt Pris:</h2>
                 </div>
                 <div class="inputs">
                     <h2>Thomas Andersson</h2>
-                    <h2>@getOrderDate()</h2>
-                    <h2>@getCountOrderdDays()</h2>
+                    <h2>@order.orderDate</h2>
+                    <h2>@getNumberOfMeals()</h2>
                     <h2>2023-03-06</h2>
                     <h2>@getTotalPrice():-</h2>
                 </div>
@@ -49,10 +49,13 @@
 @code {
     [Parameter]
     public Menu menu { get; set; }
+    [Parameter]
+    public Order order { get; set; } = null;
 
     private List<LocalStorage.Row> data;
 
     public bool dataLoaded = false;
+
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -64,25 +67,30 @@
         await JSRuntime.InvokeVoidAsync("confettis");
     }
 
-    private string getOrderDate() {
-        return DateTime.Now.ToString("yyyy-MM-dd");
-    }
-
     private int getTotalPrice()
     {
         int Total = 0;
-        foreach (LocalStorage.Row r in data)
+        foreach (OrderItem item in order.orderItems)
         {
-            Total += r.LunchPrice + r.DinnerPrice;
+            Total += item.dish.Price * item.quantity;
         }
         return Total;
     }
 
-    private int getCountOrderdDays() {
-        int count = 0;
-        foreach (LocalStorage.Row r in data) {
-            count++;
+    private int getNumberOfMeals()
+    {
+        OrderItem _prevOrderItem = null;
+        int Total = 0;
+        foreach (OrderItem item in order.orderItems)
+        {
+            //Count number of meals (more orderItems can be created per meal)
+            if (_prevOrderItem != null && (_prevOrderItem.date == item.date && _prevOrderItem.type == item.type))
+            {
+                continue;
+            }  
+            Total += 1; 
+            _prevOrderItem = item;
         }
-        return count;
+        return Total;
     }
 }

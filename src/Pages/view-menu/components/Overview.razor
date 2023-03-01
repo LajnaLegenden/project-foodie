@@ -74,6 +74,10 @@
             <h2 class="total-all-price">Total: @getTotalPrice():- </h2>
         </table>
     </div>
+    @if (PopupOpen)
+{
+    <OrderFailPopup OnClose="@PopupClose"/>
+}
 } else {
     <h1>Loading</h1>
 }
@@ -86,12 +90,70 @@
 
     public bool dataLoaded = false;
 
+    /*------- Popup (Modal dialog)--------*/
+    public bool PopupOpen { get; set; }
+
+    private void PopupClose(bool accepted)
+    {
+        PopupOpen = false;
+        StateHasChanged();
+    }
+    private void OpenPopup()
+    {
+        PopupOpen = true;
+        StateHasChanged();
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if(!dataLoaded){
             data = await LocalStorage.LoadData(localStorage, menu);
             dataLoaded = true;
             StateHasChanged();
+        }
+    }
+
+    public async Task<Order> SaveOrder() {
+        using(DatabaseContext db = new DatabaseContext()) {
+            IRepositoryWrapper repository = new RepositoryWrapper(db);
+            MenuRepository menuRepository = new MenuRepository(db);
+            DishRepository dishRepository = new DishRepository(db);
+
+            // Create a new order connected to the current menu
+            Order order = new Order() {
+                userId = 1,
+                // This next line will trigger an exception, use for development to trigger OrderFailPopup.
+                @* menu= menu, *@
+                menu = await menuRepository.GetByIdAsync(menu.Id),
+                orderDate = DateTime.Now,
+                orderItems = new List < OrderItem > ()
+            };
+            repository.Order.AddOrder(order);
+            //loop trough dishes in local storage to create orderItems
+            @foreach (LocalStorage.Row r in data) {
+                DateTime date = r.dm.date;
+                @foreach (var item in r.dishCount) {
+                    Dish dish = await dishRepository.GetByIdAsync(item.dishId);
+                    var amount = item.Count;
+                    OrderType orderType = item.dm.type;
+                    repository.Order.AddOrderItem(order, dish, amount, date, orderType);
+                }
+            }
+            // Lastly, save changes to database. If something goes wrong catch exception and open OrderFailPopup.
+            try
+            {
+                await repository.SaveAsync();
+                return order;
+            }
+            catch (DbUpdateConcurrencyException) {
+                OpenPopup();
+                throw;
+            }
+             catch (DbUpdateException)
+            {
+                OpenPopup();
+                throw;
+            }
         }
     }
 
