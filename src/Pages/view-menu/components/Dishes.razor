@@ -144,10 +144,8 @@
     private bool showInput = false;
     private string ButtonClass => count <= 0 ? "food-card-btn food-card-btn-add-amount" : "food-card-btn food-card-btn-add";
     private string dayString = "";
-    private string jsonString;
 
     public static int MAX_DISHES = 20;
-    private bool firstRender = true;
     //onAfterRenderAsync
 
     protected override void OnAfterRender(bool firstRender)
@@ -155,8 +153,10 @@
         if (firstRender)
         {
             dayString = dayMenu.date.ToString("yyyy-MM-dd") + "-" + dayMenu.type + "-" + dayMenu.Id;
-            GetData();
+            //disable await warning
+            _ = GetData();
         }
+        
     }
 
     private async void modifyCount(int value)

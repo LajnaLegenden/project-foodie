@@ -108,8 +108,6 @@
     private bool shouldGoToOverview;
     public Order newOrder;
 
-    int returnButtonShenanigans = -1;
-
     public string viewPort { get; set; } = "desktop";
     private DotNetObjectReference<ViewMenu> objRef;
     private string dayString => selectedIndex == overViewIndex ? "overview-day-container" : "viewmenu-day-container";
@@ -261,7 +259,7 @@
 
     private string dateFormat(DateTime date)
     {
-        return date != null ? date.ToString("dd/M") : "";
+        return date.ToString("dd/M");
     }
 
     private void setPage(int index = 0, bool isButton = false)
