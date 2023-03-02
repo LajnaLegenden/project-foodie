@@ -153,10 +153,9 @@
         if (firstRender)
         {
             dayString = dayMenu.date.ToString("yyyy-MM-dd") + "-" + dayMenu.type + "-" + dayMenu.Id;
-            //disable await warning
+    //disable await warning
             _ = GetData();
         }
-        
     }
 
     private async void modifyCount(int value)

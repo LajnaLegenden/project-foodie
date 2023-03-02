@@ -3,6 +3,7 @@
 @using project_foodie.Pages.my_page.components
 @using project_foodie.Repository
 @using Microsoft.AspNetCore.WebUtilities
+@implements IDisposable
 @inject NavigationManager NavManager
 <main class="container">
 
@@ -35,7 +36,7 @@
 </main>
 
 @code {
-    List<Order> orders = new List<Order>();
+    List<Order> orders = new();
 
     private int pageNumber = 1;
     private readonly int pageSize = 2;
@@ -49,10 +50,17 @@
         InvokeAsync(StateHasChanged);
     }
 
+
     private void HandleLocationChanged(object sender, LocationChangedEventArgs e)
     {
         ReadQueryParams();
         InvokeAsync(StateHasChanged);
+    }
+
+    void IDisposable.Dispose()
+    {
+    // Unsubscribe from the event when our component is disposed
+        NavManager.LocationChanged -= HandleLocationChanged;
     }
 
     private void ReadQueryParams()
