@@ -68,7 +68,7 @@
                     </td>
                     <td data-label="Pris">@r.DinnerPrice:-</td>
                     <td data-label="Totalt">@(r.LunchPrice + r.DinnerPrice):-</td>
-                    <td><button class="change-dish-button">Ändra val</button></td>
+                    <td><a href="@getModifyUrl(r)" class="change-dish-button">Ändra val</a></td>
                 </tr>
             }
             <h2 class="total-all-price">Total: @getTotalPrice():- </h2>
