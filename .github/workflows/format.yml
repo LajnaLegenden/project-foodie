@@ -3,7 +3,6 @@ name: ReSharper CLI CleanupCode
 on: [ push ]
 
 jobs:
-  if: ${{ contains(github.event.commits[0].message, 'Cleanup code by ReSharper CLI CleanupCode GitHub Action') }}
   cleanup:
     runs-on: ubuntu-latest
     name: Cleanup Code
