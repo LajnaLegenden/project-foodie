@@ -86,21 +86,21 @@
                 await allergenRepository.AddAsync(allergen);
             }
 
-            var menus = new List<Menu>
+            var startDate = new DateTime(2023, 2, 20);
+            var endDate = new DateTime(2023, 2, 26);
+            var lastOrderDate = new DateTime(2023, 2, 18);
+            var menus = new List<Menu>();
+            for (var i = 0; i < 10; i++)
             {
-                new()
+                var menu = new Menu
                 {
-                    Name = "Vecka 8", lastOrderDate = new DateTime(2023, 2, 18), startDate = new DateTime(2023, 2, 20), endDate = new DateTime(2023, 2, 26)
-                },
-                new()
-                {
-                    Name = "Vecka 9", lastOrderDate = new DateTime(2023, 2, 25), startDate = new DateTime(2023, 2, 27), endDate = new DateTime(2023, 3, 5)
-                },
-                new()
-                {
-                    Name = "Vecka 10", lastOrderDate = new DateTime(2023, 3, 4), startDate = new DateTime(2023, 3, 6), endDate = new DateTime(2023, 3, 12)
-                }
-            };
+                    Name = "Vecka " + i,
+                    lastOrderDate = lastOrderDate.AddDays(7 * i),
+                    startDate = startDate.AddDays(7 * i),
+                    endDate = endDate.AddDays(7 * i)
+                };
+                menus.Add(menu);
+            }
 
 
     // Create ingredients
