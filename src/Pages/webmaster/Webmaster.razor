@@ -10,16 +10,16 @@
         @switch (selectedPage)
         {
             case 1:
-                <Menus />
+                <Menus/>
                 break;
             case 2:
-                <Dishes />
+                <Dishes/>
                 break;
             case 3:
-                <Db />
+                <Db/>
                 break;
             default:
-                <Menus />
+                <Menus/>
                 break;
         }
     </div>
@@ -27,13 +27,14 @@
 
 @code {
     int selectedPage = 1;
+
     protected override void OnInitialized()
     {
-
     }
 
-    void handleClick(int page){
+    void handleClick(int page)
+    {
         selectedPage = page;
-
     }
+
 }

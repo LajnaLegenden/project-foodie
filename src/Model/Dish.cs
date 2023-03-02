@@ -1,7 +1,5 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace project_foodie.Model;
 
@@ -10,6 +8,7 @@ public class Dish
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
+
     public required string Name { get; set; }
     public FoodType Type { get; set; } = FoodType.Unknown;
     public string description { get; set; } = "";

@@ -1,78 +1,75 @@
 /* Path: src/Pages/view-menu/components/TimeLineSection.razor.css */
 .timeline-line {
-    border-top: 1px solid black;
-    height: 100%;
-    margin-top: 0.8em;
-    width: 5em;
+  border-top: 1px solid black;
+  height: 100%;
+  margin-top: 0.8em;
+  width: 5em;
 }
 
 .timeline-dot-inner {
-    border-radius: 100%;
-    border: 1px solid black;
-    height: 0.6em;
-    margin-top: 0.5em;
-    width: 0.6em;
-    margin-bottom: 0.3em;
+  border: 1px solid black;
+  border-radius: 100%;
+  height: 0.6em;
+  margin-bottom: 0.3em;
+  margin-top: 0.5em;
+  width: 0.6em;
 }
 
 .timeline-item {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
-    -webkit-box-pack: center;
-        -ms-flex-pack: center;
-            justify-content: center;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
-    -webkit-transition: 250ms all ease-in-out;
-    -o-transition: 250ms all ease-in-out;
-    transition: 250ms all ease-in-out;
-    overflow: hidden;
-    width: 100%;
-    opacity: 1;
+  -ms-flex-align: center;
+  -ms-flex-direction: column;
+  -ms-flex-pack: center;
+  -o-transition: 250ms all ease-in-out;
+  -webkit-box-align: center;
+  -webkit-box-direction: normal;
+  -webkit-box-orient: vertical;
+  -webkit-box-pack: center;
+  -webkit-transition: 250ms all ease-in-out;
+  align-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  opacity: 1;
+  overflow: hidden;
+  transition: 250ms all ease-in-out;
+  width: 100%;
 }
 
 .hidden {
-    width: 0px;
-    opacity: 0;
+  opacity: 0;
+  width: 0px;
 }
 
 .day {
-    font-size: 1.3em;
-    font-weight: 600;
-    margin-bottom: 0.2em;
+  font-size: 1.3em;
+  font-weight: 600;
+  margin-bottom: 0.2em;
 }
 
 .type {
-    font-size: 1.1em;
-    font-weight: 400;
-    margin-bottom: 0.2em;
+  font-size: 1.1em;
+  font-weight: 400;
+  margin-bottom: 0.2em;
 }
 
 .type.active {
-    font-weight: bold;
-    background: #067A46;
+  background: #067A46;
+  font-weight: bold;
 }
 
-.type.active a {
-    color: white;
-}
+.type.active a { color: white; }
 
 .type.inactive {
-    color: grey;
-    opacity: 0.5;
-}
-.type.passed {
-opacity: 0.3;
+  color: grey;
+  opacity: 0.5;
 }
 
+.type.passed { opacity: 0.3; }
+
 .timeline-item.active {
-    color: white;
-    font-weight: bold;
-    background: #067A46;
+  background: #067A46;
+  color: white;
+  font-weight: bold;
 }

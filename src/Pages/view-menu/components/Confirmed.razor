@@ -1,16 +1,11 @@
-@inject Blazored.LocalStorage.ILocalStorageService localStorage
-@using project_foodie.Data
-@using project_foodie.Pages.view_menu.components
-@using project_foodie.Model;
-@using project_foodie.Modules;
-@using project_foodie.Repository;
-@using Newtonsoft.Json;
-@using Newtonsoft.Json.Linq;
+@using project_foodie.Model
+@using project_foodie.Modules
+@inject ILocalStorageService localStorage
 @inject NavigationManager NavManager
 @inject IJSRuntime JSRuntime
-@using Microsoft.JSInterop
 
-@if (dataLoaded) {
+@if (dataLoaded)
+{
     <div class="confirmedContainer">
         <div class="title">
             <h1>Beställningen är nu bekräftad!</h1>
@@ -37,18 +32,22 @@
             </div>
         </div>
         <div class="buttonContainer">
-            <button @onclick="@(()=>NavManager.NavigateTo("/"))">Klart</button>
+            <button @onclick="@(() => NavManager.NavigateTo("/"))">Klart</button>
         </div>
     </div>
-} else {
+}
+else
+{
     <div class="loading">
         <h1>Loading...</h1>
     </div>
 }
 
 @code {
+
     [Parameter]
     public Menu menu { get; set; }
+
     [Parameter]
     public Order order { get; set; } = null;
 
@@ -59,7 +58,8 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if(!dataLoaded){
+        if (!dataLoaded)
+        {
             data = await LocalStorage.LoadData(localStorage, menu);
             dataLoaded = true;
             StateHasChanged();
@@ -69,8 +69,8 @@
 
     private int getTotalPrice()
     {
-        int Total = 0;
-        foreach (OrderItem item in order.orderItems)
+        var Total = 0;
+        foreach (var item in order.orderItems)
         {
             Total += item.dish.Price * item.quantity;
         }
@@ -80,17 +80,18 @@
     private int getNumberOfMeals()
     {
         OrderItem _prevOrderItem = null;
-        int Total = 0;
-        foreach (OrderItem item in order.orderItems)
+        var Total = 0;
+        foreach (var item in order.orderItems)
         {
-            //Count number of meals (more orderItems can be created per meal)
-            if (_prevOrderItem != null && (_prevOrderItem.date == item.date && _prevOrderItem.type == item.type))
+    //Count number of meals (more orderItems can be created per meal)
+            if (_prevOrderItem != null && _prevOrderItem.date == item.date && _prevOrderItem.type == item.type)
             {
                 continue;
-            }  
-            Total += 1; 
+            }
+            Total += 1;
             _prevOrderItem = item;
         }
         return Total;
     }
+
 }

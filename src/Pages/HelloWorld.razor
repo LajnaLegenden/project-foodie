@@ -1,5 +1,4 @@
 @page "/test"
-@using project_foodie.Data
 @using project_foodie.Model
 <h1>Test</h1>
 <p>@message</p>
@@ -11,7 +10,8 @@
     protected override async Task OnInitializedAsync()
     {
         var db = new DatabaseContext();
-        Menu menu = new Menu(){
+        var menu = new Menu
+        {
             Name = "Test",
             endDate = DateTime.Now,
             startDate = DateTime.Now,
@@ -22,4 +22,5 @@
         await db.SaveChangesAsync();
         message = "Test";
     }
+
 }

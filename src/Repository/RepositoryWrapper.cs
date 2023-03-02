@@ -1,35 +1,33 @@
 // Wrapper for all repositories, all other repositories should be accessed from this wrapper.
 // ex: repository = new RepositoryWrapper(db)
 //     repository.Order.getAllAsync()
+
 using project_foodie.Model;
-namespace project_foodie.Repository
+
+namespace project_foodie.Repository;
+
+public class RepositoryWrapper : IRepositoryWrapper
 {
-    public class RepositoryWrapper : IRepositoryWrapper
+    private readonly DatabaseContext _dbContext;
+    private IOrderRepository _order;
+
+    public RepositoryWrapper(DatabaseContext databaseContext)
     {
-        private DatabaseContext _dbContext;
-        private IOrderRepository _order;
+        _dbContext = databaseContext;
+    }
 
-        public IOrderRepository Order
+    public IOrderRepository Order
+    {
+        get
         {
-            get
-            {
-                if (_order == null)
-                {
-                    _order = new OrderRepository(_dbContext);
-                }
+            if (_order == null) _order = new OrderRepository(_dbContext);
 
-                return _order;
-            }
+            return _order;
         }
+    }
 
-        public RepositoryWrapper(DatabaseContext databaseContext)
-        {
-            _dbContext = databaseContext;
-        }
-
-        public async Task SaveAsync()
-        {
-            await _dbContext.SaveChangesAsync();
-        }
+    public async Task SaveAsync()
+    {
+        await _dbContext.SaveChangesAsync();
     }
 }

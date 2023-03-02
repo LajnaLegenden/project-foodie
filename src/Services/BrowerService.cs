@@ -1,6 +1,6 @@
 using Microsoft.JSInterop;
-using System.Threading.Tasks;
-namespace project_foodie.Service{
+
+namespace project_foodie.Service;
 
 public class BrowserService
 {
@@ -15,12 +15,10 @@ public class BrowserService
     {
         return await _js.InvokeAsync<BrowserDimension>("getDimensions");
     }
-
 }
 
 public class BrowserDimension
 {
     public int Width { get; set; }
     public int Height { get; set; }
-}
 }
