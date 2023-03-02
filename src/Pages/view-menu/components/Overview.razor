@@ -1,11 +1,11 @@
-@inject Blazored.LocalStorage.ILocalStorageService localStorage
-@using Newtonsoft.Json;
-@using Newtonsoft.Json.Linq;
-@using project_foodie.Model;
-@using project_foodie.Repository;
-@using project_foodie.Modules;
+@using project_foodie.Model
+@using project_foodie.Modules
+@using project_foodie.Repository
+@using System.Globalization
+@inject ILocalStorageService localStorage
 
-@if (dataLoaded) {
+@if (dataLoaded)
+{
     <div class="overview-container">
         <h1>Översikt över dina val</h1>
         <p>Beställningsdag: 2023-01-23</p>
@@ -21,7 +21,7 @@
                 <th>Totalt</th>
                 <th></th>
             </tr>
-            @foreach (LocalStorage.Row r in data)
+            @foreach (var r in data)
             {
                 <tr>
                     <td data-label="Veckodag">@convertToWeekday(r.dm.date)</td>
@@ -31,19 +31,19 @@
                             {
                                 if (item.dm.type == OrderType.Lunch)
                                 {
-                                if (item.Count == -1) 
-                                {
-                                    <li>Överhoppad</li>
-                                }
-                                else 
-                                {
+                                    if (item.Count == -1)
+                                    {
+                                        <li>Överhoppad</li>
+                                    }
+                                    else
+                                    {
                                         <li>
                                             @getDishFromDmById(item.dishId, item.dm).Name x @item.Count
                                         </li>
                                     }
                                 }
                             }
-                    </ul>
+                        </ul>
                     </td>
                     <td data-label="Pris">@r.LunchPrice:-</td>
                     <td data-label="Middag">
@@ -52,37 +52,42 @@
                             {
                                 if (item.dm.type == OrderType.Middag)
                                 {
-                                if (item.Count == -1) 
-                                {
-                                    <li>Överhoppad</li>
-                                }
-                                else 
-                                {
+                                    if (item.Count == -1)
+                                    {
+                                        <li>Överhoppad</li>
+                                    }
+                                    else
+                                    {
                                         <li>
                                             @getDishFromDmById(item.dishId, item.dm).Name x @item.Count
                                         </li>
                                     }
                                 }
                             }
-                    </ul>
+                        </ul>
                     </td>
                     <td data-label="Pris">@r.DinnerPrice:-</td>
                     <td data-label="Totalt">@(r.LunchPrice + r.DinnerPrice):-</td>
-                    <td><a href="@getModifyUrl(r)" class="change-dish-button">Ändra val</a></td>
+                    <td>
+                        <a href="@getModifyUrl(r)" class="change-dish-button">Ändra val</a>
+                    </td>
                 </tr>
             }
             <h2 class="total-all-price">Total: @getTotalPrice():- </h2>
         </table>
     </div>
     @if (PopupOpen)
-{
-    <OrderFailPopup OnClose="@PopupClose"/>
+    {
+        <OrderFailPopup OnClose="@PopupClose"/>
+    }
 }
-} else {
+else
+{
     <h1>Loading</h1>
 }
 
 @code {
+
     [Parameter]
     public Menu menu { get; set; }
 
@@ -98,6 +103,7 @@
         PopupOpen = false;
         StateHasChanged();
     }
+
     private void OpenPopup()
     {
         PopupOpen = true;
@@ -106,50 +112,57 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if(!dataLoaded){
+        if (!dataLoaded)
+        {
             data = await LocalStorage.LoadData(localStorage, menu);
             dataLoaded = true;
             StateHasChanged();
         }
     }
 
-    public async Task<Order> SaveOrder() {
-        using(DatabaseContext db = new DatabaseContext()) {
+    public async Task<Order> SaveOrder()
+    {
+        using (var db = new DatabaseContext())
+        {
             IRepositoryWrapper repository = new RepositoryWrapper(db);
-            MenuRepository menuRepository = new MenuRepository(db);
-            DishRepository dishRepository = new DishRepository(db);
+            var menuRepository = new MenuRepository(db);
+            var dishRepository = new DishRepository(db);
 
-            // Create a new order connected to the current menu
-            Order order = new Order() {
+    // Create a new order connected to the current menu
+            var order = new Order
+            {
                 userId = 1,
-                // This next line will trigger an exception, use for development to trigger OrderFailPopup.
+    // This next line will trigger an exception, use for development to trigger OrderFailPopup.
                 @* menu= menu, *@
-                menu = await menuRepository.GetByIdAsync(menu.Id),
+            menu = await menuRepository.GetByIdAsync(menu.Id),
                 orderDate = DateTime.Now,
-                orderItems = new List < OrderItem > ()
+                orderItems = new List<OrderItem>()
             };
             repository.Order.AddOrder(order);
-            //loop trough dishes in local storage to create orderItems
-            @foreach (LocalStorage.Row r in data) {
-                DateTime date = r.dm.date;
-                @foreach (var item in r.dishCount) {
-                    Dish dish = await dishRepository.GetByIdAsync(item.dishId);
+    //loop trough dishes in local storage to create orderItems
+            @foreach (var r in data)
+            {
+                var date = r.dm.date;
+                @foreach (var item in r.dishCount)
+                {
+                    var dish = await dishRepository.GetByIdAsync(item.dishId);
                     var amount = item.Count;
-                    OrderType orderType = item.dm.type;
+                    var orderType = item.dm.type;
                     repository.Order.AddOrderItem(order, dish, amount, date, orderType);
                 }
             }
-            // Lastly, save changes to database. If something goes wrong catch exception and open OrderFailPopup.
+    // Lastly, save changes to database. If something goes wrong catch exception and open OrderFailPopup.
             try
             {
                 await repository.SaveAsync();
                 return order;
             }
-            catch (DbUpdateConcurrencyException) {
+            catch (DbUpdateConcurrencyException)
+            {
                 OpenPopup();
                 throw;
             }
-             catch (DbUpdateException)
+            catch (DbUpdateException)
             {
                 OpenPopup();
                 throw;
@@ -159,26 +172,26 @@
 
     private string getModifyUrl(LocalStorage.Row r)
     {
-        // /order/id/page=r.index
-        string url = "/order/" + menu.Id + "?page=" + DayMenuHelper.getDayMenuIndex(menu, r.dm);
+    // /order/id/page=r.index
+        var url = "/order/" + menu.Id + "?page=" + DayMenuHelper.getDayMenuIndex(menu, r.dm);
         return url;
     }
 
     private int getTotalPrice()
     {
-        int Total = 0;
-        foreach (LocalStorage.Row r in data)
+        var Total = 0;
+        foreach (var r in data)
         {
             Total += r.LunchPrice + r.DinnerPrice;
         }
         return Total;
-
     }
+
     private string convertToWeekday(DateTime date)
     {
-        string weekday = "";
+        var weekday = "";
 
-        weekday = date.ToString("dddddd", new System.Globalization.CultureInfo("sv-SE"));
+        weekday = date.ToString("dddddd", new CultureInfo("sv-SE"));
         weekday = char.ToUpper(weekday[0]) + weekday.Substring(1);
 
         return weekday;
@@ -186,11 +199,12 @@
 
     private Dish getDishFromDmById(int id, DayMenu dm)
     {
-        foreach (Dish d in dm.dishes)
+        foreach (var d in dm.dishes)
         {
             if (d.Id == id)
                 return d;
         }
         return null;
     }
+
 }
