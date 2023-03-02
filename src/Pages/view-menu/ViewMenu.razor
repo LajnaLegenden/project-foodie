@@ -12,6 +12,7 @@
 @inject NavigationManager NavManager
 @inject ILocalStorageService localStorage
 @inject CartService CartService
+@implements IDisposable
 
 <div>
     @if (loading)
@@ -220,6 +221,14 @@
     {
         return selectedIndex == i;
     }
+
+
+    void IDisposable.Dispose()
+{
+  // Unsubscribe from the event when our component is disposed
+  NavManager.LocationChanged -= HandleLocationChanged;
+}
+
 
     protected override async Task OnInitializedAsync()
     {
