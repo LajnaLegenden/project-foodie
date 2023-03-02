@@ -1,17 +1,17 @@
 @page "/order/{menuId}"
 @page "/order"
-@using project_foodie.Pages.view_menu.components
-@using project_foodie.Repository
-@using project_foodie.Model
-@using project_foodie.Modules
-@using Microsoft.AspNetCore.WebUtilities
-@using System.Globalization
 @inject NavigationManager UriHelper
 @inject IJSRuntime JS;
 @inject IJSRuntime JSRuntime
 @inject NavigationManager NavManager
 @inject ILocalStorageService localStorage
 @inject CartService CartService
+@using project_foodie.Pages.view_menu.components
+@using project_foodie.Repository
+@using project_foodie.Model
+@using project_foodie.Modules
+@using Microsoft.AspNetCore.WebUtilities
+@using System.Globalization
 @implements IDisposable
 
 <div>
@@ -224,10 +224,10 @@
 
 
     void IDisposable.Dispose()
-{
-  // Unsubscribe from the event when our component is disposed
-  NavManager.LocationChanged -= HandleLocationChanged;
-}
+    {
+    // Unsubscribe from the event when our component is disposed
+        NavManager.LocationChanged -= HandleLocationChanged;
+    }
 
 
     protected override async Task OnInitializedAsync()
