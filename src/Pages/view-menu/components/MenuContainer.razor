@@ -31,25 +31,7 @@
     [Parameter]
     public string Category { get; set; }
 
-    string currentCategory = "all";
     private string interactable = "clickable";
-
-    void toggleClass(int type)
-    {
-        if (type == 1)
-        {
-            currentCategory = "all";
-        }
-        else if (type == 2)
-        {
-            currentCategory = "vegetariskt";
-        }
-        else
-        {
-            currentCategory = "grundkost";
-        }
-        ;
-    }
 
     /*------------------ No food ---------------------*/
     private bool isChecked = false;
