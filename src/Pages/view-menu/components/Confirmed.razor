@@ -7,40 +7,40 @@
 @if (dataLoaded)
 {
     <div class="confirmedContainer">
-    <div class="title">
-        <h1>Beställningen är nu bekräftad!</h1>
-    </div>
-    <div class="infoContainer">
-        <div class="logoContainer">
-            <img src="/images/confetti.png" />
+        <div class="title">
+            <h1>Beställningen är nu bekräftad!</h1>
         </div>
-        <div class="information">
-            <div class="parameters">
-                <h2>Namn:</h2>
-                <h2>Beställningsdag:</h2>
-                <h2>Antal beställda portioner:</h2>
-                <h2>Leveransdatum:</h2>
-                <h2>Totalt Pris:</h2>
+        <div class="infoContainer">
+            <div class="logoContainer">
+                <img src="/images/confetti.png"/>
             </div>
-            <div class="inputs">
-                <h2>Thomas Andersson</h2>
-                <h2>@order.orderDate</h2>
-                <h2>@getNumberOfMeals()</h2>
-                <h2>2023-03-06</h2>
-                <h2>@getTotalPrice():-</h2>
+            <div class="information">
+                <div class="parameters">
+                    <h2>Namn:</h2>
+                    <h2>Beställningsdag:</h2>
+                    <h2>Antal beställda portioner:</h2>
+                    <h2>Leveransdatum:</h2>
+                    <h2>Totalt Pris:</h2>
+                </div>
+                <div class="inputs">
+                    <h2>Thomas Andersson</h2>
+                    <h2>@order.orderDate</h2>
+                    <h2>@getNumberOfMeals()</h2>
+                    <h2>2023-03-06</h2>
+                    <h2>@getTotalPrice():-</h2>
+                </div>
             </div>
         </div>
+        <div class="buttonContainer">
+            <button @onclick="@(() => NavManager.NavigateTo("/"))">Klart</button>
+        </div>
     </div>
-    <div class="buttonContainer">
-        <button @onclick="@(() => NavManager.NavigateTo("/"))">Klart</button>
-    </div>
-</div>
 }
 else
 {
     <div class="loading">
-    <h1>Loading...</h1>
-</div>
+        <h1>Loading...</h1>
+    </div>
 }
 
 @code {
