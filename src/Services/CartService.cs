@@ -42,18 +42,33 @@ public class CartService
         // Fetch the data from local storage
         var localStorageContent = await _localStorage.GetItemAsync<string>("dishData");
         // Check if the data is empty
-        if (localStorageContent == null) return 0;
+        if (localStorageContent == null)
+            return 0;
 
         // Deserialize the data
-        var dictionary = JsonConvert.DeserializeObject<
-            Dictionary<string, Dictionary<string, int>>
-        >(localStorageContent);
-        // Filter the data where count is greater than 0
-        var filteredObjects = dictionary.Values.Where(
-            obj => obj.Values.Any(count => count > 0)
+        var dictionary = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, int>>>(
+            localStorageContent
         );
-        // Count the data and return the count
-        var itemsCount = filteredObjects.Count();
-        return itemsCount;
+
+        // Count the occurrences of each ID
+        var idCounts = new Dictionary<string, int>();
+        foreach (var obj in dictionary.Values)
+        {
+            foreach (var id in obj.Keys)
+            {
+                if (idCounts.ContainsKey(id))
+                {
+                    idCounts[id] += obj[id];
+                }
+                else
+                {
+                    idCounts[id] = obj[id];
+                }
+            }
+        }
+
+        // Sum the counts and return the total
+        var totalCount = idCounts.Values.Sum();
+        return totalCount;
     }
 }
