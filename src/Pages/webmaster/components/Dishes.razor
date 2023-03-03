@@ -1,7 +1,6 @@
+@using project_foodie.Model
+@using project_foodie.Repository
 @namespace project_foodie.Pages.Webmaster
-@using project_foodie.Model;
-@using project_foodie.Repository;
-@using Newtonsoft.Json;
 <div>
 
     <table>
@@ -41,15 +40,15 @@
 @code {
 
     private List<Dish> _allDishes;
-        private int selectedDishId = -1;
+    private int selectedDishId = -1;
 
     protected override async void OnInitialized()
     {
-       using(var context = new DatabaseContext()){
-        DishRepository dishRepository = new DishRepository(context);
-        _allDishes = await dishRepository.GetAllAsync();
-       }
-       
+        using (var context = new DatabaseContext())
+        {
+            var dishRepository = new DishRepository(context);
+            _allDishes = await dishRepository.GetAllAsync();
+        }
     }
 
     void setDishId(int id)

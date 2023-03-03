@@ -1,4 +1,4 @@
-
+@using System.Globalization
 <div class="@classTimelineCard">
     @weekday
 </div>
@@ -6,21 +6,22 @@
 @code {
     string classTimelineCard = "timeline-day-not-done";
     string weekday = "";
+
     [Parameter]
-    public DateTime[] dates {get; set;} = new DateTime[4]; 
+    public DateTime[] dates { get; set; } = new DateTime[4];
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        DateTime date = dates[0];
-        DateTime activeDate = dates[1];
-        DateTime inactiveDate = dates[2];
-        DateTime startDate = dates[3];
+        var date = dates[0];
+        var activeDate = dates[1];
+        var inactiveDate = dates[2];
+        var startDate = dates[3];
 
-        if (date == inactiveDate) 
+        if (date == inactiveDate)
         {
             classTimelineCard = "timeline-day-inactive";
         }
-        else if (date == activeDate) 
+        else if (date == activeDate)
         {
             classTimelineCard = "timeline-day-active";
         }
@@ -29,8 +30,9 @@
             classTimelineCard = "timeline-day-done";
         }
 
-        // Convert from date to weekday
-        weekday = date.ToString("dddddd", new System.Globalization.CultureInfo("sv-SE"));
+    // Convert from date to weekday
+        weekday = date.ToString("dddddd", new CultureInfo("sv-SE"));
         weekday = char.ToUpper(weekday[0]) + weekday.Substring(1);
     }
+
 }

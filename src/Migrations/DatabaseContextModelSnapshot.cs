@@ -206,6 +206,9 @@ namespace projectfoodie.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("date")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<int?>("dishId")
                         .HasColumnType("int");
 
@@ -213,6 +216,9 @@ namespace projectfoodie.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("type")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -307,7 +313,7 @@ namespace projectfoodie.Migrations
                         .HasForeignKey("dishId");
 
                     b.HasOne("project_foodie.Model.Order", "order")
-                        .WithMany("OrderItems")
+                        .WithMany("orderItems")
                         .HasForeignKey("orderId");
 
                     b.Navigation("dish");
@@ -324,7 +330,7 @@ namespace projectfoodie.Migrations
 
             modelBuilder.Entity("project_foodie.Model.Order", b =>
                 {
-                    b.Navigation("OrderItems");
+                    b.Navigation("orderItems");
                 });
 #pragma warning restore 612, 618
         }

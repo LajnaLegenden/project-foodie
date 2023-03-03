@@ -1,75 +1,78 @@
-@using project_foodie.Pages.view_menu.components;
 @using project_foodie.Model
-@using project_foodie.Service
+@using project_foodie.Modules
 @inject IJSRuntime JS
-@inject BrowserService Service
 
-
-@if(state != "mobile"){
-<div class="timeline-container">
-    @for (int i = 0; i < sections.Count; i += dayMenuPerSection)
-    {
-        TimeLineSection.TimelineState tableState = state == "tablet" && shouldShowTypes(sections[i]) ? TimeLineSection.TimelineState.Active : TimeLineSection.TimelineState.Inactive;
-        <div class="timeline-section @(getClass(i))">
-            <div class="timeline-entry">
-                <TimeLineSection dm="@sections[i].DayMenu" showTypes="true" size="@state" isDay="true" state="tableState"/>
-                @for (int j = 0; j < dayMenuPerSection; j++)
-                {
-                   @if(state == "desktop"){
-                     <div class="timeline-line @(shouldShowTypes(sections[i]) ? "" : "hidden")"></div>
-
-                    //get current state
-                    TimeLineSection.TimelineState sectionState = currentIndex == sections[i + j].Index ?
-                    TimeLineSection.TimelineState.Active : currentIndex > sections[i + j].Index ?
-                    TimeLineSection.TimelineState.Completed : TimeLineSection.TimelineState.Inactive;
-                    <TimeLineSection dm="@sections[i+j].DayMenu" showTypes="@shouldShowTypes(sections[i])" isDay="false"
-                        state="sectionState"  />
-                   }
-                }
-            </div>
-            @if (i + dayMenuPerSection < sections.Count && state == "desktop")
-            {
-                <div class="timeline-line"></div>
-            }
-        </div>
-    }
-</div>
-} else {
+@if (state != "mobile")
+{
     <div class="timeline-container">
-            <div class="timeline-section mobile">
+        @for (var i = 0; i < sections.Count; i += dayMenuPerSection)
+        {
+            var tableState = state == "tablet" && shouldShowTypes(sections[i]) ? TimeLineSection.TimelineState.Active : TimeLineSection.TimelineState.Inactive;
+            <div class="timeline-section @(getClass(i))">
                 <div class="timeline-entry">
-                    <TimeLineSection dm="@sections[currentIndex].DayMenu" showTypes="true" size="@state" isDay="true" state="TimeLineSection.TimelineState.Inactive" />
-                   
-                    @foreach (var item in getSameDateDayMenus(currentIndex))
+
+                    <TimeLineSection menu=@menu dm="@sections[i].DayMenu" showTypes="true" size="@state" isDay="true" state="tableState"/>
+
+                    @for (var j = 0; j < dayMenuPerSection; j++)
                     {
-                        TimeLineSection.TimelineState sectionState = currentIndex == item.Index ? TimeLineSection.TimelineState.Active : currentIndex > item.Index ? TimeLineSection.TimelineState.Completed : TimeLineSection.TimelineState.Inactive;
-                        <TimeLineSection dm="@item.DayMenu" showTypes="true" isDay="false" state="sectionState" />
+                        @if (state == "desktop")
+                        {
+                            <div class="timeline-line @(shouldShowTypes(sections[i]) ? "" : "hidden")"></div>
+
+                            //get current state
+                            var sectionState = currentIndex == sections[i + j].Index ?
+                                TimeLineSection.TimelineState.Active : currentIndex > sections[i + j].Index ?
+                                    TimeLineSection.TimelineState.Completed : TimeLineSection.TimelineState.Inactive;
+                            <TimeLineSection menu=@menu dm="@sections[i + j].DayMenu" showTypes="@shouldShowTypes(sections[i])" isDay="false"
+                                             state="sectionState"/>
+                        }
                     }
                 </div>
+                @if (i + dayMenuPerSection < sections.Count && state == "desktop")
+                {
+                    <div class="timeline-line"></div>
+                }
             </div>
-</div>
-    }
+        }
+    </div>
+}
+else
+{
+    <div class="timeline-container">
+        <div class="timeline-section mobile">
+            <div class="timeline-entry">
+                <TimeLineSection menu=@menu dm="@sections[currentIndex].DayMenu" showTypes="true" size="@state" isDay="true" state="TimeLineSection.TimelineState.Inactive"/>
+
+                @foreach (var item in getSameDateDayMenus(currentIndex))
+                {
+                    var sectionState = currentIndex == item.Index ? TimeLineSection.TimelineState.Active : currentIndex > item.Index ? TimeLineSection.TimelineState.Completed : TimeLineSection.TimelineState.Inactive;
+                    <TimeLineSection menu=@menu dm="@item.DayMenu" showTypes="true" isDay="false" state="sectionState"/>
+                }
+            </div>
+        </div>
+    </div>
+}
 
 
 @code {
+
     [Parameter]
     public Menu menu { get; set; }
+
     [Parameter]
     public int currentIndex { get; set; }
+
     [Parameter]
     public string state { get; set; } = "desktop";
 
     private List<(DayMenu DayMenu, int Index)> sections;
     private int dayMenuPerSection = 2;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        sections = ViewMenu.getSortedDayMenus(menu);
-        dayMenuPerSection = getNumberOfSameDateDayMenus(0);
-       
+        sections = DayMenuHelper.getSortedDayMenus(menu);
+        dayMenuPerSection = DayMenuHelper.getNumberOfSameDateDayMenus(0, sections);
     }
-
-
 
     private string getClass(int index)
     {
@@ -78,7 +81,6 @@
             return "selected";
         }
         return "";
-
     }
 
     private string getDay(int index, int offset)
@@ -93,16 +95,15 @@
     //function to get all sections with same date
     private List<(DayMenu DayMenu, int Index)> getSameDateDayMenus(int index)
     {
-        List<(DayMenu DayMenu, int Index)> sameDateDayMenus = new List<(DayMenu DayMenu, int Index)>();
-        DateTime date = sections[index].DayMenu.date;
+        var sameDateDayMenus = new List<(DayMenu DayMenu, int Index)>();
+        var date = sections[index].DayMenu.date;
 
-        for (int i = 0; i < sections.Count; i++)
+        for (var i = 0; i < sections.Count; i++)
         {
             if (sections[i].DayMenu.date == date)
             {
                 sameDateDayMenus.Add((sections[i].DayMenu, i));
             }
-            
         }
 
         return sameDateDayMenus;
@@ -114,36 +115,12 @@
         {
             return true;
         }
-        //check if currentsection has same date as this section
+    //check if currentsection has same date as this section
         if (sections[currentIndex].DayMenu.date == section.DayMenu.date)
         {
             return true;
         }
         return false;
     }
-
-    //function to get number of DayMenus with same date
-    private int getNumberOfSameDateDayMenus(int index)
-    {
-        int count = 0;
-        DateTime date = sections[index].DayMenu.date;
-
-        for (int i = 0; i < sections.Count; i++)
-        {
-            if (sections[i].DayMenu.date == date)
-            {
-                count++;
-            }
-            else
-            {
-                break;
-            }
-        }
-
-        return count;
-    }
-
-
-
 
 }

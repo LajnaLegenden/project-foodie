@@ -1,4 +1,3 @@
-
 <div class="modal-background">
     <div class="modal-card">
         <div class="card-image">
@@ -7,23 +6,40 @@
             <h1>@DishName</h1>
         </div>
         <div class="card-body">
-            <div class="content">
-                <h2>Innehåll</h2>
-                <ul>
-                    @foreach (var ingredient in FoodContent)
-                    {
-                        <li>@ingredient</li>
-                    }
-                </ul>
+            <div class="content-container">
+                <div class="content">
+                    <h2>Innehåll</h2>
+                    <ul>
+                        @foreach (var ingredient in FoodContent)
+                        {
+                            <li>@ingredient</li>
+                        }
+                    </ul>
+                </div>
+                <div class="content">
+                    <h2>Allergener</h2>
+                    <ul>
+                        @foreach (var allergen in Allergens)
+                        {
+                            <li>@allergen</li>
+                        }
+                    </ul>
+                </div>
             </div>
-            <div class="content">
-                <h2>Allergener</h2>
-                <ul>
-                    @foreach (var allergen in Allergens)
+            <div class="nutrition-table">
+                <table>
+                    <tr>
+                        <th class="alignleft">Näringsvärde</th>
+                        <th class="alignright">per 100 gram</th>
+                    </tr>
+                    @foreach (var nutritionalValue in nutritionalValues)
                     {
-                        <li>@allergen</li>
+                        <tr>
+                            <td class="alignleft">@nutritionalValue.Name</td>
+                            <td class="alignright">@nutritionalValue.Amount</td>
+                        </tr>
                     }
-                </ul>
+                </table>
             </div>
         </div>
         <div class="card-button">
@@ -34,17 +50,92 @@
 
 
 @code {
+
     [Parameter]
-    public string DishName {get; set;}
+    public string DishName { get; set; }
+
     [Parameter]
-    public List<string> FoodContent {get; set;}
+    public List<string> FoodContent { get; set; }
+
     [Parameter]
-    public List<string> Allergens {get; set;}
+    public List<string> Allergens { get; set; }
+
     [Parameter]
-    public EventCallback<bool> OnClose {get; set;}
+    public EventCallback<bool> OnClose { get; set; }
 
     private Task ModalClose()
     {
         return OnClose.InvokeAsync(false);
     }
+
+    public class NutritionalValue
+    {
+        public string Name { get; set; }
+        public string Amount { get; set; }
+    }
+
+    List<NutritionalValue> nutritionalValues = new()
+    {
+        new NutritionalValue
+        {
+            Name = "energi",
+            Amount = "400 kilojoule"
+        },
+        new NutritionalValue
+        {
+            Name = "fett",
+            Amount = "1,5 gram"
+        },
+        new NutritionalValue
+        {
+            Name = "kolhydrater",
+            Amount = "30 gram"
+        },
+        new NutritionalValue
+        {
+            Name = "energi",
+            Amount = "400 kilojoule"
+        },
+        new NutritionalValue
+        {
+            Name = "fett",
+            Amount = "1,5 gram"
+        },
+        new NutritionalValue
+        {
+            Name = "kolhydrater",
+            Amount = "30 gram"
+        },
+        new NutritionalValue
+        {
+            Name = "energi",
+            Amount = "400 kilojoule"
+        },
+        new NutritionalValue
+        {
+            Name = "fett",
+            Amount = "1,5 gram"
+        },
+        new NutritionalValue
+        {
+            Name = "kolhydrater",
+            Amount = "30 gram"
+        },
+        new NutritionalValue
+        {
+            Name = "energi",
+            Amount = "400 kilojoule"
+        },
+        new NutritionalValue
+        {
+            Name = "fett",
+            Amount = "1,5 gram"
+        },
+        new NutritionalValue
+        {
+            Name = "kolhydrater",
+            Amount = "30 gram"
+        }
+    };
+
 }

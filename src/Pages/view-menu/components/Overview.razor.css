@@ -1,7 +1,11 @@
+/*
+path: src/Pages/view-menu/components/MenuContainer.razor.css
+*/
+
 h1 {
-  text-align: center;
   font-size: var(--h1-font-default, 40px);
   font-weight: bold;
+  text-align: center;
 }
 
 p {
@@ -11,82 +15,81 @@ p {
 }
 
 ul {
-  list-style-type: none;
   border-collapse: collapse;
+  list-style-type: none;
   padding-left: 0;
 }
 
 
-li:not(:last-child) {
-  margin-bottom: 10px;
-}
+li:not(:last-child) { margin-bottom: 10px; }
 
-.overview-table tr td {
-  font-size: 20px;
-}
+.overview-table tr td { font-size: 20px; }
 
 .overview-container {
-  width: 100%;
+  -ms-flex-align: center;
+  -ms-flex-direction: column;
+  -webkit-box-align: center;
+  -webkit-box-direction: normal;
+  -webkit-box-orient: vertical;
+  align-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   flex-direction: column;
-  align-items: center;
   margin-bottom: 64px;
-
+  width: 100%;
 }
+
 .overview-table {
+  -webkit-box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-collapse: collapse;
-  width: 80%;
   border-radius: 10px;
-  overflow: hidden;
   border-radius: 10px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  width: 80%;
 }
 
 .overview-table th {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  text-align: left;
   background-color: #067A46;
   color: white;
+  padding-bottom: 12px;
+  padding-top: 12px;
+  text-align: left;
   text-transform: uppercase;
 }
 
-.overview-table:first-child {
-  border-radius: 10px;
-}
+.overview-table:first-child { border-radius: 10px; }
 
 .overview-table td, .overview-table th {
   border-bottom: 1px solid #ddd;
   padding: 8px;
 }
 
-button {
-  padding: 8px 16px;
-	border-radius: 50px;
-	border: none;
-	background-color: #FF5757;
-	color: #fff;
-	font-size: 16px;
-	cursor: pointer;
-  text-transform: uppercase;
+a {
+  background-color: #FF5757;
+  border: none;
+  border-radius: 50px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 16px;
   font-weight: 700;
+  padding: 8px 16px;
+  text-transform: uppercase;
 }
 
-.total-all-price {
-  text-align: right;
-}
+.total-all-price { text-align: right; }
 
 @media screen and (max-width: 1500px) {
   .overview-table {
+    -webkit-box-shadow: none;
     border: 0;
     border-radius: 0;
     box-shadow: none;
     width: 60%;
   }
 
-  .overview-table caption {
-    font-size: 1.3em;
-  }
+  .overview-table caption { font-size: 1.3em; }
 
   .overview-table th {
     border: none;
@@ -100,15 +103,17 @@ button {
   }
 
   .overview-table tr {
-    overflow: hidden;
+    -webkit-box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border: 1px solid #ddd;
-    display: block;
-    margin-bottom: 1em;
     border-radius: 10px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    display: block;
+    margin-bottom: 1em;
+    overflow: hidden;
   }
 
   .overview-table tr:first-child {
+    -webkit-box-shadow: none;
     border: 0;
     box-shadow: none;
   }
@@ -142,19 +147,20 @@ button {
     color: #fff;
   }
 
-  button {
-    padding: 8px 16px;
-    border-radius: 50px;
-    width: 200px;
-    border: none;
+  a {
     background-color: #FF5757;
+    border: none;
+    border-radius: 50px;
     color: #fff;
     font-size: 12px;
+    padding: 8px 16px;
+    width: 200px;
   }
 }
 
 @media screen and (max-width: 970px) {
   .overview-table {
+    -webkit-box-shadow: none;
     border: 0;
     border-radius: 0;
     box-shadow: none;
@@ -164,15 +170,14 @@ button {
 
 @media screen and (max-width: 1500px) {
   .overview-table {
+    -webkit-box-shadow: none;
     border: 0;
     border-radius: 0;
     box-shadow: none;
     width: 60%;
   }
 
-  .overview-table caption {
-    font-size: 1.3em;
-  }
+  .overview-table caption { font-size: 1.3em; }
 
   .overview-table th {
     border: none;
@@ -186,15 +191,17 @@ button {
   }
 
   .overview-table tr {
-    overflow: hidden;
+    -webkit-box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border: 1px solid #ddd;
-    display: block;
-    margin-bottom: 1em;
     border-radius: 10px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    display: block;
+    margin-bottom: 1em;
+    overflow: hidden;
   }
 
   .overview-table tr:first-child {
+    -webkit-box-shadow: none;
     border: 0;
     box-shadow: none;
   }
@@ -228,19 +235,20 @@ button {
     color: #fff;
   }
 
-  button {
-    padding: 8px 16px;
-    border-radius: 50px;
-    width: 200px;
-    border: none;
+  a {
     background-color: #FF5757;
+    border: none;
+    border-radius: 50px;
     color: #fff;
     font-size: 12px;
+    padding: 8px 16px;
+    width: 200px;
   }
 }
 
 @media screen and (max-width: 970px) {
   .overview-table {
+    -webkit-box-shadow: none;
     border: 0;
     border-radius: 0;
     box-shadow: none;

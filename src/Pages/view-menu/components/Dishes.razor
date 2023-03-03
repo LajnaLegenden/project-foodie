@@ -1,41 +1,57 @@
-@using project_foodie.Pages.view_menu.components;
-@using project_foodie.Model;
-@using Newtonsoft.Json;
-@using Newtonsoft.Json.Linq;
-@inject Blazored.LocalStorage.ILocalStorageService localStorage
-@using project_foodie.Repository;
+@using project_foodie.Model
+@using project_foodie.Repository
+@using Newtonsoft.Json.Linq
+@using Newtonsoft.Json
+@inject ILocalStorageService localStorage
+@inject CartService CartService
 
-
-
-<div class="food-card">
-    <div @onclick="() => OpenPopup()" class="food-card-img-container">
-
+@if (dishData.Name != "GHOST_DISH_DISABLE_MEAL")
+{
+    <div class="food-card">
+        <div @onclick="() => OpenPopup()" class="food-card-img-container">
+        </div>
+        <div class="food-card-body">
+            <div class="info-button">
+                <img src="/images/info-circle1.svg" @onclick="() => OpenPopup()" width="40px" height="40px"/>
+            </div>
+            <div class="food-card-upper-body">
+                <div class="food-card-food-container">
+                    <p class="food-card-text">@dishData.Name</p>
+                    <p class="food-card-text-extra">@dishData.description</p>
+                </div>
+                <div class="food-card-price-container">
+                    <p class="food-card-price">@dishData.Price:-</p>
+                </div>
+            </div>
+            <div class="allergener">
+                @foreach (var element in dishData.Allergens)
+                {
+                    <li>
+                        <span>@element.Name</span>
+                    </li>
+                }
+            </div>
+            <div class="@quantityContainer">
+                @if (showInput)
+                {
+                    <div class="btn-add-container">
+                        <button class="food-card-btn-decrement" @onclick="e => modifyCount(-1)">
+                            <span>-</span>
+                        </button>
+                        <input type="text" class="text-add-placeholder" count="@count" placeholder="@count st" readonly="readonly"/>
+                        <button class="food-card-btn-increment" @onclick="e => modifyCount(1)">
+                            <span>+</span>
+                        </button>
+                    </div>
+                }
+                else
+                {
+                    <button class="@ButtonClass food-card-btn" type="submit" @onclick="e => modifyCount(1)">Välj</button>
+                }
+            </div>
+        </div>
     </div>
-    <div class="food-card-body">
-        <div class="food-card-upper-body">
-            <div class="food-card-food-container">
-                <p class="food-card-text">@dishData.Name</p>
-                <p class="food-card-text-extra">@dishData.description</p>
-            </div>
-            <div class="food-card-price-container">
-                <p class="food-card-price">@dishData.Price:-</p>
-            </div>
-        </div>
-        <div class="allergener">
-            @foreach(Allergen element in dishData.Allergens) {
-                <li><span>@element.Name</span></li>
-            }
-        </div>
-        <div class="@quantityContainer">
-            <div class="btn-add-container">
-                <button class="food-card-btn-decrement" @onclick="((e) => modifyCount(-1))"><span>-</span></button>
-                <input type="text" class="text-add-placeholder" count="@count" placeholder="@count st" readonly="readonly" />
-                <button class="food-card-btn-increment" @onclick="((e) => modifyCount(1))"><span>+</span></button>
-            </div>
-        </div>
-    </div>
-</div>
-
+}
 
 @if (PopupOpen)
 {
@@ -51,62 +67,85 @@
         PopupOpen = false;
         StateHasChanged();
     }
+
     private void OpenPopup()
     {
         PopupOpen = true;
         StateHasChanged();
     }
+
     /*----------------No food--------------*/
-    [Parameter]
-    public bool wantFood {get; set;}
-    [Parameter]
-    public string quantityContainer {get; set;}
-    protected override void OnParametersSet()
+    string quantityContainer = "food-card-btn-container";
+
+    public async void Clicked(List<int> ids)
     {
-        if (wantFood)
+        var ghostDishId = new List<int>();
+        quantityContainer = "food-card-btn-container-no-food";
+        count = 0;
+
+        await updateData(count, ids);
+
+        if (dishData.Name == "GHOST_DISH_DISABLE_MEAL")
         {
-            count = 1;
-            modifyCount(-1);
+            ghostDishId.Add(dishData.Id);
         }
+        await updateData(-1, ghostDishId);
     }
+
+    public async void Unclicked()
+    {
+        var ghostDishId = new List<int>();
+        quantityContainer = "food-card-btn-container";
+        count = 0;
+
+        if (dishData.Name == "GHOST_DISH_DISABLE_MEAL")
+        {
+            ghostDishId.Add(dishData.Id);
+        }
+        await updateData(count, ghostDishId);
+    }
+
     /*-------------------------------------*/
-    List<string> foodContent = new List<string>();
-    List<string> allergens = new List<string>();
+    List<string> foodContent = new();
+    List<string> allergens = new();
     private ICollection<Ingredient> ingredients;
 
-    protected override async Task OnInitializedAsync() {
+    protected override async Task OnInitializedAsync()
+    {
         using (var db = new DatabaseContext())
         {
-            DishRepository dr = new DishRepository(db);
+            var dr = new DishRepository(db);
             ingredients = await dr.getDishIngredients(dishData.Id);
-        } 
+        }
 
-        foreach(Allergen element in dishData.Allergens) 
+        foreach (var element in dishData.Allergens)
         {
             allergens.Add(element.Name);
         }
 
-        foreach (Ingredient element in ingredients) 
+        foreach (var element in ingredients)
         {
-           foodContent.Add(element.Name);
+            foodContent.Add(element.Name);
         }
     }
 
     [Parameter]
     public int id { get; set; }
+
     [Parameter]
     public Dish dishData { get; set; }
+
     [Parameter]
     public DayMenu dayMenu { get; set; }
+
     [Parameter]
     public int count { get; set; } = 0;
+
     private bool showInput = false;
     private string ButtonClass => count <= 0 ? "food-card-btn food-card-btn-add-amount" : "food-card-btn food-card-btn-add";
     private string dayString = "";
-    private string jsonString;
 
     public static int MAX_DISHES = 20;
-    private bool firstRender = true;
     //onAfterRenderAsync
 
     protected override void OnAfterRender(bool firstRender)
@@ -114,14 +153,18 @@
         if (firstRender)
         {
             dayString = dayMenu.date.ToString("yyyy-MM-dd") + "-" + dayMenu.type + "-" + dayMenu.Id;
-            GetData();
+    //disable await warning
+            _ = GetData();
         }
     }
 
     private async void modifyCount(int value)
     {
+        var ids = new List<int>();
+        ids.Add(dishData.Id);
+
         count += value;
-        //enforce max dishes and min dishes
+    //enforce max dishes and min dishes
         if (count > MAX_DISHES)
         {
             count = MAX_DISHES;
@@ -130,55 +173,19 @@
         {
             count = 0;
         }
-
-        //check if key
-        var localStorageContent = await localStorage.GetItemAsync<string>("dishData");
-        if (localStorageContent == null)
-        {
-            //create key
-            await localStorage.SetItemAsync("dishData", "{}");
-            localStorageContent = "{}";
-        }
-        DateTime day = dayMenu.date;
-        string dayString = day.ToString("yyyy-MM-dd") + "-" + dayMenu.type + "-" + dayMenu.Id;
-        JObject obj = JObject.Parse(localStorageContent);
-        //save dish as array of object {dishId: 1, count: 2} with key date
-        //check if date exists
-        if (obj.ContainsKey(dayString))
-        {
-            //check if dish exists
-            if (obj[dayString][dishData.Id.ToString()] != null)
-            {
-                //update count
-                obj[dayString][dishData.Id.ToString()] = count;
-            }
-            else
-            {
-                //add dish
-                obj[dayString][dishData.Id.ToString()] = count;
-            }
-        }
-        else
-        {
-            //add date
-            obj[dayString] = new JObject();
-            //add dish
-            obj[dayString][dishData.Id.ToString()] = count;
-        }
-        string json = JsonConvert.SerializeObject(obj);
-        await localStorage.SetItemAsync("dishData", json);
+        await updateData(count, ids);
         enforceCounter();
     }
 
     private async Task GetData()
     {
-        //parse json
+    //parse json
         var localStorageContent = await localStorage.GetItemAsync<string>("dishData");
         if (localStorageContent != null)
         {
-            JObject obj = JObject.Parse(localStorageContent);
-            DateTime day = dayMenu.date;
-            string dayString = day.ToString("yyyy-MM-dd") + "-" + dayMenu.type + "-" + dayMenu.Id;
+            var obj = JObject.Parse(localStorageContent);
+            var day = dayMenu.date;
+            var dayString = day.ToString("yyyy-MM-dd") + "-" + dayMenu.type + "-" + dayMenu.Id;
             if (obj.ContainsKey(dayString))
             {
                 if (obj[dayString][dishData.Id.ToString()] != null)
@@ -189,7 +196,8 @@
             }
         }
     }
-    private void  enforceCounter()
+
+    private void enforceCounter()
     {
         if (count > 0)
         {
@@ -201,7 +209,54 @@
         }
         InvokeAsync(StateHasChanged);
     }
+
+    public async Task updateData(int quantity, List<int> ids)
+    {
+        foreach (var id in ids)
+        {
+    //check if key
+            var localStorageContent = await localStorage.GetItemAsync<string>("dishData");
+            if (localStorageContent == null)
+            {
+    //create key
+                await localStorage.SetItemAsync("dishData", "{}");
+                CartService.AddToCart();
+                localStorageContent = "{}";
+            }
+
+            var day = dayMenu.date;
+            var dayString = day.ToString("yyyy-MM-dd") + "-" + dayMenu.type + "-" + dayMenu.Id;
+            var obj = JObject.Parse(localStorageContent);
+
+    //save dish as array of object {dishId: 1, count: 2} with key date
+    //check if date exists
+            if (obj.ContainsKey(dayString))
+            {
+    //check if dish exists
+                if (obj[dayString][id.ToString()] != null)
+                {
+    //update count
+                    obj[dayString][id.ToString()] = quantity;
+                }
+                else
+                {
+    //add dish
+                    obj[dayString][id.ToString()] = quantity;
+                }
+            }
+            else
+            {
+    //add date
+                obj[dayString] = new JObject();
+    //add dish
+                obj[dayString][id.ToString()] = quantity;
+            }
+
+            var json = JsonConvert.SerializeObject(obj);
+            await localStorage.SetItemAsync("dishData", json);
+            CartService.AddToCart();
+            enforceCounter();
+        }
+    }
+
 }
-
-
-

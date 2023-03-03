@@ -1,182 +1,292 @@
+/* 
+path: src/Pages/view-menu/components/Dishes.razor.css
+*/
+
 .food-card {
-    width: 300px;
-    height: 391px;
-    background: #FCFCFC;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 5px;
+  -webkit-box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  background: #FCFCFC;
+  border-radius: 5px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  height: 391px;
+  position: relative;
+  width: 300px;
 }
 
-.food-card-img-container {
-    height: 177px;
-    border-radius: 5px 5px 0px 0px;
-    background-color: #067A46;
-}
-
-.food-card-upper-body {
-    height: 70px;
-}
-
-.food-card-text,
-.food-card-price {
-    padding-top: 10px;
-    margin: auto;
-    font-weight: bold;
-    font-size: var(--p-font-default);
-    line-height: 130%;
-}
-
-.food-card-price {
-    color: #067A46;
-    font-size: 25px;
-}
-
-.food-card-text {
-    font-size: 18px;
-}
-
-.food-card-text-extra {
-    font-size: 14px;
-    width: 100%;
-    margin: auto;
-    margin-top: 4px;
-    font-weight: 100;
-    color: #3D3D3D;
-}
-
-.allergener {
-    display: flex;
-    border-top: 1px solid #DBDBDB;
-    align-items: center;
-    padding: 0px;
-    gap: 5px;
-    margin-top: 16px;
-    padding-top: 16px;
-    margin-bottom: 26px;
-    margin-left: 10px;
+.info-button {
+  margin-right: 5px;
+  margin-top: 5px;
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 
 .allergener li {
-    color: #3D3D3D;
+  display: inline-block;
+  font-size: 14px;
+  font-weight: bold;
+  margin-right: 10px;
+  padding-left: 10px;
+  position: relative;
 }
 
+.allergener li:before {
+  content: "•";
+  left: 0;
+  position: absolute;
+}
+
+.allergener li span { margin-left: 10px; }
+
+.info-button img {
+  -webkit-box-shadow: rgba(0, 0, 0, 0.3) 4px 8px 24px;
+  border-radius: 100%;
+  box-shadow: rgba(0, 0, 0, 0.3) 4px 8px 24px;
+}
+
+.food-card-img-container {
+  background-color: #067A46;
+  border-radius: 5px 5px 0px 0px;
+  cursor: pointer;
+  height: 177px;
+}
+
+.food-card-upper-body { height: 70px; }
+
+.food-card-text,
+.food-card-price {
+  font-size: var(--p-font-default);
+  font-weight: bold;
+  line-height: 130%;
+  margin: auto;
+  padding-top: 10px;
+}
+
+.food-card-price {
+  color: #067A46;
+  font-size: 25px;
+}
+
+.food-card-text { font-size: 18px; }
+
+.food-card-text-extra {
+  color: #3D3D3D;
+  font-size: 14px;
+  font-weight: 100;
+  margin: auto;
+  margin-top: 4px;
+  width: 100%;
+}
+
+.allergener {
+  -ms-flex-align: center;
+  -webkit-box-align: center;
+  align-items: center;
+  border-top: 1px solid #DBDBDB;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 5px;
+  margin-bottom: 26px;
+  margin-left: 10px;
+  margin-top: 16px;
+  padding: 0px;
+  padding-top: 16px;
+}
+
+.allergener li { color: #3D3D3D; }
+
 .allergener li span {
-    position: relative;
-    left: -10px;
+  left: -10px;
+  position: relative;
 }
 
 .food-card-upper-body {
-    display: flex;
-    justify-content: space-around;
-    width: 100%;
+  -ms-flex-pack: distribute;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
 }
 
-.food-card-food-container {
-    width: 70%;
-}
+.food-card-food-container { width: 70%; }
 
 .food-card-btn-container {
-    display: flex;
-    justify-content: center;
+  -ms-flex-pack: center;
+  -webkit-box-pack: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  justify-content: center;
 }
 
 .food-card-btn-container-no-food {
-    display: flex;
-    justify-content: center;
+  -ms-flex-pack: center;
+  -webkit-box-pack: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  justify-content: center;
 }
 
-.food-card-btn-container-no-food .btn-add-container {
-    background: rgba(94, 99, 97, 0.23);
-}
+.food-card-btn-container-no-food .btn-add-container { background: rgba(94, 99, 97, 0.23); }
 
-.food-card-btn-container-no-food .food-card-btn-decrement {
-    background: #494949;
-}
+.food-card-btn-container-no-food .food-card-btn-decrement { background: #494949; }
 
-.food-card-btn-container-no-food .food-card-btn-increment {
-    background: #494949;
-}
+.food-card-btn-container-no-food .food-card-btn-increment { background: #494949; }
+
+.food-card-btn-container-no-food .food-card-btn { background: #adadad; }
 
 .food-card-btn {
-    margin: 8px;
-    width: 75%;
-    height: 40px;
-    border: 1px solid gray;
+  -webkit-box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  background: #C3DED2;
+  border: none;
+  border-radius: 100px;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  font-size: 17px;
+  font-weight: 600;
+  height: 40px;
+  margin: 8px;
+  width: 75%;
 }
 
-.food-card-text-add-amount {
-    width: 80px;
-}
+.food-card-text-add-amount { width: 80px; }
 
 .btn-add-container {
-    height: 45px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    width: 180px;
-    margin: 5px;
-    border-radius: 25px;
-    background: rgba(6, 122, 70, 0.23);
-    line-height: 1.5em;
+  -ms-flex-direction: row;
+  -ms-flex-pack: center;
+  -ms-flex-pack: justify;
+  -webkit-box-direction: normal;
+  -webkit-box-orient: horizontal;
+  -webkit-box-pack: center;
+  -webkit-box-pack: justify;
+  background: rgba(6, 122, 70, 0.23);
+  border-radius: 25px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-direction: row;
+  height: 45px;
+  justify-content: center;
+  justify-content: space-between;
+  line-height: 1.5em;
+  margin: 5px;
+  width: 75%;
 }
 
 .text-add-placeholder {
-    width: 85px;
-    background: none;
-    border: none;
-    text-align: center;
-    color: var(--text-color-primary, #000000);
-    font-weight: bold;
-    font-size: 18px;
+  background: none;
+  border: none;
+  color: var(--text-color-primary, #000000);
+  cursor: default;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  width: 85px;
 }
 
+/* Default style for all buttons */
+
 .food-card-btn-increment,
-.food-card-btn-decrement {
-    color: white;
-    border-radius: 100%;
-    width: 40px;
-    height: 40px;
-    border: none;
-    filter: var(--filter-shadow-default, drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)));
-    margin-top: 3px;
-    font-size: 30px;
+.food-card-btn-decrement,
+.food-card-btn-info {
+  -webkit-filter: var(--filter-shadow-default, drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)));
+  border: none;
+  border-radius: 100%;
+  color: white;
+  cursor: pointer;
+  filter: var(--filter-shadow-default, drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)));
+  font-size: 30px;
+  height: 38px;
+  margin-top: 3.5px;
+  width: 38px;
+}
+
+.food-card-btn-info {
+  border: 4px solid var(--btn-sucess, #006B38);
+  color: var(--btn-sucess, #006B38);
+  font-weight: 700;
+  margin: 8px;
 }
 
 .food-card-btn-increment {
-    float: right;
-    background: var(--btn-sucess, #006B38);
+  background: var(--btn-sucess, #006B38);
+  float: right;
+  margin-right: 3.5px;
 }
 
 .food-card-btn-increment span {
-    font-size: 40px;
-    height: 30px;
-    line-height: 0.95;
+  font-size: 40px;
+  height: 30px;
+  line-height: 0.95;
 }
 
 .food-card-btn-decrement span {
-    font-size: 40px;
-    height: 30px;
-    line-height: 0;
+  font-size: 40px;
+  height: 30px;
+  line-height: 0;
 }
 
 .food-card-btn-decrement {
-    float: left;
-    background: #b10000;
+  background: #b10000;
+  float: left;
+  margin-left: 3.5px;
 }
 
+/* Adjust line-height for Firefox and Safari */
+
+@-moz-document url-prefix() {
+
+  .food-card-btn-increment span,
+  .food-card-btn-decrement span { line-height: 0.5; }
+}
+
+@media not all and (-webkit-min-device-pixel-ratio: 0), not all and (-o-min-device-pixel-ratio: 0/1), not all and (min-resolution: .001dpcm) {
+  @supports (-webkit-appearance:none) and (stroke-color:transparent) {
+
+    .food-card-btn-increment span,
+    .food-card-btn-decrement span { line-height: 0.5; }
+  }
+}
+
+
 .text-add-placeholder:focus {
-    border: none;
-    background: none;
+  background: none;
+  border: none;
+}
+
+::-webkit-input-placeholder {
+  color: var(--text-color-primary, #000000);
+  opacity: 1;
+}
+
+::-moz-placeholder {
+  color: var(--text-color-primary, #000000);
+  opacity: 1;
+}
+
+:-ms-input-placeholder {
+  color: var(--text-color-primary, #000000);
+  opacity: 1;
+}
+
+::-ms-input-placeholder {
+  color: var(--text-color-primary, #000000);
+  opacity: 1;
 }
 
 ::placeholder {
-    color: var(--text-color-primary, #000000);
-    opacity: 1;
+  color: var(--text-color-primary, #000000);
+  opacity: 1;
 }
 
-:-ms-input-placeholder { /* Internet Explorer 10-11 */
-    color: var(--text-color-primary, #000000);
-  }
-  
-::-ms-input-placeholder { /* Microsoft Edge */
-    color: var(--text-color-primary, #000000);
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: var(--text-color-primary, #000000);
+}
+
+::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: var(--text-color-primary, #000000);
 }

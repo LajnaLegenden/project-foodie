@@ -1,15 +1,18 @@
-@using project_foodie.Data
-@using project_foodie.Pages.view_menu.components
-@using project_foodie.Model;
-
+@using project_foodie.Model
 <div class="startContainer">
     <h1>Vi levererar din favoritmaträtt</h1>
     <h1 class="h1-same">direkt hem till dig.</h1>
     <p>Du beställer för <span class="green">@menuInfo.Name</span></p>
-    <p>Sista bestälningsdag för <span class="green">@menuInfo.Name</span> är <span class="red"><br>@menuInfo.lastOrderDate.ToString("yyyy-MM-dd")</span></p>
+    <p>
+        Sista bestälningsdag för <span class="green">@menuInfo.Name</span> är
+        <span class="red">
+            <br>@menuInfo.lastOrderDate.ToString("yyyy-MM-dd")
+        </span>
+    </p>
 </div>
 
 @code {
+
     [Parameter]
     public Menu menuInfo { get; set; }
 

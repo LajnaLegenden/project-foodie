@@ -1,3 +1,6 @@
+@inject ILocalStorageService localStorage
+@inject CartService CartService
+
 <div class="header">
     <div class="logo">
         <h1>LOGO</h1>
@@ -14,7 +17,7 @@
                     <span class="nav-link-text">Beställ</span>
                 </NavLink>
             </div>
-            <div class="nav-item">
+            <div class="nav-item not-need-now">
                 <NavLink class="nav-link" href="how">
                     <span>Vanliga frågor</span>
                 </NavLink>
@@ -24,6 +27,49 @@
                     <span>Min sida</span>
                 </NavLink>
             </div>
+            <div class="nav-item">
+                <NavLink class="nav-link" href="/order?page=14">
+                    <div class="nav-kassan">
+                        <img src="/images/shopping-basket.svg" width="50px" height="50px"/>
+                        <span class="nav-kassan-counter">
+                            <p>@cartCount</p>
+                        </span>
+                    </div>
+                </NavLink>
+            </div>
         </nav>
     </div>
 </div>
+
+@code {
+
+    // Variable to hold the cart count
+    private int itemsCountInKassan;
+    private int cartCount;
+
+    // OnInitializedAsync is called when the component is first rendered
+    protected override async void OnInitialized()
+    {
+        cartCount = await CartService.GetObjectCount();
+        CartService.SetCartCount(cartCount);
+        CartService.CartCountChanged += HandleCartCountChanged;
+    }
+
+    // Handle the event when the cart count changes
+    private void HandleCartCountChanged(object sender, EventArgs e)
+    {
+        cartCount = CartService.GetCartCount();
+        StateHasChanged();
+    }
+
+    // OnAfterRenderAsync is called after the component has been rendered
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            itemsCountInKassan = await CartService.GetObjectCount();
+            StateHasChanged();
+        }
+    }
+
+}

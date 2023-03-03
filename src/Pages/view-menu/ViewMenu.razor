@@ -1,119 +1,195 @@
+@page "/order/{menuId}"
 @page "/order"
-@using project_foodie.Data
-@using project_foodie.Pages.view_menu.components
 @inject NavigationManager UriHelper
-@using project_foodie.Model;
-@using Newtonsoft.Json;
-@using System.Globalization;
-@using project_foodie.Repository;
 @inject IJSRuntime JS;
 @inject IJSRuntime JSRuntime
+@inject NavigationManager NavManager
+@inject ILocalStorageService localStorage
+@inject CartService CartService
+@using project_foodie.Pages.view_menu.components
+@using project_foodie.Repository
+@using project_foodie.Model
+@using project_foodie.Modules
+@using Microsoft.AspNetCore.WebUtilities
+@using System.Globalization
+@implements IDisposable
 
-@if (loading)
-{
-    <p>Loading</p>
-}
-else
-{
-    @if(selectedIndex == -1) {
-        <ViewStart menuInfo=@_menu/>
-    } else {
-        @if(selectedIndex != overViewIndex) {
-            <Timeline menu="@_menu" currentIndex="@selectedIndex" state="@viewPort"/>
-            <div class="day-container">
-                <h1 class="week-highlight">@_menu.Name</h1>
-                <h1 class=@dayString>@activeWeekday()</h1>
-                <h1 class=@dayString>@dateString()</h1>
-            </div>
+<div>
+    @if (loading)
+    {
+        <p>Loading</p>
+    }
+    else
+    {
+        @if (selectedIndex == -1)
+        {
+            <ViewStart menuInfo=@_menu/>
         }
-        <div class="menu-container">
-            @if(selectedIndex != overViewIndex) {
-                <div class="radio-group">
-                    <EditForm Model="@_model">
-                        <InputRadioGroup @bind-Value="_model.Category">
-
-                        <input type="radio" id="radio-1" name="group" checked="checked" @onchange="(() => Category = categoryList[0].Category)" />
-                        <label for="radio-1">Alla</label>
-
-                        <input type="radio" id="radio-2" name="group" @onchange="(() => Category = categoryList[1].Category)" />
-                        <label for="radio-2">Grundkost</label>
-
-                        <input type="radio" id="radio-3" name="group" @onchange="(() => Category = categoryList[2].Category)" />
-                        <label for="radio-3">Vegetariskt</label>
-                        </InputRadioGroup>
-                    </EditForm>
+        else if (selectedIndex == confirmedViewIndex)
+        {
+            <Confirmed menu="@_menu" order="@newOrder"/>
+        }
+        else
+        {
+            @if (selectedIndex != overViewIndex)
+            {
+                <Timeline menu="@_menu" currentIndex="@selectedIndex" state="@viewPort"/>
+                <div class="day-container">
+                    <h1 class="week-highlight">@_menu.Name</h1>
+                    <h1 class=@dayString>@activeWeekday()</h1>
+                    <h1 class=@dayString>@dateString()</h1>
                 </div>
             }
-            @foreach (var dayMenu in ViewMenu.getSortedDayMenus(_menu))
+            <div class="menu-container">
+                @if (selectedIndex != overViewIndex)
                 {
-                    <div class="@(showSelected(dayMenu.Index) ? "shown" : "hidden")">
-                        <MenuContainer dayMenu=@dayMenu.DayMenu Category="@Category"/>
+                    <div class="radio-group">
+                        <EditForm Model="@_model">
+                            <InputRadioGroup @bind-Value="_model.Category">
+
+                                <input type="radio" id="radio-1" name="group" checked="checked" @onchange="() => Category = categoryList[0].Category"/>
+                                <label for="radio-1">Alla</label>
+
+                                <input type="radio" id="radio-2" name="group" @onchange="() => Category = categoryList[1].Category"/>
+                                <label for="radio-2">Grundkost</label>
+
+                                <input type="radio" id="radio-3" name="group" @onchange="() => Category = categoryList[2].Category"/>
+                                <label for="radio-3">Vegetariskt</label>
+                            </InputRadioGroup>
+                        </EditForm>
                     </div>
                 }
-            @if(selectedIndex == overViewIndex){
-                <Overview menu="@_menu"/>
-            }
+                @foreach (var dayMenu in DayMenuHelper.getSortedDayMenus(_menu))
+                {
+                    <div class="@(showSelected(dayMenu.Index) ? "shown" : "hidden")">
+                        <MenuContainer @ref="menuContainer" dayMenu=@dayMenu.DayMenu Category="@Category"/>
+                    </div>
+                }
+                @if (selectedIndex == overViewIndex)
+                {
+                    <Overview @ref="overview" menu="@_menu"/>
+                }
 
-            <div class="button-container">
-                <button @onclick="prevPage" class="button-back">@getBackButtonString()</button>
-                <button @onclick="nextPage" class="button-forward">@getNextButtonString()</button>
+                <div class="button-container">
+                    <button @onclick="() => setPage(selectedIndex - 1, true)" class="button-back">@getBackButtonString()</button>
+                    @if (selectedIndex == overViewIndex)
+                    {
+                        <button @onclick="@SaveOrder" class="button-forward">Beställ här</button>
+                    }
+                    else
+                    {
+                        <button @onclick="() => setPage(selectedIndex + 1, true)" class="button-forward">@getNextButtonString()</button>
+                    }
+
+                </div>
             </div>
-        </div>
+        }
+        @if (selectedIndex == -1)
+        {
+            <div class="button-start-container">
+                <button @onclick="() => setPage(selectedIndex + 1, true)" class="button-start">Beställ här</button>
+            </div>
+        }
     }
-    @if(selectedIndex == -1) {
-        <div class="button-start-container">
-            <button @onclick="nextPage" class="button-start">Beställ här</button>
-        </div>
-    }
-}
+</div>
 
 @code {
     public string Category = "all";
     private int selectedIndex = -1;
     private int overViewIndex;
+    private int confirmedViewIndex;
+
+    [Parameter]
+    public string menuId { get; set; }
+
+    Overview overview;
+    MenuContainer menuContainer;
     private Menu _menu;
     private bool loading = true;
-    public string viewPort {get; set;} = "desktop";
+    private bool shouldGoToOverview;
+    public Order newOrder;
+
+    public string viewPort { get; set; } = "desktop";
     private DotNetObjectReference<ViewMenu> objRef;
     private string dayString => selectedIndex == overViewIndex ? "overview-day-container" : "viewmenu-day-container";
 
-
-    private List<Categories> categoryList = new()
+    // Uses SaveOrder from Overview.razor
+    private async Task SaveOrder()
+    {
+        try
         {
-            new Categories()
-            {
-                Category = "all"
-            },
-            new Categories()
-            {
-                Category = "grundkost"
-            },
-            new Categories()
-            {
-                Category = "vegetariskt"
-            }
-        };
+            newOrder = await overview?.SaveOrder();
+            setPage(selectedIndex + 1, true);
+    //Clear local storage once order is saved
+            await localStorage.ClearAsync();
+            CartService.AddToCart();
+        }
+        catch (DbUpdateConcurrencyException e)
+        {
+    // TODO: Log error
+            Console.WriteLine(e);
+        }
+        catch (DbUpdateException e)
+        {
+    // TODO: Log error
+            Console.WriteLine(e);
+        }
+    }
 
-    private Categories _model = new() { Category = "all" };
+    private readonly List<Categories> categoryList = new()
+    {
+        new Categories
+        {
+            Category = "all"
+        },
+        new Categories
+        {
+            Category = "grundkost"
+        },
+        new Categories
+        {
+            Category = "vegetariskt"
+        }
+    };
+
+    private readonly Categories _model = new() { Category = "all" };
 
     protected class DayMenuIndex
     {
-        public int Index;
         public DayMenu DayMenu;
+        public int Index;
     }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
             var viewPort = await JS.InvokeAsync<string>("blazorOnLoad", objRef);
-                Console.WriteLine(System.Reflection.Assembly.GetExecutingAssembly().GetName().Name);
         }
     }
 
     protected override void OnInitialized()
     {
+        NavManager.LocationChanged += HandleLocationChanged;
         objRef = DotNetObjectReference.Create(this);
+        ReadQueryParams();
     }
+
+    private void HandleLocationChanged(object sender, LocationChangedEventArgs e)
+    {
+        ReadQueryParams();
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void ReadQueryParams()
+    {
+        var uri = NavManager.ToAbsoluteUri(NavManager.Uri);
+        if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("page", out var _page))
+        {
+            selectedIndex = Convert.ToInt32(_page);
+        }
+    }
+
 
     //C#
     [JSInvokable]
@@ -123,35 +199,49 @@ else
         InvokeAsync(StateHasChanged);
     }
 
-    string activeWeekday() {
-        if(selectedIndex == -1 || selectedIndex >= ViewMenu.getSortedDayMenus(_menu).Count) {
+    string activeWeekday()
+    {
+        if (selectedIndex == -1 || selectedIndex >= DayMenuHelper.getSortedDayMenus(_menu).Count)
+        {
             return "";
         }
-        return convertToWeekday(ViewMenu.getSortedDayMenus(_menu)[selectedIndex].DayMenu.date);
+        return convertToWeekday(DayMenuHelper.getSortedDayMenus(_menu)[selectedIndex].DayMenu.date);
     }
 
-    string dateString() {
-        if(selectedIndex == -1 || selectedIndex >= ViewMenu.getSortedDayMenus(_menu).Count) {
+    string dateString()
+    {
+        if (selectedIndex == -1 || selectedIndex >= DayMenuHelper.getSortedDayMenus(_menu).Count)
+        {
             return "";
         }
-        return dateFormat(ViewMenu.getSortedDayMenus(_menu)[selectedIndex].DayMenu.date);
+        return dateFormat(DayMenuHelper.getSortedDayMenus(_menu)[selectedIndex].DayMenu.date);
     }
 
-bool showSelected(int  i) {
- return selectedIndex  == i;
-}
+    bool showSelected(int i)
+    {
+        return selectedIndex == i;
+    }
+
+
+    void IDisposable.Dispose()
+    {
+    // Unsubscribe from the event when our component is disposed
+        NavManager.LocationChanged -= HandleLocationChanged;
+    }
+
+
     protected override async Task OnInitializedAsync()
     {
         using (var db = new DatabaseContext())
         {
-            MenuRepository mr = new MenuRepository(db);
-            List<Menu> menus = await mr.GetAllAsync();
+            var mr = new MenuRepository(db);
+            var menus = await mr.GetAllAsync();
 
             menus.Sort((m1, m2) => m1.lastOrderDate > m2.lastOrderDate ? 1 : -1);
 
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
 
-            foreach (Menu menu in menus)
+            foreach (var menu in menus)
             {
                 if (menu.lastOrderDate > now)
                 {
@@ -162,34 +252,15 @@ bool showSelected(int  i) {
             }
 
             overViewIndex = _menu.dayMenus.Count;
+            confirmedViewIndex = overViewIndex + 1;
         }
-
     }
-public static List<(DayMenu DayMenu, int Index)> getSortedDayMenus(Menu menu)
-{
-    var indexedDayMenus = menu.dayMenus
-        .Select((d, i) => new { DayMenu = d, Index = i })
-        .OrderBy(di => di.DayMenu.date)
-        .ThenBy(di => di.DayMenu.type)
-        .ToList();
-
-    var sortedDayMenus = indexedDayMenus.Select(di => di.DayMenu).ToList();
-
-    var result = new List<(DayMenu DayMenu, int Index)>();
-
-    for (int i = 0; i < indexedDayMenus.Count(); i++)
-    {
-        result.Add((indexedDayMenus[i].DayMenu, i));
-    }
-
-    return result;
-}
 
     private string convertToWeekday(DateTime date)
     {
-        string weekday = "";
+        var weekday = "";
 
-        weekday = date.ToString("dddddd", new System.Globalization.CultureInfo("sv-SE"));
+        weekday = date.ToString("dddddd", new CultureInfo("sv-SE"));
         weekday = char.ToUpper(weekday[0]) + weekday.Substring(1);
 
         return weekday;
@@ -197,35 +268,63 @@ public static List<(DayMenu DayMenu, int Index)> getSortedDayMenus(Menu menu)
 
     private string dateFormat(DateTime date)
     {
-        return date != null ? date.ToString("dd/M") : "";
+        return date.ToString("dd/M");
     }
 
-    private async void nextPage()
+    private void setPage(int index = 0, bool isButton = false)
     {
-        selectedIndex++;
-        checkPageMax();
-        await JSRuntime.InvokeVoidAsync("scrollToTop");
-    }
+        var _index = index;
+        if (index == overViewIndex)
+            shouldGoToOverview = true;
 
-    private async void prevPage()
-    {
-        selectedIndex--;
-        checkPageMax();
-        await JSRuntime.InvokeVoidAsync("scrollToTop");
-    }
 
-    private void checkPageMax(){
-        if(selectedIndex < -1){
-            selectedIndex = -1;
-        } else if(selectedIndex > overViewIndex){
-            selectedIndex = overViewIndex;
+        if (isButton)
+        {
+            if (index == overViewIndex - 1 || index == confirmedViewIndex)
+            {
+                shouldGoToOverview = false;
+            }
+        }
+
+
+        if (shouldGoToOverview)
+        {
+            index = overViewIndex;
+        }
+        selectedIndex = index;
+        checkPageMax();
+
+        var url = UrlHelper.RemoveQueryStringByKey(NavManager.Uri, "page");
+        var query = new Dictionary<string, string> { { "page", selectedIndex.ToString() } };
+
+        NavManager.NavigateTo(QueryHelpers.AddQueryString(url, query));
+        if (viewPort != "desktop")
+        {
+            JSRuntime.InvokeVoidAsync("scrollToTop");
         }
     }
-    private string getBackButtonString() {
+
+
+    private void checkPageMax()
+    {
+        if (selectedIndex < -1)
+        {
+            selectedIndex = -1;
+        }
+        else if (selectedIndex > confirmedViewIndex)
+        {
+            selectedIndex = confirmedViewIndex;
+        }
+    }
+
+    private string getBackButtonString()
+    {
         return selectedIndex == 0 ? "Gå till start" : "Föregående";
     }
 
-    private string getNextButtonString(){
+    private string getNextButtonString()
+    {
         return selectedIndex == overViewIndex ? "Lägg Order" : "Nästa";
     }
+
 }

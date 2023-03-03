@@ -1,0 +1,105 @@
+@page "/me/order_history"
+@using project_foodie.Model
+@using project_foodie.Pages.my_page.components
+@using project_foodie.Repository
+@using Microsoft.AspNetCore.WebUtilities
+@implements IDisposable
+@inject NavigationManager NavManager
+<main class="container">
+
+    <h1 class="order-history-title">Mina beställningar</h1>
+    <div class="order-history-container">
+        <div class="tables">
+            @foreach (var order in orders)
+            {
+                <OrderTable orderData="@order"/>
+            }
+        </div>
+        <div class="pageControl">
+            <a href="/me/order_history?page=@(pageNumber - 1)">Föregående</a>
+            @for (var i = 1; i <= totalItems / pageSize; i++)
+            {
+                @if (i == pageNumber)
+                {
+                    <a class="active" href="/me/order_history?page=@i">@i</a>
+                }
+                else
+                {
+                    <a href="/me/order_history?page=@i">@i</a>
+                }
+            }
+
+            <a href="/me/order_history?page=@(pageNumber + 1)">Nästa</a>
+        </div>
+
+    </div>
+</main>
+
+@code {
+    List<Order> orders = new();
+
+    private int pageNumber = 1;
+    private readonly int pageSize = 2;
+    private int totalItems = -1;
+
+
+    protected override void OnInitialized()
+    {
+        NavManager.LocationChanged += HandleLocationChanged;
+        ReadQueryParams();
+        InvokeAsync(StateHasChanged);
+    }
+
+
+    private void HandleLocationChanged(object sender, LocationChangedEventArgs e)
+    {
+        ReadQueryParams();
+        InvokeAsync(StateHasChanged);
+    }
+
+    void IDisposable.Dispose()
+    {
+    // Unsubscribe from the event when our component is disposed
+        NavManager.LocationChanged -= HandleLocationChanged;
+    }
+
+    private void ReadQueryParams()
+    {
+        var uri = NavManager.ToAbsoluteUri(NavManager.Uri);
+        if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("page", out var _page))
+        {
+            var page = Convert.ToInt32(_page);
+            setPage(page);
+        }
+        else
+        {
+            setPage(1);
+        }
+    }
+
+    private void setPage(int page)
+    {
+        using (var db = new DatabaseContext())
+        {
+            var repository = new RepositoryWrapper(db);
+            if (totalItems == -1)
+                totalItems = repository.Order.GetNumberOfOrders();
+            if (page > 0 && page <= totalItems / pageSize)
+            {
+                pageNumber = page;
+                orders = repository.Order.GetPage(pageNumber, pageSize);
+            }
+
+            else
+            {
+                if (pageNumber == 0)
+                    pageNumber = 1;
+                else if (pageNumber > totalItems / pageSize)
+                    pageNumber = totalItems / pageSize;
+                NavManager.NavigateTo("/me/order_history?page=" + pageNumber);
+            }
+    //update url
+        }
+    }
+
+}
