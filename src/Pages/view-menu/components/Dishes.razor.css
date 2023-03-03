@@ -35,9 +35,7 @@ path: src/Pages/view-menu/components/Dishes.razor.css
   position: absolute;
 }
 
-.allergener li span {
-  margin-left: 10px;
-}
+.allergener li span { margin-left: 10px; }
 
 .info-button img {
   -webkit-box-shadow: rgba(0, 0, 0, 0.3) 4px 8px 24px;
@@ -52,9 +50,7 @@ path: src/Pages/view-menu/components/Dishes.razor.css
   height: 177px;
 }
 
-.food-card-upper-body {
-  height: 70px;
-}
+.food-card-upper-body { height: 70px; }
 
 .food-card-text,
 .food-card-price {
@@ -70,9 +66,7 @@ path: src/Pages/view-menu/components/Dishes.razor.css
   font-size: 25px;
 }
 
-.food-card-text {
-  font-size: 18px;
-}
+.food-card-text { font-size: 18px; }
 
 .food-card-text-extra {
   color: #3D3D3D;
@@ -99,9 +93,7 @@ path: src/Pages/view-menu/components/Dishes.razor.css
   padding-top: 16px;
 }
 
-.allergener li {
-  color: #3D3D3D;
-}
+.allergener li { color: #3D3D3D; }
 
 .allergener li span {
   left: -10px;
@@ -117,9 +109,7 @@ path: src/Pages/view-menu/components/Dishes.razor.css
   width: 100%;
 }
 
-.food-card-food-container {
-  width: 70%;
-}
+.food-card-food-container { width: 70%; }
 
 .food-card-btn-container {
   -ms-flex-pack: center;
@@ -139,21 +129,13 @@ path: src/Pages/view-menu/components/Dishes.razor.css
   justify-content: center;
 }
 
-.food-card-btn-container-no-food .btn-add-container {
-  background: rgba(94, 99, 97, 0.23);
-}
+.food-card-btn-container-no-food .btn-add-container { background: rgba(94, 99, 97, 0.23); }
 
-.food-card-btn-container-no-food .food-card-btn-decrement {
-  background: #494949;
-}
+.food-card-btn-container-no-food .food-card-btn-decrement { background: #494949; }
 
-.food-card-btn-container-no-food .food-card-btn-increment {
-  background: #494949;
-}
+.food-card-btn-container-no-food .food-card-btn-increment { background: #494949; }
 
-.food-card-btn-container-no-food .food-card-btn {
-  background: #adadad;
-}
+.food-card-btn-container-no-food .food-card-btn { background: #adadad; }
 
 .food-card-btn {
   -webkit-box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
@@ -169,9 +151,7 @@ path: src/Pages/view-menu/components/Dishes.razor.css
   width: 75%;
 }
 
-.food-card-text-add-amount {
-  width: 80px;
-}
+.food-card-text-add-amount { width: 80px; }
 
 .btn-add-container {
   -ms-flex-direction: row;
@@ -207,31 +187,32 @@ path: src/Pages/view-menu/components/Dishes.razor.css
 }
 
 /* Default style for all buttons */
+
 .food-card-btn-increment,
 .food-card-btn-decrement,
 .food-card-btn-info {
-  color: white;
-  border-radius: 100%;
-  width: 38px;
-  height: 38px;
-  border: none;
   -webkit-filter: var(--filter-shadow-default, drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)));
-  filter: var(--filter-shadow-default, drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)));
-  margin-top: 3.5px;
-  font-size: 30px;
+  border: none;
+  border-radius: 100%;
+  color: white;
   cursor: pointer;
+  filter: var(--filter-shadow-default, drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)));
+  font-size: 30px;
+  height: 38px;
+  margin-top: 3.5px;
+  width: 38px;
 }
 
 .food-card-btn-info {
-  margin: 8px;
+  border: 4px solid var(--btn-sucess, #006B38);
   color: var(--btn-sucess, #006B38);
   font-weight: 700;
-  border: 4px solid var(--btn-sucess, #006B38);
+  margin: 8px;
 }
 
 .food-card-btn-increment {
-  float: right;
   background: var(--btn-sucess, #006B38);
+  float: right;
   margin-right: 3.5px;
 }
 
@@ -248,27 +229,24 @@ path: src/Pages/view-menu/components/Dishes.razor.css
 }
 
 .food-card-btn-decrement {
-  float: left;
   background: #b10000;
+  float: left;
   margin-left: 3.5px;
 }
 
 /* Adjust line-height for Firefox and Safari */
+
 @-moz-document url-prefix() {
 
   .food-card-btn-increment span,
-  .food-card-btn-decrement span {
-    line-height: 0.5;
-  }
+  .food-card-btn-decrement span { line-height: 0.5; }
 }
 
-@media not all and (-webkit-min-device-pixel-ratio:0), not all and (-o-min-device-pixel-ratio:0/1), not all and (min-resolution:.001dpcm) {
+@media not all and (-webkit-min-device-pixel-ratio: 0), not all and (-o-min-device-pixel-ratio: 0/1), not all and (min-resolution: .001dpcm) {
   @supports (-webkit-appearance:none) and (stroke-color:transparent) {
 
     .food-card-btn-increment span,
-    .food-card-btn-decrement span {
-      line-height: 0.5;
-    }
+    .food-card-btn-decrement span { line-height: 0.5; }
   }
 }
 
