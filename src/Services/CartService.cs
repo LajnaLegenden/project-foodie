@@ -53,19 +53,11 @@ public class CartService
         // Count the occurrences of each ID
         var idCounts = new Dictionary<string, int>();
         foreach (var obj in dictionary.Values)
-        {
-            foreach (var id in obj.Keys)
-            {
-                if (idCounts.ContainsKey(id))
-                {
-                    idCounts[id] += obj[id];
-                }
-                else
-                {
-                    idCounts[id] = obj[id];
-                }
-            }
-        }
+        foreach (var id in obj.Keys)
+            if (idCounts.ContainsKey(id))
+                idCounts[id] += obj[id];
+            else
+                idCounts[id] = obj[id];
 
         // Sum the counts and return the total
         var totalCount = idCounts.Values.Sum();
