@@ -234,12 +234,20 @@ path: src/Pages/view-menu/components/Dishes.razor.css
   margin-left: 3.5px;
 }
 
-/* Adjust line-height for Firefox and Safari only */
+/* Adjust line-height for Firefox and Safari */
 
 @-moz-document url-prefix() {
 
   .food-card-btn-increment span,
   .food-card-btn-decrement span { line-height: 0.5; }
+}
+
+@media not all and (-webkit-min-device-pixel-ratio: 0), not all and (-o-min-device-pixel-ratio: 0/1), not all and (min-resolution: .001dpcm) {
+  @supports (-webkit-appearance:none) and (stroke-color:transparent) {
+
+    .food-card-btn-increment span,
+    .food-card-btn-decrement span { line-height: 0.5; }
+  }
 }
 
 

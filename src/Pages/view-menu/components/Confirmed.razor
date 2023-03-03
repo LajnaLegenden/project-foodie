@@ -18,7 +18,7 @@
                 <div class="parameters">
                     <h2>Namn:</h2>
                     <h2>Beställningsdag:</h2>
-                    <h2>Antal beställda måltider:</h2>
+                    <h2>Antal beställda portioner:</h2>
                     <h2>Leveransdatum:</h2>
                     <h2>Totalt Pris:</h2>
                 </div>
@@ -79,17 +79,10 @@ else
 
     private int getNumberOfMeals()
     {
-        OrderItem _prevOrderItem = null;
         var Total = 0;
         foreach (var item in order.orderItems)
         {
-    //Count number of meals (more orderItems can be created per meal)
-            if (_prevOrderItem != null && _prevOrderItem.date == item.date && _prevOrderItem.type == item.type)
-            {
-                continue;
-            }
-            Total += 1;
-            _prevOrderItem = item;
+            Total += item.quantity;
         }
         return Total;
     }
