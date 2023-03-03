@@ -28,6 +28,7 @@ public class OrderRepository : RepositoryBase<Order>, IOrderRepository
             .Include(o => o.orderItems)
             .ThenInclude(o => o.dish)
             .Include(o => o.menu)
+            .ThenInclude(o => o.dayMenus)
             .ToList()
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
