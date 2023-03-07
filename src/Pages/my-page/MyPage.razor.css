@@ -1,0 +1,54 @@
+.line {
+    border-top: 1px solid #ccc;
+    margin: 0 0 1rem 0;
+    width: 100%;
+}
+
+.linkContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(2, minmax(1fr, 30px));
+    grid-gap: 3rem;
+    height: 100%;
+}
+
+.mainContainer {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    grid-template-rows: 1fr;
+    grid-gap: 1rem;
+    height: 80%
+}
+
+.menuCard {
+    border-radius: 1em;
+    border: 0.2rem solid var(--primary-color);
+    height: 100%;
+}
+
+.menuCard>* {
+    
+    text-align: center;
+}
+
+.menuCard>h3 {
+    margin-top: 30%;
+    font-size: 1.5rem;
+}
+
+.nav-item {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+}
+
+.nav-link>h4 {
+font-size: 18px;
+}
