@@ -36,7 +36,7 @@ h2 {
   -ms-flex-pack: center;
   -webkit-box-pack: center;
   background-color: #ffffff;
-  border: 2px solid green;
+  border: 2px solid var(--primary-color);
   border-radius: 4px;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -49,7 +49,7 @@ h2 {
 }
 
 .skip-container label {
-  color: green;
+  color: var(--primary-color);
   font-size: 26px;
   font-weight: bold;
   margin: 3px 0 0 10px;
@@ -79,7 +79,7 @@ h2 {
 input[type="radio"] { display: none; }
 
 input[type="radio"] + label {
-  border: 2px solid #067A46;
+  border: 2px solid var(--primary-color);
   border-radius: 4px;
   cursor: pointer;
   display: inline-block;
@@ -91,7 +91,7 @@ input[type="radio"] + label {
 }
 
 input[type="radio"]:checked + label {
-  background-color: #067A46;
+  background-color: var(--primary-color);
   color: white;
 }
 
