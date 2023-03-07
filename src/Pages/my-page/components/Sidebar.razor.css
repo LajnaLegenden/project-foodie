@@ -1,33 +1,28 @@
 .sidebar {
-    width: 267px;
-    height: 322px;
-    padding-left: 20px;
+  height: 322px;
+  padding-left: 20px;
+  width: 267px;
 }
 
 .sidebar-title {
-    font-size: 30px;
-    font-weight: 600;
-    padding: 10px 10px 0px 10px;
-    margin: 0;
+  font-size: 30px;
+  font-weight: 600;
+  margin: 0;
+  padding: 10px 10px 0px 10px;
 }
 
 .item {
-    font-size: 24px;
-    font-weight: 500;
-    padding: 10px;
+  font-size: 24px;
+  font-weight: 500;
+  padding: 10px;
 }
 
-.item .nav-link span {
-    text-decoration: none;
-}
+.item .nav-link span { text-decoration: none; }
 
 .item .nav-link-active span {
-    text-decoration: underline 1px solid #991F3D;
-    transition: ease-in 0.3s;
-    text-underline-offset: 6px;
+  text-decoration: underline 1px solid #991F3D;
+  text-underline-offset: 6px;
+  transition: ease-in 0.3s;
 }
 
-hr {
-    border-top: 1px solid #C8C8C8;
-}
-
+hr { border-top: 1px solid #C8C8C8; }
