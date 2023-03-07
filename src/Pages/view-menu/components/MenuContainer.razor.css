@@ -31,16 +31,17 @@ h2 {
   justify-content: center;
   margin: auto;
 }
+
 .skip-container {
+  -ms-flex-pack: center;
+  -webkit-box-pack: center;
+  border: 2px solid #0F4C81;
+  border-radius: 4px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
   justify-content: center;
   margin: 25px;
-  border: 2px solid #0F4C81;
-  border-radius: 4px;
   padding: 10px;
 }
 
@@ -52,10 +53,10 @@ h2 {
 }
 
 .skip-checkbox {
-  height: 40px;
-  width: 40px;
   background-color: #F5A623;
   border: 2px solid #E07225;
+  height: 40px;
+  width: 40px;
 }
 
 
