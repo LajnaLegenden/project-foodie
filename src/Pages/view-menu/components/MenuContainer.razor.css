@@ -35,8 +35,8 @@ h2 {
 .skip-container {
   -ms-flex-pack: center;
   -webkit-box-pack: center;
-  border: 2px solid green;
   background-color: #ffffff;
+  border: 2px solid green;
   border-radius: 4px;
   display: -webkit-box;
   display: -ms-flexbox;
