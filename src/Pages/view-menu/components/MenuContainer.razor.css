@@ -35,7 +35,8 @@ h2 {
 .skip-container {
   -ms-flex-pack: center;
   -webkit-box-pack: center;
-  border: 2px solid #0F4C81;
+  border: 2px solid green;
+  background-color: #ffffff;
   border-radius: 4px;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -48,7 +49,7 @@ h2 {
 }
 
 .skip-container label {
-  color: #0F4C81;
+  color: green;
   font-size: 26px;
   font-weight: bold;
   margin: 3px 0 0 10px;
@@ -60,9 +61,6 @@ h2 {
   height: 40px;
   width: 40px;
 }
-
-
-
 
 .radio-group {
   -ms-flex-direction: row;
