@@ -54,10 +54,15 @@ public class CartService
         var idCounts = new Dictionary<string, int>();
         foreach (var obj in dictionary.Values)
         foreach (var id in obj.Keys)
+        {
+            var count = obj[id];
+            if (count < 0)
+                count = 0; // Set count to 0 if it's negative
             if (idCounts.ContainsKey(id))
-                idCounts[id] += obj[id];
+                idCounts[id] += count;
             else
-                idCounts[id] = obj[id];
+                idCounts[id] = count;
+        }
 
         // Sum the counts and return the total
         var totalCount = idCounts.Values.Sum();
