@@ -5,9 +5,12 @@
 @using Microsoft.AspNetCore.WebUtilities
 @implements IDisposable
 @inject NavigationManager NavManager
-<main class="container">
+<div class="flex-container">
+<div class="sidebar"></div>
+<div class="container">
 
     <h1 class="order-history-title">Mina beställningar</h1>
+    <div class="line"></div>
     <div class="order-history-container">
         <div class="tables">
             @foreach (var order in orders)
@@ -33,7 +36,8 @@
         </div>
 
     </div>
-</main>
+</div>
+</div>
 
 @code {
     List<Order> orders = new();
