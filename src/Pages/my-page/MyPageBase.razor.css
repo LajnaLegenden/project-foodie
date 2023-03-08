@@ -7,6 +7,7 @@
 }
 
 .active { text-decoration: underline; }
+
 .sidebar {
   height: 322px;
   padding-left: 20px;
@@ -29,13 +30,14 @@
 .item .nav-link span { text-decoration: none; }
 
 .item .nav-link-active span {
-  -webkit-text-decoration: underline 1px solid #991F3D;
-          text-decoration: underline 1px solid #991F3D;
-  text-underline-offset: 6px;
-  -webkit-transition: ease-in 0.3s;
   -o-transition: ease-in 0.3s;
+  -webkit-text-decoration: underline 1px solid #991F3D;
+  -webkit-transition: ease-in 0.3s;
+  text-decoration: underline 1px solid #991F3D;
+  text-underline-offset: 6px;
   transition: ease-in 0.3s;
 }
+
 .line {
   border-top: 1px solid #ccc;
   margin: 0 0 1rem 0;
