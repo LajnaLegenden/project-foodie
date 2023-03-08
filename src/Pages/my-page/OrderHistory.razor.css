@@ -1,9 +1,25 @@
+.flex-container {
+  display: flex;
+  flex-direction: row;
+}
+.sidebar {
+  width: 300px;
+  background-color: blanchedalmond;
+}
+
 .pageControl {
   -ms-flex-pack: distribute;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   justify-content: space-around;
+}
+
+.line {
+  background: var(--primary-color);
+  height: 3px;
+  width: 100%;
+  margin-bottom: 15px;
 }
 
 .tables {
@@ -20,7 +36,7 @@
   width: 100%;
 }
 
-main {
+.container {
   -ms-flex-align: center;
   -ms-flex-direction: column;
   -ms-flex-pack: center;
@@ -53,4 +69,10 @@ a { color: black; }
 a.active {
   border: 1px solid var(--primary-color);
   color: var(--primary-color);
+}
+
+@media screen and (max-width: 1200px) {
+  .order-history-title {
+    text-align: center;
+  }
 }
