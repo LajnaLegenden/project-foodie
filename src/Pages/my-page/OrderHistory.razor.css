@@ -77,3 +77,8 @@ a.active {
     text-align: center;
   }
 }
+.page {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+}
