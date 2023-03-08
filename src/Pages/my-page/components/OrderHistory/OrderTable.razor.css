@@ -102,17 +102,13 @@ td, th { text-align: left; }
     justify-content: space-around;
   }
 
-  .last-item td {
-    border: none;
-  }
+  .last-item td { border: none; }
 
-  .type {
-    display: none;
-  }
+  .type { display: none; }
 
   .day {
-    width: 100%;
     border-top: 1px solid #CDCDCD !important;
+    width: 100%;
   }
 }
 
