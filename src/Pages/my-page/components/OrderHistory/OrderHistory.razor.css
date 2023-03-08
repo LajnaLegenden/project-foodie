@@ -78,6 +78,13 @@ a.active {
   .order-history-title { text-align: center; }
 }
 .page {
+  -ms-flex-direction: row;
+  -ms-flex-pack: start;
+  -webkit-box-direction: normal;
+  -webkit-box-orient: horizontal;
+  -webkit-box-pack: start;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   flex-direction: row;
   justify-content: start;

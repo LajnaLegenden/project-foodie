@@ -1,14 +1,10 @@
-@page "/me/order_history"
 @using project_foodie.Model
-@using project_foodie.Pages.my_page.components
 @using project_foodie.Repository
 @using Microsoft.AspNetCore.WebUtilities
 @implements IDisposable
 @inject NavigationManager NavManager
 <div class="flex-container">
-    <div class="sidebar"></div>
     <div class="container">
-
         <h1 class="order-history-title">Mina beställningar</h1>
         <div class="line"></div>
         <div class="order-history-container">
@@ -31,14 +27,8 @@
                         <a href="/me/order_history?page=@i">@i</a>
                     }
                 }
-
-<<<<<<< HEAD
-            <a href="/me/order_history?page=@(pageNumber + 1)">Nästa</a>
-=======
                 <a href="/me/order_history?page=@(pageNumber + 1)">Nästa</a>
             </div>
-
->>>>>>> 57f3998e77c47e9243f6766c57061d6eb9adb04d
         </div>
     </div>
 </div>
@@ -47,7 +37,7 @@
     List<Order> orders = new();
 
     private int pageNumber = 1;
-    private readonly int pageSize = 2;
+    private readonly int pageSize = 5;
     private int totalItems = -1;
 
 
@@ -74,6 +64,12 @@
     private void ReadQueryParams()
     {
         var uri = NavManager.ToAbsoluteUri(NavManager.Uri);
+
+        if (!uri.ToString().Contains("order_history"))
+        {
+            return;
+        }
+
         if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("page", out var _page))
         {
             var page = Convert.ToInt32(_page);
