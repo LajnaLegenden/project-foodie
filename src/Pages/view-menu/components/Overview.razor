@@ -21,56 +21,74 @@
                 <th>Totalt</th>
                 <th></th>
             </tr>
-            @foreach (var r in data)
+            @foreach (var date in dates)
             {
+                int index = data.FindIndex(a => a.dm.date == date);
                 <tr>
-                    <td data-label="Veckodag">@convertToWeekday(r.dm.date)</td>
-                    <td data-label="Lunch">
-                        <ul>
-                            @foreach (var item in r.dishCount)
-                            {
-                                if (item.dm.type == OrderType.Lunch)
+                    @if (index == -1)
+                    {
+                        DayMenu dm = DayMenuHelper.getDayMenuByDate(menu, date);
+
+                        <td data-label="Veckodag">@DayMenuHelper.convertToWeekday(date)</td>
+                        <td data-label="Lunch"></td>
+                        <td data-label="Pris">0:-</td>
+                        <td data-label="Middag"></td>
+                        <td data-label="Pris">0:-</td>
+                        <td data-label="Totalt">0:-</td>
+                        <td>
+                            <a href="@getModifyUrlbyDayMenu(dm)" class="change-dish-button">Ändra val</a>
+                        </td>
+                    }
+                    else
+                    {
+                        <td data-label="Veckodag">@DayMenuHelper.convertToWeekday(data[index].dm.date)</td>
+                        <td data-label="Lunch">
+                            <ul>
+                                @foreach (var item in data[index].dishCount)
                                 {
-                                    if (item.Count == -1)
+                                    if (item.dm.type == OrderType.Lunch)
                                     {
-                                        <li>Överhoppad</li>
-                                    }
-                                    else
-                                    {
-                                        <li>
-                                            @getDishFromDmById(item.dishId, item.dm).Name x @item.Count
-                                        </li>
+                                        if (item.Count == -1)
+                                        {
+                                            <li>Överhoppad</li>
+                                        }
+                                        else
+                                        {
+                                            <li>
+                                                @getDishFromDmById(item.dishId, item.dm).Name x @item.Count
+                                            </li>
+                                        }
                                     }
                                 }
-                            }
-                        </ul>
-                    </td>
-                    <td data-label="Pris">@r.LunchPrice:-</td>
-                    <td data-label="Middag">
-                        <ul>
-                            @foreach (var item in r.dishCount)
-                            {
-                                if (item.dm.type == OrderType.Middag)
+                            </ul>
+                        </td>
+                        <td data-label="Pris">@data[index].LunchPrice:-</td>
+                        <td data-label="Middag">
+                            <ul>
+                                @foreach (var item in data[index].dishCount)
                                 {
-                                    if (item.Count == -1)
+                                    if (item.dm.type == OrderType.Middag)
                                     {
-                                        <li>Överhoppad</li>
-                                    }
-                                    else
-                                    {
-                                        <li>
-                                            @getDishFromDmById(item.dishId, item.dm).Name x @item.Count
-                                        </li>
+                                        if (item.Count == -1)
+                                        {
+                                            <li>Överhoppad</li>
+                                        }
+                                        else
+                                        {
+                                            <li>
+                                                @getDishFromDmById(item.dishId, item.dm).Name x @item.Count
+                                            </li>
+                                        }
                                     }
                                 }
-                            }
-                        </ul>
-                    </td>
-                    <td data-label="Pris">@r.DinnerPrice:-</td>
-                    <td data-label="Totalt">@(r.LunchPrice + r.DinnerPrice):-</td>
-                    <td>
-                        <a href="@getModifyUrl(r)" class="change-dish-button">Ändra val</a>
-                    </td>
+                            </ul>
+                        </td>
+                        <td data-label="Pris">@data[index].DinnerPrice:-</td>
+                        <td data-label="Totalt">@(data[index].LunchPrice + data[index].DinnerPrice):-</td>
+                        <td>
+                            <a href="@getModifyUrl(data[index])" class="change-dish-button">Ändra val</a>
+                        </td>
+                    }
                 </tr>
             }
             <h2 class="total-all-price">Total: @getTotalPrice():- </h2>
@@ -90,10 +108,9 @@ else
 
     [Parameter]
     public Menu menu { get; set; }
-
     private List<LocalStorage.Row> data;
-
     public bool dataLoaded = false;
+    HashSet<DateTime> dates = new HashSet<DateTime>();
 
     /*------- Popup (Modal dialog)--------*/
     public bool PopupOpen { get; set; }
@@ -112,6 +129,11 @@ else
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        foreach (var dayMenu in DayMenuHelper.getSortedDayMenus(menu))
+        {
+            dates.Add(dayMenu.DayMenu.date);
+        }
+
         if (!dataLoaded)
         {
             data = await LocalStorage.LoadData(localStorage, menu);
@@ -128,18 +150,18 @@ else
             var menuRepository = new MenuRepository(db);
             var dishRepository = new DishRepository(db);
 
-    // Create a new order connected to the current menu
+            // Create a new order connected to the current menu
             var order = new Order
             {
                 userId = 1,
-    // This next line will trigger an exception, use for development to trigger OrderFailPopup.
+            // This next line will trigger an exception, use for development to trigger OrderFailPopup.
                 @* menu= menu, *@
             menu = await menuRepository.GetByIdAsync(menu.Id),
                 orderDate = DateTime.Now,
                 orderItems = new List<OrderItem>()
             };
             repository.Order.AddOrder(order);
-    //loop trough dishes in local storage to create orderItems
+            //loop trough dishes in local storage to create orderItems
             @foreach (var r in data)
             {
                 var date = r.dm.date;
@@ -151,7 +173,7 @@ else
                     repository.Order.AddOrderItem(order, dish, amount, date, orderType);
                 }
             }
-    // Lastly, save changes to database. If something goes wrong catch exception and open OrderFailPopup.
+            // Lastly, save changes to database. If something goes wrong catch exception and open OrderFailPopup.
             try
             {
                 await repository.SaveAsync();
@@ -172,8 +194,15 @@ else
 
     private string getModifyUrl(LocalStorage.Row r)
     {
-    // /order/id/page=r.index
+        // /order/id/page=r.index
         var url = "/order/" + menu.Id + "?page=" + DayMenuHelper.getDayMenuIndex(menu, r.dm);
+        return url;
+    }
+
+    private string getModifyUrlbyDayMenu(DayMenu dm)
+    {
+        // /order/id/page=r.index
+        var url = "/order/" + menu.Id + "?page=" + DayMenuHelper.getDayMenuIndex(menu, dm);
         return url;
     }
 
@@ -187,16 +216,6 @@ else
         return Total;
     }
 
-    private string convertToWeekday(DateTime date)
-    {
-        var weekday = "";
-
-        weekday = date.ToString("dddddd", new CultureInfo("sv-SE"));
-        weekday = char.ToUpper(weekday[0]) + weekday.Substring(1);
-
-        return weekday;
-    }
-
     private Dish getDishFromDmById(int id, DayMenu dm)
     {
         foreach (var d in dm.dishes)
@@ -206,5 +225,4 @@ else
         }
         return null;
     }
-
 }
