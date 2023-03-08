@@ -43,7 +43,7 @@
                     @if (previousDate == dayMenu.DayMenu.date)
                     {
                         <tr>
-                            <td></td>
+                            <td class="type"></td>
                             @if (previousType == dayMenu.DayMenu.type)
                             {
                                 <td></td>
@@ -63,7 +63,7 @@
                     else
                     {
                         <tr class="last-item">
-                            <td>@DayMenuHelper.convertToWeekday(dayMenu.DayMenu.date)</td>
+                            <td class="day">@DayMenuHelper.convertToWeekday(dayMenu.DayMenu.date)</td>
                             @if (previousType == dayMenu.DayMenu.type)
                             {
                                 <td></td>
