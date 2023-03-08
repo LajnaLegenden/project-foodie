@@ -8,34 +8,31 @@
     <div>
         <h2>Mina sidor</h2>
         <div class="line"></div>
-        <div class="nav-item">
-            <div class="navLink @(getDefaultActive() ? "active" : "")">
-                <NavLink class="nav-link" href="/me">
-                    <h4>Översikt</h4>
-                </NavLink>
-            </div>
-            <div class="navLink @(section == "order_history" ? "active" : "")">
-                <NavLink class="nav-link" href="/me/order_history">
-                    <h4>Mina beställningar</h4>
-                </NavLink>
-            </div>
-            <div class="navLink @(section == "invoices" ? "active" : "")">
-                <NavLink class="nav-link" href="/me/invoices">
-                    <h4>Mina fakturor</h4>
-                </NavLink>
-            </div>
-            <div class="navLink @(section == "favourites" ? "active" : "")">
-                <NavLink class="nav-link" href="/me/favourites">
-                    <h4>Mina favoriter</h4>
-                </NavLink>
-            </div>
-            <div class="navLink @(section == "aboutme" ? "active" : "")">
-
-                <NavLink class="nav-link" href="/me/aboutme">
-                    <h4>Mina uppgifter</h4>
-                </NavLink>
-            </div>
-        </div>
+<div class="item">
+        <NavLink class="@(activePage == "/me" ? "nav-link-active" : "nav-link")" href="/me" @onclick="@(() => activePage = "/me")">
+            <span>Översikt</span>
+        </NavLink>
+    </div>
+    <div class="item">
+        <NavLink class="@(activePage == "/me/order_history" ? "nav-link-active" : "nav-link")" href="/me/order_history" @onclick="@(() => activePage = "/me/order_history")">
+            <span>Mina beställningar</span>
+        </NavLink>
+    </div>
+    <div class="item">
+        <NavLink class="@(activePage == "/me/invoice" ? "nav-link-active" : "nav-link")" href="/me/invoice" @onclick="@(() => activePage = "/me/invoice")">
+            <span>Fakturor</span>
+        </NavLink>
+    </div>
+    <div class="item">
+        <NavLink class="@(activePage == "/me/favorites" ? "nav-link-active" : "nav-link")" href="/me/favorites" @onclick="@(() => activePage = "/me/favorites")">
+            <span>Favoriter</span>
+        </NavLink>
+    </div>
+    <div class="item">
+        <NavLink class="@(activePage == "/me/account" ? "nav-link-active" : "nav-link")" href="/me/account" @onclick="@(() => activePage = "/me/account")">
+            <span>Mina uppgifter</span>
+        </NavLink>
+    </div>
     </div>
     @switch (section)
     {
@@ -61,6 +58,13 @@
 
     [Parameter]
     public string section { get; set; }
+    private string activePage = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        var uri = new Uri(NavManager.Uri);
+        activePage = uri.LocalPath;
+    }
 
     bool getDefaultActive()
     {
