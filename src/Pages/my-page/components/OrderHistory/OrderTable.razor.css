@@ -46,9 +46,7 @@ td, th { text-align: left; }
 
 .order-details-table td:first-child { padding-left: 20px; }
 
-.last-item td {
-  border-top: 1px solid #CDCDCD;
-}
+.last-item td { border-top: 1px solid #CDCDCD; }
 
 .ordered { background-color: #FAFAFA; }
 
@@ -94,13 +92,9 @@ td, th { text-align: left; }
 }
 
 @media screen and (max-width: 1300px) {
-  .order-details-table {
-    margin: 0;
-  }
+  .order-details-table { margin: 0; }
 }
 
 @media screen and (max-width: 430px) {
-  .order-table {
-    width: auto;
-  }
+  .order-table { width: auto; }
 }
