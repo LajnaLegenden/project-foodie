@@ -1,0 +1,42 @@
+@inject NavigationManager NavigationManager
+
+<div class="sidebar">
+    <h2 class="sidebar-title">Mina sidor</h2>
+    <hr>
+    <div class="item">
+        <NavLink class="@(activePage == "/me" ? "nav-link-active" : "nav-link")" href="/me" @onclick="@(() => activePage = "/me")">
+            <span>Översikt</span>
+        </NavLink>
+    </div>
+    <div class="item">
+        <NavLink class="@(activePage == "/me/order_history" ? "nav-link-active" : "nav-link")" href="/me/order_history" @onclick="@(() => activePage = "/me/order_history")">
+            <span>Mina beställningar</span>
+        </NavLink>
+    </div>
+    <div class="item">
+        <NavLink class="@(activePage == "/me/invoice" ? "nav-link-active" : "nav-link")" href="/me/invoice" @onclick="@(() => activePage = "/me/invoice")">
+            <span>Fakturor</span>
+        </NavLink>
+    </div>
+    <div class="item">
+        <NavLink class="@(activePage == "/me/favorites" ? "nav-link-active" : "nav-link")" href="/me/favorites" @onclick="@(() => activePage = "/me/favorites")">
+            <span>Favoriter</span>
+        </NavLink>
+    </div>
+    <div class="item">
+        <NavLink class="@(activePage == "/me/account" ? "nav-link-active" : "nav-link")" href="/me/account" @onclick="@(() => activePage = "/me/account")">
+            <span>Mina uppgifter</span>
+        </NavLink>
+    </div>
+</div>
+
+@code {
+    private string activePage = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        var uri = new Uri(NavigationManager.Uri);
+        activePage = uri.LocalPath;
+    }
+
+}
