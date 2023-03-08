@@ -1,5 +1,4 @@
 @using project_foodie.Model
-@using project_foodie.Pages.my_page.components
 @using project_foodie.Repository
 @using Microsoft.AspNetCore.WebUtilities
 @implements IDisposable
@@ -64,10 +63,10 @@
 
     private void ReadQueryParams()
     {
-        
         var uri = NavManager.ToAbsoluteUri(NavManager.Uri);
 
-        if(!uri.ToString().Contains("order_history")){
+        if (!uri.ToString().Contains("order_history"))
+        {
             return;
         }
 

@@ -1,13 +1,13 @@
 @page "/me"
 @page "/me/{section}"
-@using project_foodie.Pages.my_page.components
 @using project_foodie.Pages.my_page.components.OrderHistory
+@using project_foodie.Pages.my_page.components
 @inject NavigationManager NavManager
 
 <div class="mainContainer">
     <div>
-    <h2>Mina sidor</h2>
-            <div class="line"></div>
+        <h2>Mina sidor</h2>
+        <div class="line"></div>
         <div class="nav-item">
             <NavLink class="nav-link" href="/me">
                 <h4>Översikt</h4>
@@ -46,9 +46,10 @@
     }
 </div>
 
-    @code {
-        [Parameter]
-        public string section { get; set; }
+@code {
+
+    [Parameter]
+    public string section { get; set; }
 
 
-    }
+}
