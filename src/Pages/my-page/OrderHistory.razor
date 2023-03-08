@@ -6,37 +6,37 @@
 @implements IDisposable
 @inject NavigationManager NavManager
 <div class="flex-container">
-<div class="sidebar"></div>
-<div class="container">
+    <div class="sidebar"></div>
+    <div class="container">
 
-    <h1 class="order-history-title">Mina beställningar</h1>
-    <div class="line"></div>
-    <div class="order-history-container">
-        <div class="tables">
-            @foreach (var order in orders)
-            {
-                <OrderTable orderData="@order"/>
-            }
-        </div>
-        <div class="pageControl">
-            <a href="/me/order_history?page=@(pageNumber - 1)">Föregående</a>
-            @for (var i = 1; i <= totalItems / pageSize; i++)
-            {
-                @if (i == pageNumber)
+        <h1 class="order-history-title">Mina beställningar</h1>
+        <div class="line"></div>
+        <div class="order-history-container">
+            <div class="tables">
+                @foreach (var order in orders)
                 {
-                    <a class="active" href="/me/order_history?page=@i">@i</a>
+                    <OrderTable orderData="@order"/>
                 }
-                else
+            </div>
+            <div class="pageControl">
+                <a href="/me/order_history?page=@(pageNumber - 1)">Föregående</a>
+                @for (var i = 1; i <= totalItems / pageSize; i++)
                 {
-                    <a href="/me/order_history?page=@i">@i</a>
+                    @if (i == pageNumber)
+                    {
+                        <a class="active" href="/me/order_history?page=@i">@i</a>
+                    }
+                    else
+                    {
+                        <a href="/me/order_history?page=@i">@i</a>
+                    }
                 }
-            }
 
-            <a href="/me/order_history?page=@(pageNumber + 1)">Nästa</a>
+                <a href="/me/order_history?page=@(pageNumber + 1)">Nästa</a>
+            </div>
+
         </div>
-
     </div>
-</div>
 </div>
 
 @code {
