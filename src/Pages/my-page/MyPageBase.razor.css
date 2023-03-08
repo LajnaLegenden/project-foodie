@@ -6,7 +6,6 @@
   height: 80%
 }
 
-.nav-link:hover {
-  background-color: var(--primary-color);
-  color: white;
+.active {
+  text-decoration: underline;
 }

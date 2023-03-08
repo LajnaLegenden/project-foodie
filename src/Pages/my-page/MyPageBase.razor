@@ -9,21 +9,32 @@
         <h2>Mina sidor</h2>
         <div class="line"></div>
         <div class="nav-item">
-            <NavLink class="nav-link" href="/me">
-                <h4>Översikt</h4>
-            </NavLink>
-            <NavLink class="nav-link" href="/me/order_history">
-                <h4>Mina beställningar</h4>
-            </NavLink>
-            <NavLink class="nav-link" href="/me/invoices">
-                <h4>Mina fakturor</h4>
-            </NavLink>
-            <NavLink class="nav-link" href="/me/favourites">
-                <h4>Mina favoriter</h4>
-            </NavLink>
-            <NavLink class="nav-link" href="/me/aboutme">
-                <h4>Mina uppgifter</h4>
-            </NavLink>
+            <div class="navLink @(getDefaultActive() ? "active" :"")">
+                <NavLink class="nav-link" href="/me">
+                    <h4>Översikt</h4>
+                </NavLink>
+            </div>
+            <div class="navLink @(section == "order_history" ?"active" :"")">
+                <NavLink class="nav-link" href="/me/order_history">
+                    <h4>Mina beställningar</h4>
+                </NavLink>
+            </div>
+            <div class="navLink @(section == "invoices" ?"active" :"")">
+                <NavLink class="nav-link" href="/me/invoices">
+                    <h4>Mina fakturor</h4>
+                </NavLink>
+            </div>
+            <div class="navLink @(section == "favourites" ?"active" :"")">
+                <NavLink class="nav-link" href="/me/favourites">
+                    <h4>Mina favoriter</h4>
+                </NavLink>
+            </div>
+            <div class="navLink @(section == "aboutme" ?"active" :"")">
+
+                <NavLink class="nav-link" href="/me/aboutme">
+                    <h4>Mina uppgifter</h4>
+                </NavLink>
+            </div>
         </div>
     </div>
     @switch (section)
@@ -51,5 +62,14 @@
     [Parameter]
     public string section { get; set; }
 
-
+    bool getDefaultActive()
+    {
+      if(section == "order_history" || section == "invoices" || section == "favourites" || section == "aboutme")
+      {
+        return false;
+      }
+  
+        return true;
+ 
+    }
 }
