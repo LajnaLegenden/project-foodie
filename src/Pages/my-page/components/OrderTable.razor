@@ -42,40 +42,40 @@
                 {
                     @if (previousDate == dayMenu.DayMenu.date)
                     {
-                        <tr class="last-item">
+                        <tr>
                             <td></td>
                             @if (previousType == dayMenu.DayMenu.type)
                             {
                                 <td></td>
                                 <td>@orderItem.dish.Name</td>
-                                <td>@orderItem.quantity</td>
+                                <td>@orderItem.quantity st</td>
                                 <td>@orderItem.dish.Price:-</td>
                             }
                             else
                             {
-                                <td class="dish-type">@dayMenu.DayMenu.type</td>
+                                <td>@dayMenu.DayMenu.type</td>
                                 <td>@orderItem.dish.Name</td>
-                                <td>@orderItem.quantity</td>
+                                <td>@orderItem.quantity st</td>
                                 <td>@orderItem.dish.Price:-</td>
                             }
                         </tr>
                     }
                     else
                     {
-                        <tr>
+                        <tr class="last-item">
                             <td>@DayMenuHelper.convertToWeekday(dayMenu.DayMenu.date)</td>
                             @if (previousType == dayMenu.DayMenu.type)
                             {
                                 <td></td>
                                 <td>@orderItem.dish.Name</td>
-                                <td>@orderItem.quantity</td>
+                                <td>@orderItem.quantity st</td>
                                 <td>@orderItem.dish.Price:-</td>
                             }
                             else
                             {
-                                <td class="dish-type">@dayMenu.DayMenu.type</td>
+                                <td>@dayMenu.DayMenu.type</td>
                                 <td>@orderItem.dish.Name</td>
-                                <td>@orderItem.quantity</td>
+                                <td>@orderItem.quantity st</td>
                                 <td>@orderItem.dish.Price:-</td>
                             }
                         </tr>
