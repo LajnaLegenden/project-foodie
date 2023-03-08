@@ -1,4 +1,3 @@
-@page "/me/order_history"
 @using project_foodie.Model
 @using project_foodie.Pages.my_page.components
 @using project_foodie.Repository
@@ -39,7 +38,7 @@
     List<Order> orders = new();
 
     private int pageNumber = 1;
-    private readonly int pageSize = 2;
+    private readonly int pageSize = 5;
     private int totalItems = -1;
 
 
@@ -65,7 +64,13 @@
 
     private void ReadQueryParams()
     {
+        
         var uri = NavManager.ToAbsoluteUri(NavManager.Uri);
+
+        if(!uri.ToString().Contains("order_history")){
+            return;
+        }
+
         if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("page", out var _page))
         {
             var page = Convert.ToInt32(_page);

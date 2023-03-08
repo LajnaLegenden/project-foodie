@@ -1,0 +1,12 @@
+.mainContainer {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    grid-template-rows: 1fr;
+    grid-gap: 1rem;
+    height: 80%
+}
+
+.nav-link:hover {
+    background-color: var(--primary-color);
+    color: white;
+}

@@ -1,0 +1,54 @@
+@page "/me"
+@page "/me/{section}"
+@using project_foodie.Pages.my_page.components
+@using project_foodie.Pages.my_page.components.OrderHistory
+@inject NavigationManager NavManager
+
+<div class="mainContainer">
+    <div>
+    <h2>Mina sidor</h2>
+            <div class="line"></div>
+        <div class="nav-item">
+            <NavLink class="nav-link" href="/me">
+                <h4>Översikt</h4>
+            </NavLink>
+            <NavLink class="nav-link" href="/me/order_history">
+                <h4>Mina beställningar</h4>
+            </NavLink>
+            <NavLink class="nav-link" href="/me/invoices">
+                <h4>Mina fakturor</h4>
+            </NavLink>
+            <NavLink class="nav-link" href="/me/favourites">
+                <h4>Mina favoriter</h4>
+            </NavLink>
+            <NavLink class="nav-link" href="/me/aboutme">
+                <h4>Mina uppgifter</h4>
+            </NavLink>
+        </div>
+    </div>
+    @switch (section)
+    {
+        case "order_history":
+            <OrderHistory/>
+            break;
+        case "invoices":
+            <Invoices/>
+            break;
+        case "favourites":
+            <Favourites/>
+            break;
+        case "aboutme":
+            <AboutMe/>
+            break;
+        default:
+            <MyPage/>
+            break;
+    }
+</div>
+
+    @code {
+        [Parameter]
+        public string section { get; set; }
+
+
+    }
