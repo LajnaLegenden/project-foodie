@@ -74,7 +74,7 @@ a.active {
   color: var(--primary-color);
 }
 
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 1300px) {
   .order-history-title { text-align: center; }
 }
 .page {
@@ -88,4 +88,19 @@ a.active {
   display: flex;
   flex-direction: row;
   justify-content: start;
+}
+
+@media screen and (max-width: 920px) {
+  .container {
+    margin: 0;
+    width: 100%;
+  }
+
+  .flex-container {
+    justify-content: center;
+  }
+
+  .line {
+    display: none;
+  }
 }

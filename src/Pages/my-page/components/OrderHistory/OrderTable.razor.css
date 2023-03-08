@@ -46,13 +46,9 @@ td, th { text-align: left; }
 
 .order-details-table td:first-child { padding-left: 20px; }
 
-<<<<<<< HEAD
 .last-item td {
   border-top: 1px solid #CDCDCD;
 }
-=======
-.last-item td { border-bottom: 1px solid #CDCDCD; }
->>>>>>> 57f3998e77c47e9243f6766c57061d6eb9adb04d
 
 .ordered { background-color: #FAFAFA; }
 
@@ -60,7 +56,7 @@ td, th { text-align: left; }
 
 .td-delivered { color: #067A46; }
 
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 1300px) {
   .order-table {
     display: flex;
     justify-content: space-around;
@@ -94,5 +90,17 @@ td, th { text-align: left; }
     right: 300px;
     text-align: left;
     text-decoration: underline;
+  }
+}
+
+@media screen and (max-width: 1300px) {
+  .order-details-table {
+    margin: 0;
+  }
+}
+
+@media screen and (max-width: 430px) {
+  .order-table {
+    width: auto;
   }
 }
