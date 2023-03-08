@@ -47,21 +47,13 @@
 hr { border-top: 1px solid #C8C8C8; }
 
 @media screen and (max-width: 1220px) {
-  .item {
-    font-size: 16px;
-  }
+  .item { font-size: 16px; }
 }
 
 @media screen and (max-width: 720px) {
-  .display-tablet {
-    display: none;
-  }
+  .display-tablet { display: none; }
 
-  .mainContainer {
-    grid-template-columns: 1fr;
-  }
+  .mainContainer { grid-template-columns: 1fr; }
 
-  .item {
-    font-size: 18px;
-  }
+  .item { font-size: 18px; }
 }

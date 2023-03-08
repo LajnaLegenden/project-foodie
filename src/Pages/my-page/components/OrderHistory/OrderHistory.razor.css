@@ -97,11 +97,7 @@ a.active {
     width: 100%;
   }
 
-  .flex-container {
-    justify-content: center;
-  }
+  .flex-container { justify-content: center; }
 
-  .line {
-    display: none;
-  }
+  .line { display: none; }
 }
