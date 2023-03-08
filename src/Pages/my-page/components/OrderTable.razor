@@ -1,7 +1,7 @@
 @using project_foodie.Model
 @using project_foodie.Modules
 @using System.Globalization
-<table class="order-table @delivered(@orderStatus)">
+<table class="order-table @delivered(orderStatus)">
     <tr>
         <th>Beställningsnummer</th>
         <th>Orderdatum</th>
@@ -17,7 +17,7 @@
         <td>@orderData.orderDate.ToString("yyyy-MM-dd")</td>
         <td>Vecka @weekNr</td>
         <td>@totalPrice :-</td>
-        <td class="td-@delivered(@orderStatus)">@orderStatus</td>
+        <td class="td-@delivered(orderStatus)">@orderStatus</td>
     </tr>
 </table>
 
@@ -107,15 +107,17 @@
         detailsVisible ^= true;
     }
 
-    private string delivered(string status) {
-        if (status == "Beställd") {
+    private string delivered(string status)
+    {
+        if (status == "Beställd")
+        {
             return "ordered";
-        } else {
-            return "delivered";
         }
+        return "delivered";
     }
 
-    private string getButtonString() {
+    private string getButtonString()
+    {
         return detailsVisible ? "Dölj detaljer" : "Visa detaljer";
     }
 

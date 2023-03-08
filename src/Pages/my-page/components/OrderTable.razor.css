@@ -2,81 +2,73 @@
   background-color: #FAFAFA;
   border-bottom: 1px solid #E0E0E0;
   border-radius: 16px;
+  margin-bottom: 15px;
+  margin-top: 15px;
   padding: 15px;
   padding-left: 40px;
-  margin-top: 15px;
-  margin-bottom: 15px;
 }
 
 .details-button {
-  width: 100px;
+  background: none;
   border: none;
   color: #0F7BDE;
-  font-weight: bold;
-  background: none;
   font-size: 24px;
+  font-weight: bold;
+  width: 100px;
 }
 
 td, th { text-align: left; }
 
-.order-table th {
-  color: #8E8E8E;
-}
+.order-table th { color: #8E8E8E; }
 
-.order-table td {
-  font-weight: bold;
-}
+.order-table td { font-weight: bold; }
 
 .order-details-table td {
-  padding-top: 10px;
-  padding-bottom: 10px;
   font-weight: 500;
+  padding-bottom: 10px;
+  padding-top: 10px;
 }
 
-.order-details-table  {
+.order-details-table {
   border-collapse: collapse;
   padding-left: 100px;
 }
+
 .order-details-table thead th {
   border-bottom: 1px solid #CDCDCD;
-  padding-bottom: 10px;
   color: #8E8E8E;
+  padding-bottom: 10px;
 }
+
 .order-details-table tbody tr { border: none; }
 
-.order-details-table th:first-child {
-  padding-left: 20px;
-}
+.order-details-table th:first-child { padding-left: 20px; }
 
-.order-details-table td:first-child {
-  padding-left: 20px;
-}
+.order-details-table td:first-child { padding-left: 20px; }
 
+<<<<<<< HEAD
 .last-item td {
   border-top: 1px solid #CDCDCD;
 }
+=======
+.last-item td { border-bottom: 1px solid #CDCDCD; }
+>>>>>>> 57f3998e77c47e9243f6766c57061d6eb9adb04d
 
-.ordered {
-  background-color: #FAFAFA;
-}
+.ordered { background-color: #FAFAFA; }
 
-.delivered {
-  background: rgba(152, 232, 196, 0.12);
-}
+.delivered { background: rgba(152, 232, 196, 0.12); }
 
-.td-delivered {
-  color: #067A46;
-}
+.td-delivered { color: #067A46; }
 
 @media screen and (max-width: 1200px) {
   .order-table {
     display: flex;
-    width: 400px;
     justify-content: space-around;
-    padding: 20px;
     margin: auto;
-    margin-top: 10px;
     margin-bottom: 10px;
+    margin-top: 10px;
+    padding: 20px;
+    width: 400px;
   }
 
   .order-table th {
@@ -89,24 +81,18 @@ td, th { text-align: left; }
     margin: 10px;
   }
 
-  .order-details-table {
-    margin-left: 30px;
-  }
+  .order-details-table { margin-left: 30px; }
 
-  .order-details-table th {
-    display: none;
-  }
+  .order-details-table th { display: none; }
 
-  .dish-type {
-    display: none;
-  }
+  .dish-type { display: none; }
 
   .details-button {
     font-size: 14px;
-    padding: 0px;
     margin: 0px;
+    padding: 0px;
+    right: 300px;
     text-align: left;
     text-decoration: underline;
-    right: 300px;
   }
 }
