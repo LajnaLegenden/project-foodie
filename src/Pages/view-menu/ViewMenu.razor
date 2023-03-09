@@ -23,37 +23,40 @@
     {
         @if (selectedIndex == -1)
         {
-            <ViewStart menuInfo=@_menu/>
+            <ViewStart menuInfo=@_menu />
         }
         else if (selectedIndex == confirmedViewIndex)
         {
-            <Confirmed menu="@_menu" order="@newOrder"/>
+            <Confirmed menu="@_menu" order="@newOrder" />
         }
         else
         {
             @if (selectedIndex != overViewIndex)
             {
-                <Timeline menu="@_menu" currentIndex="@selectedIndex" state="@viewPort"/>
+                <Timeline menu="@_menu" currentIndex="@selectedIndex" state="@viewPort" />
                 <div class="day-container">
-                    <h1 class="week-highlight">@_menu.Name</h1>
-                    <h1 class=@dayString>@activeWeekday()</h1>
-                    <h1 class=@dayString>@dateString()</h1>
-                </div>
+        <h1 class="week-highlight">@_menu.Name</h1>
+        <h1 class=@dayString>@activeWeekday()</h1>
+        <h1 class=@dayString>@dateString()</h1>
+    </div>
             }
             <div class="menu-container">
-                @if (selectedIndex != overViewIndex)
+        @if (selectedIndex != overViewIndex)
                 {
                     <div class="radio-group">
                         <EditForm Model="@_model">
                             <InputRadioGroup @bind-Value="_model.Category">
 
-                                <input type="radio" id="radio-1" name="group" checked="checked" @onchange="() => Category = categoryList[0].Category"/>
+                                <input type="radio" id="radio-1" name="group" checked="checked"
+                        @onchange="() => Category = categoryList[0].Category" />
                                 <label for="radio-1">Alla</label>
 
-                                <input type="radio" id="radio-2" name="group" @onchange="() => Category = categoryList[1].Category"/>
+                                <input type="radio" id="radio-2" name="group"
+                        @onchange="() => Category = categoryList[1].Category" />
                                 <label for="radio-2">Grundkost</label>
 
-                                <input type="radio" id="radio-3" name="group" @onchange="() => Category = categoryList[2].Category"/>
+                                <input type="radio" id="radio-3" name="group"
+                        @onchange="() => Category = categoryList[2].Category" />
                                 <label for="radio-3">Vegetariskt</label>
                             </InputRadioGroup>
                         </EditForm>
@@ -62,23 +65,25 @@
                 @foreach (var dayMenu in DayMenuHelper.getSortedDayMenus(_menu))
                 {
                     <div class="@(showSelected(dayMenu.Index) ? "shown" : "hidden")">
-                        <MenuContainer @ref="menuContainer" dayMenu=@dayMenu.DayMenu Category="@Category"/>
+                        <MenuContainer @ref="menuContainer" dayMenu=@dayMenu.DayMenu Category="@Category" />
                     </div>
                 }
                 @if (selectedIndex == overViewIndex)
                 {
-                    <Overview @ref="overview" menu="@_menu"/>
+                    <Overview @ref="overview" menu="@_menu" />
                 }
 
                 <div class="button-container">
-                    <button @onclick="() => setPage(selectedIndex - 1, true)" class="button-back">@getBackButtonString()</button>
+                    <button @onclick="() => setPage(selectedIndex - 1, true)"
+                        class="button-back">@getBackButtonString()</button>
                     @if (selectedIndex == overViewIndex)
                     {
                         <button @onclick="@SaveOrder" class="button-forward">Beställ här</button>
                     }
                     else
                     {
-                        <button @onclick="() => setPage(selectedIndex + 1, true)" class="button-forward">@getNextButtonString()</button>
+                        <button @onclick="() => setPage(selectedIndex + 1, true)"
+                            class="button-forward">@getNextButtonString()</button>
                     }
 
                 </div>
@@ -120,37 +125,37 @@
         {
             newOrder = await overview?.SaveOrder();
             setPage(selectedIndex + 1, true);
-    //Clear local storage once order is saved
+            //Clear local storage once order is saved
             await localStorage.ClearAsync();
             CartService.AddToCart();
         }
         catch (DbUpdateConcurrencyException e)
         {
-    // TODO: Log error
+            // TODO: Log error
             Console.WriteLine(e);
         }
         catch (DbUpdateException e)
         {
-    // TODO: Log error
+            // TODO: Log error
             Console.WriteLine(e);
         }
     }
 
     private readonly List<Categories> categoryList = new()
-    {
-        new Categories
-        {
-            Category = "all"
-        },
-        new Categories
-        {
-            Category = "grundkost"
-        },
-        new Categories
-        {
-            Category = "vegetariskt"
-        }
-    };
+{
+new Categories
+{
+Category = "all"
+},
+new Categories
+{
+Category = "grundkost"
+},
+new Categories
+{
+Category = "vegetariskt"
+}
+};
 
     private readonly Categories _model = new() { Category = "all" };
 
@@ -225,7 +230,7 @@
 
     void IDisposable.Dispose()
     {
-    // Unsubscribe from the event when our component is disposed
+        // Unsubscribe from the event when our component is disposed
         NavManager.LocationChanged -= HandleLocationChanged;
     }
 
@@ -324,7 +329,7 @@
 
     private string getNextButtonString()
     {
-        return selectedIndex == overViewIndex ? "Lägg Order" : "Nästa";
+        return selectedIndex == overViewIndex ? "Lägg Order" : "Nästa dag";
     }
 
 }
