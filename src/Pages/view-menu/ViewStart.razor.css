@@ -6,30 +6,48 @@
   width: 35%;
 }
 
+.dateText {
+  color: var(--primary-color);
+  font-size: 30px;
+  margin-top: -20px;
+}
+
 h1 {
   color: var(--primary-color);
   font-size: 40px;
 }
 
-.h1-same { margin-top: -20px; }
+.h1-same {
+  margin-top: -20px;
+}
 
 p {
   font-size: 30px;
   line-height: 1.3;
 }
 
-span { font-weight: bold; }
+span {
+  font-weight: bold;
+}
 
-.green { color: #067A46; }
+.green {
+  color: #067A46;
+}
 
-.red { color: red; }
+.red {
+  color: red;
+}
 
 @media screen and (max-height: 1080px) {
-  .startContainer { height: 380px; }
+  .startContainer {
+    height: 380px;
+  }
 }
 
 @media screen and (max-width: 1505px) {
-  .startContainer { width: 80%; }
+  .startContainer {
+    width: 80%;
+  }
 }
 
 @media screen and (max-width: 694px) {
@@ -38,7 +56,11 @@ span { font-weight: bold; }
     width: 90%;
   }
 
-  h1 { font-size: 30px; }
+  h1 {
+    font-size: 30px;
+  }
 
-  p { font-size: 20px; }
+  p {
+    font-size: 20px;
+  }
 }

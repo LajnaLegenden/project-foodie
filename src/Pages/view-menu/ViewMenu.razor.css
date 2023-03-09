@@ -74,7 +74,7 @@
 }
 
 .button-start {
-  background-color: var(--btn-sucess, #067A46);
+  background-color: var(--primary-color);
   border: none;
   border-radius: 15px;
   color: var(--btn-secondary-text-color, #000000);
