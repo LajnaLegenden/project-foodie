@@ -4,9 +4,16 @@
 
 
 <div class="menu-container">
-    <h2 class="meal-text">@dayMenu.type</h2>
+    @* <h2 class="meal-text">@dayMenu.type</h2> *@
     <div class="@interactable">
         <div class="card-container">
+            @foreach (var dish in dayMenu.dishes)
+            {
+                if (dish.Type.ToString() == Category || Category == "all")
+                {
+                    <Dishes @ref="dishCard" dayMenu=@dayMenu dishData=@dish/>
+                }
+            }
             @foreach (var dish in dayMenu.dishes)
             {
                 if (dish.Type.ToString() == Category || Category == "all")

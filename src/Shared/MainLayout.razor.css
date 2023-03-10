@@ -11,7 +11,7 @@ main { flex: 1; }
 
 article {
   height: calc(100% - 80px);
-  margin: 1em 2em 2em 2em;
+  margin: 7em 2em;
 }
 
 footer {
@@ -37,11 +37,14 @@ footer {
 }
 
 @media screen and (max-width: 600px) {
-  footer { justify-content: center; }
+  footer { justify-content: center; display: none; }
 
   .copyright { margin: auto; }
 
   .policy { display: none; }
 
-  article { margin: 1em; }
+  article {
+    height: calc(100% - 80px);
+    margin: 5em 1em;
+  }
 }

@@ -134,6 +134,69 @@
             const count = getLocalStorageCount();
             dotNetHelper.invokeMethodAsync('Project.Foodie', 'UpdateLocalStorageCount');
         });
+
+
+    /* Hide header on scroll*/
+    var doc = document.documentElement;
+    var w = window;
+
+    var prevScroll = w.scrollY || doc.scrollTop;
+    var curScroll;
+    var direction = 0;
+    var prevDirection = 0;
+
+    function checkScroll() {
+
+        /*
+        ** Find the direction of scroll
+        ** 0 - initial, 1 - up, 2 - down
+        */
+
+        curScroll = w.scrollY || doc.scrollTop;
+        if (curScroll > prevScroll) { 
+            //scrolled up
+            direction = 2;
+        }
+        else if (curScroll < prevScroll) { 
+            //scrolled down
+            direction = 1;
+        }
+
+        if (direction !== prevDirection) {
+            toggleHeader(direction, curScroll);
+            console.log('toggle');
+        }
+        
+        prevScroll = curScroll;
+    };
+
+    var toggleHeader = function(direction, curScroll) {
+
+        if (direction === 2 && curScroll > 80 && screen.width > 600) { 
+        
+            var sheet = window.document.styleSheets[0];
+            sheet.insertRule('.menu-header { top: 0 !important; }', sheet.cssRules.length);
+            sheet.insertRule('#header { top: -5em !important; }', sheet.cssRules.length);
+            prevDirection = direction;
+        } else if (direction === 2 && curScroll > 80 && screen.width <= 600) { 
+        
+            var sheet = window.document.styleSheets[0];
+            sheet.insertRule('#header { top: -5em !important; }', sheet.cssRules.length);
+            sheet.insertRule('.mobile-header { top: -5em !important; }', sheet.cssRules.length);
+            sheet.insertRule('.menu-header { top: 0 !important; }', sheet.cssRules.length);
+            prevDirection = direction;
+        }
+        else if (direction === 1 && curScroll < 80) {
+            var sheet = window.document.styleSheets[0];
+            sheet.insertRule('.menu-header { top: 5em !important; }', sheet.cssRules.length);
+            sheet.insertRule('#header { top: 0 !important; }', sheet.cssRules.length);
+            sheet.insertRule('.mobile-header { top: 0 !important; }', sheet.cssRules.length);
+            prevDirection = direction;
+        }
+    };
+
+    window.addEventListener('scroll', checkScroll);
+
 </script>
 <script src="_framework/blazor.server.js"></script>
 </body>
