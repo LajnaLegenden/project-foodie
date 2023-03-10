@@ -14,9 +14,7 @@
   width: 2rem;
 }
 
-.nav-item {
-  font-size: 0.9rem;
-}
+.nav-item { font-size: 0.9rem; }
 
 .nav-item:first-of-type { padding-top: 1rem; }
 

@@ -1,7 +1,7 @@
 @page "/test"
 @using project_foodie.Model
-@using System.Text.Json
 @using project_foodie.Repository
+@using System.Text.Json
 
 <h1>Test</h1>
 <p>@message</p>
@@ -30,7 +30,7 @@
             string serializedString = System.Text.Json.JsonSerializer.Serialize(menu.dayMenus);
             Console.WriteLine(serializedString);
         } *@
-        string serializedString = System.Text.Json.JsonSerializer.Serialize(menu);
+        var serializedString = JsonSerializer.Serialize(menu);
         Console.WriteLine(serializedString);
         message = "Test";
     }

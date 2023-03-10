@@ -2,6 +2,7 @@
   -ms-flex-pack: justify;
   -webkit-box-pack: justify;
   -webkit-box-shadow: 0px 2px 8px rgba(72, 72, 72, 0.25);
+  align-items: center;
   background: #FFFFFF;
   background-color: FFFFFF;
   box-shadow: 0px 2px 8px rgba(72, 72, 72, 0.25);
@@ -10,21 +11,20 @@
   display: flex;
   height: 5em;
   justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  transition: top 0.3s ease 0s;
-  position:fixed;
+  position: fixed;
   top: 0;
+  transition: top 0.3s ease 0s;
+  width: 100%;
   z-index: 10;
 }
 
 .logo {
+  align-items: center;
   color: #067A46;
+  display: flex;
   font-size: 20px;
   height: 120px;
   padding-left: 2em;
-  display: flex;
-  align-items: center;
 }
 
 .nav-kassan-counter {
@@ -71,62 +71,54 @@
 }
 
 @media screen and (min-width: 600px) {
-    .nav {
-      -ms-flex-direction: row;
-      -webkit-box-direction: normal;
-      -webkit-box-orient: horizontal;
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: flex;
-      flex-direction: row;
-      font-size: 1.5em;
-      font-weight: 500;
-      gap: 20px;
-      align-items: center;
-      margin-right: 2em;
-      width: 100%;
-      justify-content: right;
-    }
+  .nav {
+    -ms-flex-direction: row;
+    -webkit-box-direction: normal;
+    -webkit-box-orient: horizontal;
+    align-items: center;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    flex-direction: row;
+    font-size: 1.5em;
+    font-weight: 500;
+    gap: 20px;
+    justify-content: right;
+    margin-right: 2em;
+    width: 100%;
+  }
 
-    .nav-link-item img {
-      display: none;
-    }
+  .nav-link-item img { display: none; }
 }
 
 
 @media screen and (max-width: 600px) {
-  .nav { 
+  .nav {
+    align-items: center;
     display: flex;
-    font-size: 1em; 
+    font-size: 1em;
     justify-content: space-between;
-    align-items: center;  
-    width: 100%;
     padding: 0 1em;
+    width: 100%;
   }
 
   .nav-link-item {
+    align-items: center;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
   }
 
-  .nav-link-item img {
-    width: 2em;
-  }
+  .nav-link-item img { width: 2em; }
 
-  .nav-link-active img {
-    filter: var(--svg-filter-green);
-  }
+  .nav-link-active img { filter: var(--svg-filter-green); }
 
-  .nav-link-active span {
-    color: #067A46 
-  }
+  .nav-link-active span { color: #067A46 }
 
   #header {
-    position:fixed;
-    top: auto !important;
     bottom: 0 !important;
+    position: fixed;
+    top: auto !important;
   }
 
   .nav-kassan-counter { font-size: 0.85em; }

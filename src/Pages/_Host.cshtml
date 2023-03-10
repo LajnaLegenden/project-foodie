@@ -153,11 +153,10 @@
         */
 
         curScroll = w.scrollY || doc.scrollTop;
-        if (curScroll > prevScroll) { 
+        if (curScroll > prevScroll) {
             //scrolled up
             direction = 2;
-        }
-        else if (curScroll < prevScroll) { 
+        } else if (curScroll < prevScroll) {
             //scrolled down
             direction = 1;
         }
@@ -166,27 +165,26 @@
             toggleHeader(direction, curScroll);
             console.log('toggle');
         }
-        
+
         prevScroll = curScroll;
     };
 
     var toggleHeader = function(direction, curScroll) {
 
-        if (direction === 2 && curScroll > 80 && screen.width > 600) { 
-        
+        if (direction === 2 && curScroll > 80 && screen.width > 600) {
+
             var sheet = window.document.styleSheets[0];
             sheet.insertRule('.menu-header { top: 0 !important; }', sheet.cssRules.length);
             sheet.insertRule('#header { top: -5em !important; }', sheet.cssRules.length);
             prevDirection = direction;
-        } else if (direction === 2 && curScroll > 80 && screen.width <= 600) { 
-        
+        } else if (direction === 2 && curScroll > 80 && screen.width <= 600) {
+
             var sheet = window.document.styleSheets[0];
             sheet.insertRule('#header { top: -5em !important; }', sheet.cssRules.length);
             sheet.insertRule('.mobile-header { top: -5em !important; }', sheet.cssRules.length);
             sheet.insertRule('.menu-header { top: 0 !important; }', sheet.cssRules.length);
             prevDirection = direction;
-        }
-        else if (direction === 1 && curScroll < 80) {
+        } else if (direction === 1 && curScroll < 80) {
             var sheet = window.document.styleSheets[0];
             sheet.insertRule('.menu-header { top: 5em !important; }', sheet.cssRules.length);
             sheet.insertRule('#header { top: 0 !important; }', sheet.cssRules.length);
