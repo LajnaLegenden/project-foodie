@@ -1,43 +1,38 @@
 @inject ILocalStorageService localStorage
 @inject CartService CartService
+@inject NavigationManager NavManager
 
-<div class="header">
+<div id="header" class="header">
     <div class="logo">
         <h1>LOGO</h1>
     </div>
-    <div class="navbar">
-        <nav class="nav">
-            <div class="nav-item">
-                <NavLink class="nav-link" href="/">
-                    <span>Start</span>
-                </NavLink>
+    <div class="navbar nav">
+        <NavLink class="@(activePage == "/" ? "nav-link-active" : "nav-link")" href="/" @onclick="@(() => activePage = "/")">
+            <div class="nav-link-item">
+                <img src="/images/house-door.svg" alt="icon name">
+                <span>Start</span>
             </div>
-            <div class="nav-item">
-                <NavLink class="nav-link" href="order">
-                    <span class="nav-link-text">Beställ</span>
-                </NavLink>
+        </NavLink>
+        <NavLink class="@(activePage == "/order" ? "nav-link-active" : "nav-link")" href="order" @onclick="@(() => activePage = "/order")">
+            <div class="nav-link-item">
+                <img src="/images/shop.svg" alt="icon name">
+                <span class="nav-link-text">Beställ</span>
             </div>
-            <div class="nav-item not-need-now">
-                <NavLink class="nav-link" href="how">
-                    <span>Vanliga frågor</span>
-                </NavLink>
+        </NavLink>
+        <NavLink class="@(activePage == "/me" ? "nav-link-active" : "nav-link")" href="me" @onclick="@(() => activePage = "/me")">
+            <div class="nav-link-item">
+                <img src="/images/person.svg" alt="icon name">
+                <span>Mina sidor</span>
             </div>
-            <div class="nav-item">
-                <NavLink class="nav-link" href="me">
-                    <span>Min sida</span>
-                </NavLink>
+        </NavLink>
+        <NavLink class="nav-link" href="/order?page=14">
+            <div class="nav-kassan">
+                <img src="/images/shopping-basket.svg" width="50px" height="50px"/>
+                <span class="nav-kassan-counter">
+                    <p>@cartCount</p>
+                </span>
             </div>
-            <div class="nav-item">
-                <NavLink class="nav-link" href="/order?page=14">
-                    <div class="nav-kassan">
-                        <img src="/images/shopping-basket.svg" width="50px" height="50px"/>
-                        <span class="nav-kassan-counter">
-                            <p>@cartCount</p>
-                        </span>
-                    </div>
-                </NavLink>
-            </div>
-        </nav>
+        </NavLink>
     </div>
 </div>
 
@@ -47,12 +42,28 @@
     private int itemsCountInKassan;
     private int cartCount;
 
+    // 
+    private string activePage = string.Empty;
+@* 
+    bool getDefaultActive()
+    {
+        if (section == "order_history" || section == "invoices" || section == "favourites" || section == "aboutme")
+        {
+            return false;
+        }
+
+        return true;
+    } *@
+
     // OnInitializedAsync is called when the component is first rendered
     protected override async void OnInitialized()
     {
         cartCount = await CartService.GetObjectCount();
         CartService.SetCartCount(cartCount);
         CartService.CartCountChanged += HandleCartCountChanged;
+
+        var uri = new Uri(NavManager.Uri);
+        activePage = uri.LocalPath;
     }
 
     // Handle the event when the cart count changes
