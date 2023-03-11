@@ -14,7 +14,7 @@
 @using System.Globalization
 @implements IDisposable
 
-<div>
+<div class="menu-view-container">
     @if (loading)
     {
         <p>Loading</p>
@@ -31,16 +31,19 @@
         }
         else
         {
-            @if (selectedIndex != overViewIndex)
-            {
-                <Timeline menu="@_menu" currentIndex="@selectedIndex" state="@viewPort"/>
-                <div class="day-container">
-                    <h1 class="week-highlight">@_menu.Name</h1>
-                    <h1 class=@dayString>@activeWeekday()</h1>
-                    <h1 class=@dayString>@dateString()</h1>
-                </div>
-            }
-            <div class="menu-container">
+            <div class="menu-header">
+                @if (selectedIndex != overViewIndex)
+                {
+                    <Timeline menu="@_menu" currentIndex="@selectedIndex" state="@viewPort"/>
+                    <div class="day-container">
+                        <h1 class="week-highlight">@_menu.Name</h1>
+                        <h1 class=@dayString>@activeWeekday()</h1>
+                        <h1 class=@dayString>@dateString()</h1>
+                        <h1 class=@dayString>-</h1>
+                        <h1 class=@dayString>@activeMeal()</h1>
+                    </div>
+                }
+
                 @if (selectedIndex != overViewIndex)
                 {
                     <div class="radio-group">
@@ -59,6 +62,8 @@
                         </EditForm>
                     </div>
                 }
+            </div>
+            <div class="menu-container">
                 @foreach (var dayMenu in DayMenuHelper.getSortedDayMenus(_menu))
                 {
                     <div class="@(showSelected(dayMenu.Index) ? "shown" : "hidden")">
@@ -71,14 +76,20 @@
                 }
 
                 <div class="button-container">
-                    <button @onclick="() => setPage(selectedIndex - 1, true)" class="button-back">@getBackButtonString()</button>
+                    <button @onclick="() => setPage(selectedIndex - 1, true)" class="button-back">
+                        <span>@getBackButtonString()</span><img src="/images/arrow-left-short.svg" alt="Tillbaka">
+                    </button>
                     @if (selectedIndex == overViewIndex)
                     {
-                        <button @onclick="@SaveOrder" class="button-forward">Beställ här</button>
+                        <button @onclick="@SaveOrder" class="button-forward">
+                            <span>Beställ här</span><img src="/images/check-lg.svg" alt="icon name">
+                        </button>
                     }
                     else
                     {
-                        <button @onclick="() => setPage(selectedIndex + 1, true)" class="button-forward">@getNextButtonString()</button>
+                        <button @onclick="() => setPage(selectedIndex + 1, true)" class="button-forward">
+                            <span>@getNextButtonString()</span><img src="/images/arrow-right-short.svg" alt="Nästa">
+                        </button>
                     }
 
                 </div>
@@ -206,6 +217,15 @@
             return "";
         }
         return convertToWeekday(DayMenuHelper.getSortedDayMenus(_menu)[selectedIndex].DayMenu.date);
+    }
+
+    string activeMeal()
+    {
+        if (selectedIndex == -1 || selectedIndex >= DayMenuHelper.getSortedDayMenus(_menu).Count)
+        {
+            return "";
+        }
+        return DayMenuHelper.getSortedDayMenus(_menu)[selectedIndex].DayMenu.type.ToString();
     }
 
     string dateString()
