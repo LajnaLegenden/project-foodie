@@ -1,13 +1,117 @@
 .order-table {
   background-color: #FAFAFA;
   border-bottom: 1px solid #E0E0E0;
-  border-radius: 20px;
-  padding: 20px;
+  border-radius: 16px;
+  margin-bottom: 15px;
+  margin-top: 15px;
+  padding: 15px;
+  padding-left: 40px;
 }
 
 .details-button {
-  margin-left: 20px;
-  padding: 20px 10px 20px 10px;
+  background: none;
+  border: none;
+  color: #0F7BDE;
+  font-size: 24px;
+  font-weight: bold;
+  width: 100px;
 }
 
-td { text-align: center; }
+td, th { text-align: left; }
+
+.order-table th { color: #8E8E8E; }
+
+.order-table td { font-weight: bold; }
+
+.order-details-table td {
+  font-weight: 500;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+
+.order-details-table {
+  border-collapse: collapse;
+  padding-left: 100px;
+}
+
+.order-details-table thead th {
+  border-bottom: 1px solid #CDCDCD;
+  color: #8E8E8E;
+  padding-bottom: 10px;
+}
+
+.order-details-table tbody tr { border: none; }
+
+.order-details-table th:first-child { padding-left: 20px; }
+
+.order-details-table td:first-child { padding-left: 20px; }
+
+.last-item td { border-top: 1px solid #CDCDCD; }
+
+.ordered { background-color: #FAFAFA; }
+
+.delivered { background: rgba(152, 232, 196, 0.12); }
+
+.td-delivered { color: #067A46; }
+
+@media screen and (max-width: 1300px) {
+  .order-table {
+    display: flex;
+    justify-content: space-around;
+    margin: auto;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    padding: 20px;
+    width: 400px;
+  }
+
+  .order-table th {
+    display: flex;
+    margin: 10px;
+  }
+
+  .order-table td {
+    display: flex;
+    margin: 10px;
+  }
+
+  .order-details-table { margin-left: 30px; }
+
+  .order-details-table th { display: none; }
+
+  .dish-type { display: none; }
+
+  .details-button {
+    font-size: 14px;
+    margin: 0px;
+    padding: 0px;
+    right: 300px;
+    text-align: left;
+    text-decoration: underline;
+  }
+}
+
+@media screen and (max-width: 1300px) {
+  .order-details-table { margin: 0; }
+}
+
+@media screen and (max-width: 540px) {
+  .order-details-table tr {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+
+  .last-item td { border: none; }
+
+  .type { display: none; }
+
+  .day {
+    border-top: 1px solid #CDCDCD !important;
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 430px) {
+  .order-table { width: auto; }
+}

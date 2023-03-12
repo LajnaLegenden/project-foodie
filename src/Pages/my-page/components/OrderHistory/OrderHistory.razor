@@ -3,12 +3,10 @@
 @using Microsoft.AspNetCore.WebUtilities
 @implements IDisposable
 @inject NavigationManager NavManager
-
-
-<div class="page">
-    <main class="container">
-
+<div class="flex-container">
+    <div class="container">
         <h1 class="order-history-title">Mina beställningar</h1>
+        <div class="line"></div>
         <div class="order-history-container">
             <div class="tables">
                 @foreach (var order in orders)
@@ -29,14 +27,11 @@
                         <a href="/me/order_history?page=@i">@i</a>
                     }
                 }
-
                 <a href="/me/order_history?page=@(pageNumber + 1)">Nästa</a>
             </div>
-
         </div>
-    </main>
+    </div>
 </div>
-
 
 @code {
     List<Order> orders = new();
