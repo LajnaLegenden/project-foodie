@@ -1,11 +1,9 @@
 @using project_foodie.Model
 <div class="startContainer">
-    <h1>Vi levererar din favoritmaträtt</h1>
-    <h1 class="h1-same">direkt hem till dig.</h1>
-    <p>Du beställer för <span class="green">@menuInfo.Name</span></p>
+    <p>Du beställer för @menuInfo.Name</p>
     <p>
-        Sista bestälningsdag för <span class="green">@menuInfo.Name</span> är
-        <span class="red">
+        Sista dag för att beställa för @menuInfo.Name
+        <span class="dateText">
             <br>@menuInfo.lastOrderDate.ToString("yyyy-MM-dd")
         </span>
     </p>
