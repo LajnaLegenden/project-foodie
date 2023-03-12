@@ -75,7 +75,7 @@ input[type="radio"]:checked + label {
   left: 0;
   padding-bottom: 10%;
   position: relative;
-  top: 14em;
+  top: 12em;
 }
 
 .overview-day-container { display: none; }
@@ -186,7 +186,7 @@ input[type="radio"]:checked + label {
 
   .menu-container {
     padding-bottom: 11em;
-    top: 14em;
+    top: 12em;
   }
 
   .radio-group { font-size: 0.9em; }
