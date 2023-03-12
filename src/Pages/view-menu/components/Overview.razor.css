@@ -80,6 +80,11 @@ a {
 
 .total-all-price { text-align: right; }
 
+
+.warning {
+  max-width: 40px;
+}
+
 @media screen and (max-width: 1500px) {
   .overview-table {
     -webkit-box-shadow: none;

@@ -3,6 +3,7 @@
 @using project_foodie.Repository
 @using System.Globalization
 @inject ILocalStorageService localStorage
+@using System.Linq;
 
 @if (dataLoaded)
 {
@@ -28,11 +29,10 @@
                     @if (index == -1)
                     {
                         DayMenu dm = DayMenuHelper.getDayMenuByDate(menu, date);
-
                         <td data-label="Veckodag">@DayMenuHelper.convertToWeekday(date)</td>
-                        <td data-label="Lunch"></td>
+                        <td data-label="Lunch"><ul><img src="/images/warning.png" alt="Warning sign"class="warning"></ul></td>
                         <td data-label="Pris">0:-</td>
-                        <td data-label="Middag"></td>
+                        <td data-label="Middag"><ul><img src="/images/warning.png" alt="Warning sign"class="warning"></ul></td>
                         <td data-label="Pris">0:-</td>
                         <td data-label="Totalt">0:-</td>
                         <td>
@@ -41,16 +41,45 @@
                     }
                     else
                     {
+                        lunchOrdered = false;
+                        dinnerOrdered = false;
                         <td data-label="Veckodag">@DayMenuHelper.convertToWeekday(data[index].dm.date)</td>
                         <td data-label="Lunch">
                             <ul>
                                 @foreach (var item in data[index].dishCount)
                                 {
-                                    if (item.dm.type == OrderType.Lunch)
+                                    @if (item.dm.type == OrderType.Lunch)
                                     {
-                                        if (item.Count == -1)
+                                        lunchOrdered = true;
+                                        @if (item.Count == -1)
                                         {
-                                            <li>Överhoppad</li>
+                                            <li><strong>Överhoppad</strong></li>
+                                        } 
+                                        else
+                                        {
+                                            <li>
+                                                @getDishFromDmById(item.dishId, item.dm).Name x @item.Count
+                                            </li>
+                                        }
+                                    }
+                                }
+                                @if (!lunchOrdered)
+                                {
+                                    <img src="/images/warning.png" alt="Warning sign"class="warning">
+                                }
+                            </ul>
+                        </td>
+                        <td data-label="Pris">@data[index].LunchPrice:-</td>
+                        <td data-label="Middag">
+                            <ul>
+                                @foreach (var item in data[index].dishCount)
+                                {                                   
+                                    @if (item.dm.type == OrderType.Middag)
+                                    {   
+                                        dinnerOrdered = true;
+                                        @if (item.Count == -1)
+                                        {
+                                            <li><strong>Överhoppad</strong></li>
                                         }
                                         else
                                         {
@@ -60,26 +89,9 @@
                                         }
                                     }
                                 }
-                            </ul>
-                        </td>
-                        <td data-label="Pris">@data[index].LunchPrice:-</td>
-                        <td data-label="Middag">
-                            <ul>
-                                @foreach (var item in data[index].dishCount)
+                                @if (!dinnerOrdered)
                                 {
-                                    if (item.dm.type == OrderType.Middag)
-                                    {
-                                        if (item.Count == -1)
-                                        {
-                                            <li>Överhoppad</li>
-                                        }
-                                        else
-                                        {
-                                            <li>
-                                                @getDishFromDmById(item.dishId, item.dm).Name x @item.Count
-                                            </li>
-                                        }
-                                    }
+                                    <img src="/images/warning.png" alt="Warning sign"class="warning">
                                 }
                             </ul>
                         </td>
@@ -108,9 +120,11 @@ else
 
     [Parameter]
     public Menu menu { get; set; }
-    private List<LocalStorage.Row> data;
     public bool dataLoaded = false;
-    HashSet<DateTime> dates = new HashSet<DateTime>();
+    private List<LocalStorage.Row> data;
+    private HashSet<DateTime> dates = new HashSet<DateTime>();
+    private bool lunchOrdered = false;
+    private bool dinnerOrdered = false;
 
     /*------- Popup (Modal dialog)--------*/
     public bool PopupOpen { get; set; }
@@ -129,6 +143,7 @@ else
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        // Get each of every date from menu
         foreach (var dayMenu in DayMenuHelper.getSortedDayMenus(menu))
         {
             dates.Add(dayMenu.DayMenu.date);
