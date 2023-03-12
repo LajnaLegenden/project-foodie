@@ -30,6 +30,7 @@ h2 {
   gap: 53px;
   justify-content: center;
   margin: auto;
+  max-width: 1070px;
 }
 
 .skip-container {
