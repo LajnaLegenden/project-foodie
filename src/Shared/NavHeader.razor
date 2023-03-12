@@ -4,13 +4,13 @@
 
 <div id="header" class="header">
     <div class="logo">
-        <h1>CGI | Platform Name</h1>
+        <h1>CGI | <span class="platform">Platform Name</span></h1>
     </div>
     <div class="navbar nav">
         <NavLink class="@(activePage == "/" ? "nav-link-active" : "nav-link")" href="/" @onclick="@(() => activePage = "/")">
             <div class="nav-link-item">
                 <img src="/images/house-door.svg" alt="icon name">
-                <span>Start</span>
+                <span class="nav-link-text">Start</span>
             </div>
         </NavLink>
         <NavLink class="@(activePage == "/order" ? "nav-link-active" : "nav-link")" href="order" @onclick="@(() => activePage = "/order")">
@@ -22,7 +22,7 @@
         <NavLink class="@(activePage == "/me" ? "nav-link-active" : "nav-link")" href="me" @onclick="@(() => activePage = "/me")">
             <div class="nav-link-item">
                 <img src="/images/person.svg" alt="icon name">
-                <span>Mina sidor</span>
+                <span class="nav-link-text">Mina sidor</span>
             </div>
         </NavLink>
         <NavLink class="nav-link" href="/order?page=14">
