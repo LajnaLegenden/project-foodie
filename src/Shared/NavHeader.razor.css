@@ -42,13 +42,13 @@
 }
 
 .nav-kassan img {
-  margin-bottom: -2px;
-  margin-right: -6px;
   align-items: center;
   color: #067A46;
   display: flex;
   font-size: 20px;
   height: 120px;
+  margin-bottom: -2px;
+  margin-right: -6px;
   padding-left: 2em;
 }
 
