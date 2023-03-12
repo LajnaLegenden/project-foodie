@@ -6,8 +6,14 @@
   width: 35%;
 }
 
+.dateText {
+  color: var(--primary-color);
+  font-size: 30px;
+  margin-top: -20px;
+}
+
 h1 {
-  color: #067A46;
+  color: var(--primary-color);
   font-size: 40px;
 }
 

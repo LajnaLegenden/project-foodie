@@ -4,9 +4,16 @@
 
 
 <div class="menu-container">
-    <h2 class="meal-text">@dayMenu.type</h2>
+    @* <h2 class="meal-text">@dayMenu.type</h2> *@
     <div class="@interactable">
         <div class="card-container">
+            @foreach (var dish in dayMenu.dishes)
+            {
+                if (dish.Type.ToString() == Category || Category == "all")
+                {
+                    <Dishes @ref="dishCard" dayMenu=@dayMenu dishData=@dish/>
+                }
+            }
             @foreach (var dish in dayMenu.dishes)
             {
                 if (dish.Type.ToString() == Category || Category == "all")
@@ -19,7 +26,7 @@
 
     <div class="skip-container">
         <input type="checkbox" class="skip-checkbox" name="skip" value="skip" checked="@isChecked" @onchange="eventArgs => { CheckboxClicked(eventArgs.Value); }"/>
-        <label for="skip"> Jag vill avstå @(char.ToLower(dayMenu.type.ToString()[0]) + dayMenu.type.ToString().Substring(1)).</label><br>
+        <label for="skip"> Jag vill avstå @(char.ToLower(dayMenu.type.ToString()[0]) + dayMenu.type.ToString().Substring(1))!</label><br>
     </div>
 </div>
 

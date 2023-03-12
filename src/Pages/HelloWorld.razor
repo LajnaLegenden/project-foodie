@@ -1,5 +1,8 @@
 @page "/test"
 @using project_foodie.Model
+@using project_foodie.Repository
+@using System.Text.Json
+
 <h1>Test</h1>
 <p>@message</p>
 
@@ -10,6 +13,7 @@
     protected override async Task OnInitializedAsync()
     {
         var db = new DatabaseContext();
+        var menuRepository = new MenuRepository(db);
         var menu = new Menu
         {
             Name = "Test",
@@ -20,6 +24,14 @@
 
         db.Menus.Add(menu);
         await db.SaveChangesAsync();
+        var menus = await menuRepository.GetAllAsync();
+        @* foreach (var menuItem in menus)
+        {
+            string serializedString = System.Text.Json.JsonSerializer.Serialize(menu.dayMenus);
+            Console.WriteLine(serializedString);
+        } *@
+        var serializedString = JsonSerializer.Serialize(menu);
+        Console.WriteLine(serializedString);
         message = "Test";
     }
 
