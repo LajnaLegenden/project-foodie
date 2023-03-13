@@ -2,19 +2,20 @@
 
 .startContainer {
   margin: auto;
+  margin-top: 10em;
   text-align: center;
   width: 35%;
 }
 
 .dateText {
   color: var(--primary-color);
-  font-size: 30px;
+  font-size: 1.5em;
   margin-top: -20px;
 }
 
 h1 {
   color: var(--primary-color);
-  font-size: 40px;
+  font-size: 2.5em;
 }
 
 .h1-same { margin-top: -20px; }
@@ -38,13 +39,47 @@ span { font-weight: bold; }
   .startContainer { width: 80%; }
 }
 
-@media screen and (max-width: 694px) {
+@media screen and (max-width: 786px) {
   .startContainer {
     height: 280px;
     width: 90%;
   }
 
-  h1 { font-size: 30px; }
+  h1 { font-size: 2em; }
+
+  p { font-size: 1.5em; }
+}
+
+@media screen and (max-width: 600px) {
+  .startContainer {
+    margin-top: 6em;
+  }
+}
+
+@media screen and (max-width: 546px) {
+  h1 { font-size: 1.7rem; }
 
   p { font-size: 20px; }
+}
+
+@media screen and (max-width: 470px) {
+  .startContainer {
+    height: 220px;
+    width: 90%;
+  }
+
+  h1 { font-size: 1.4em; }
+
+  p { font-size: 1em; }
+}
+
+@media screen and (max-width: 392px) {
+  .startContainer {
+    height: 220px;
+    width: 90%;
+  }
+
+  h1 { font-size: 1.2em; }
+
+  p { font-size: 1em; }
 }
