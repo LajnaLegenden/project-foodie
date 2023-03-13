@@ -1,0 +1,44 @@
+.startContainer {
+    background-image: url("/images/foodimg.png");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    height: 600px;
+    margin-top: -32px;
+    margin-left: -32px;
+    width: 109%;
+    height: 100%;
+    background-position: 0px;
+}
+
+.startContainer h1:first-child {
+    font-size: 1.8em;
+    text-align: center;
+    padding-top: 4em;
+    color: white;
+}
+
+.startContainer h1 {
+    font-size: 1.2em;
+    text-align: center;
+    color: white;
+}
+
+@media screen and (max-width: 580px) {
+    .startContainer {
+        width: 110%;
+        background-size: auto;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .startContainer {
+        width: 120%;
+    }
+    .startContainer h1:first-child {
+        font-size: 1.8em;
+    }
+
+    .startContainer h1 {
+        font-size: 0.9em;
+    }
+}
