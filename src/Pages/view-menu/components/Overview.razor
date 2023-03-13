@@ -28,9 +28,10 @@
                     @if (index == -1)
                     {
                         DayMenu dm = DayMenuHelper.getDayMenuByDate(menu, date);
+                        allMealsOrdered = false;
+
                         <td data-label="Veckodag">@DayMenuHelper.convertToWeekday(date)</td>
-                        <td data-label="Lunch"><ul>
-                            <li class="warning-text">Måltid ej vald<img src="/images/warning-triangle.png" alt="Warning sign"class="warning"></li></ul></td>
+                        <td data-label="Lunch"><ul><li class="warning-text">Måltid ej vald<img src="/images/warning-triangle.png" alt="Warning sign"class="warning"></li></ul></td>
                         <td data-label="Pris"></td>
                         <td data-label="Middag"><ul><li class="warning-text">Måltid ej vald<img src="/images/warning-triangle.png" alt="Warning sign"class="warning"></li></ul></td>
                         <td data-label="Pris"></td>
@@ -65,6 +66,7 @@
                                 }
                                 @if (!lunchOrdered)
                                 {
+                                    allMealsOrdered = false;
                                     <li class="warning-text">Måltid ej vald<img src="/images/warning-triangle.png" alt="Warning sign"class="warning"></li>
                                 }
                             </ul>
@@ -96,6 +98,7 @@
                                 }
                                 @if (!dinnerOrdered)
                                 {
+                                    allMealsOrdered = false;
                                     <li class="warning-text">Måltid ej vald<img src="/images/warning-triangle.png" alt="Warning sign"class="warning"></li> 
                                 }
                             </ul>
@@ -130,11 +133,25 @@ else
 
     [Parameter]
     public Menu menu { get; set; }
+    [Parameter]
+    public EventCallback<bool> OnNotAllMealsOrdered { get; set; }
+    [Parameter]
+    public EventCallback<bool> OnAllMealsOrdered { get; set; }
     public bool dataLoaded = false;
     private List<LocalStorage.Row> data;
     private HashSet<DateTime> dates = new HashSet<DateTime>();
     private bool lunchOrdered = false;
     private bool dinnerOrdered = false;
+    private bool allMealsOrdered = true;
+    
+    protected async Task DisableOrderButton()
+    {
+        await OnNotAllMealsOrdered.InvokeAsync();
+    }
+    protected async Task ActivateOrderButton()
+    {
+        await OnAllMealsOrdered.InvokeAsync();
+    }
 
     /*------- Popup (Modal dialog)--------*/
     public bool PopupOpen { get; set; }
@@ -164,6 +181,18 @@ else
             data = await LocalStorage.LoadData(localStorage, menu);
             dataLoaded = true;
             StateHasChanged();
+        }
+
+        if (firstRender)
+        {
+            if (!allMealsOrdered) 
+            {
+                DisableOrderButton();
+            }
+            else
+            {
+                ActivateOrderButton();
+            }
         }
     }
 

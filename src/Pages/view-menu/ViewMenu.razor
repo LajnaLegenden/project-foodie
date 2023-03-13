@@ -67,14 +67,14 @@
                 }
                 @if (selectedIndex == overViewIndex)
                 {
-                    <Overview @ref="overview" menu="@_menu"/>
+                    <Overview @ref="overview" menu="@_menu" OnNotAllMealsOrdered="DisableOrderButton" OnAllMealsOrdered="ActivateOrderButton"/>
                 }
 
                 <div class="button-container">
                     <button @onclick="() => setPage(selectedIndex - 1, true)" class="button-back">@getBackButtonString()</button>
                     @if (selectedIndex == overViewIndex)
                     {
-                        <button @onclick="@SaveOrder" class="button-forward">Beställ här</button>
+                        <button @onclick="@SaveOrder" class="@buttonFwdClass">Beställ här</button>
                     }
                     else
                     {
@@ -112,6 +112,8 @@
     public string viewPort { get; set; } = "desktop";
     private DotNetObjectReference<ViewMenu> objRef;
     private string dayString => selectedIndex == overViewIndex ? "overview-day-container" : "viewmenu-day-container";
+
+    private string buttonFwdClass = "button-forward";
 
     // Uses SaveOrder from Overview.razor
     private async Task SaveOrder()
@@ -205,7 +207,7 @@
         {
             return "";
         }
-        return convertToWeekday(DayMenuHelper.getSortedDayMenus(_menu)[selectedIndex].DayMenu.date);
+        return DayMenuHelper.convertToWeekday(DayMenuHelper.getSortedDayMenus(_menu)[selectedIndex].DayMenu.date);
     }
 
     string dateString()
@@ -254,16 +256,6 @@
             overViewIndex = _menu.dayMenus.Count;
             confirmedViewIndex = overViewIndex + 1;
         }
-    }
-
-    private string convertToWeekday(DateTime date)
-    {
-        var weekday = "";
-
-        weekday = date.ToString("dddddd", new CultureInfo("sv-SE"));
-        weekday = char.ToUpper(weekday[0]) + weekday.Substring(1);
-
-        return weekday;
     }
 
     private string dateFormat(DateTime date)
@@ -327,4 +319,12 @@
         return selectedIndex == overViewIndex ? "Lägg Order" : "Nästa";
     }
 
+    protected async Task DisableOrderButton()
+    {
+        buttonFwdClass = "button-forward disabled";
+    }
+    protected async Task ActivateOrderButton()
+    {
+        buttonFwdClass = "button-forward";
+    }
 }
