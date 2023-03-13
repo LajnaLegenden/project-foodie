@@ -3,45 +3,43 @@ using project_foodie.Model;
 
 namespace project_foodie.Repository;
 
-public class AllergenRepository
+public class AllergenRepository : RepositoryBase<Allergen>, IAllergenRepository
 {
-    private readonly DatabaseContext _context;
-
-    public AllergenRepository(DatabaseContext context)
+    public AllergenRepository(DatabaseContext databaseContext)
+        : base(databaseContext)
     {
-        _context = context;
-    }
-
-    public async Task<Allergen> GetByIdAsync(int id)
-    {
-        return await _context.Allergens.FirstOrDefaultAsync(d => d.Id == id);
-    }
-
-    public async Task<Allergen> GetByName(string name)
-    {
-        return await _context.Allergens.FirstOrDefaultAsync(d => d.Name == name);
-    }
-
-    public async Task AddAsync(Allergen allergen)
-    {
-        _context.Allergens.Add(allergen);
-        await _context.SaveChangesAsync();
-    }
-
-    public async Task UpdateAsync(Allergen allergen)
-    {
-        _context.Allergens.Update(allergen);
-        await _context.SaveChangesAsync();
-    }
-
-    public async Task DeleteAsync(Allergen allergen)
-    {
-        _context.Allergens.Remove(allergen);
-        await _context.SaveChangesAsync();
     }
 
     public async Task<List<Allergen>> GetAllAsync()
     {
-        return await _context.Allergens.ToListAsync();
+        return await FindAll()
+            .ToListAsync();
+    }
+
+    public async Task<Allergen> GetByIdAsync(int allergenId)
+    {
+        return await FindByCondition(a => a.Id.Equals(allergenId))
+            .FirstOrDefaultAsync();
+    }
+
+    public async Task<Allergen> GetByNameAsync(string name)
+    {
+        return await FindByCondition(a => a.Name.Equals(name))
+            .FirstOrDefaultAsync();
+    }
+
+    public void AddAllergen(Allergen allergen)
+    {
+        Create(allergen);
+    }
+
+    public void UpdateAllergen(Allergen allergen)
+    {
+        Update(allergen);
+    }
+
+    public void DeleteAllergen(Allergen allergen)
+    {
+        Delete(allergen);
     }
 }
