@@ -80,7 +80,8 @@ a, .btn-link {
   --div-timeline-done: #067A46;
 
   /*Colors*/
-  --primary-color: #067A46;
+  --primary-color: #991F3D;
+  --secondary-color: #ffffff;
 
   /* Default fonts */
   --h1-font-default: 40px;
@@ -97,6 +98,6 @@ a, .btn-link {
   --box-shadow-inset-default: inset 0px 2px 2px rgba(0, 0, 0, 0.25);
   --filter-shadow-default: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 
-  --svg-filter-green: invert(34%) sepia(56%) saturate(929%) hue-rotate(108deg) brightness(91%) contrast(95%);
+  --svg-filter-primary-color: invert(18%) sepia(42%) saturate(6018%) hue-rotate(332deg) brightness(68%) contrast(87%);
   --svg-filter-white: invert(100%) sepia(0%) saturate(0%) hue-rotate(152deg) brightness(103%) contrast(103%);
 }

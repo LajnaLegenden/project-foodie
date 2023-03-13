@@ -51,7 +51,7 @@ li:not(:last-child) { margin-bottom: 10px; }
 }
 
 .overview-table th {
-  background-color: #067A46;
+  background-color: var(--primary-color);
   color: white;
   padding-bottom: 12px;
   padding-top: 12px;

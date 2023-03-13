@@ -44,7 +44,7 @@ path: src/Pages/view-menu/components/Dishes.razor.css
 }
 
 .food-card-img-container {
-  background-color: #067A46;
+  background-color: var(--primary-color);
   border-radius: 5px 5px 0px 0px;
   cursor: pointer;
   height: 177px;
@@ -62,7 +62,7 @@ path: src/Pages/view-menu/components/Dishes.razor.css
 }
 
 .food-card-price {
-  color: #067A46;
+  color: var(--primary-color);
   font-size: 25px;
 }
 
@@ -204,14 +204,14 @@ path: src/Pages/view-menu/components/Dishes.razor.css
 }
 
 .food-card-btn-info {
-  border: 4px solid var(--btn-sucess, #006B38);
-  color: var(--btn-sucess, #006B38);
+  border: 4px solid var(--primary-color);
+  color: var(--primary-color);
   font-weight: 700;
   margin: 8px;
 }
 
 .food-card-btn-increment {
-  background: var(--btn-sucess, #006B38);
+  background: var(--primary-color);
   float: right;
   margin-right: 3.5px;
 }
@@ -229,7 +229,7 @@ path: src/Pages/view-menu/components/Dishes.razor.css
 }
 
 .food-card-btn-decrement {
-  background: #b10000;
+  background: grey;
   float: left;
   margin-left: 3.5px;
 }
@@ -242,7 +242,9 @@ path: src/Pages/view-menu/components/Dishes.razor.css
   .food-card-btn-decrement span { line-height: 0.5; }
 }
 
-@media not all and (-webkit-min-device-pixel-ratio: 0), not all and (-o-min-device-pixel-ratio: 0/1), not all and (min-resolution: .001dpcm) {
+@media not all and (-webkit-min-device-pixel-ratio: 0),
+not all and (-o-min-device-pixel-ratio: 0/1),
+not all and (min-resolution: .001dpcm) {
   @supports (-webkit-appearance:none) and (stroke-color:transparent) {
 
     .food-card-btn-increment span,

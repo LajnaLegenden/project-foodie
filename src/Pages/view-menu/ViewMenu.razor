@@ -50,13 +50,16 @@
                         <EditForm Model="@_model">
                             <InputRadioGroup @bind-Value="_model.Category">
 
-                                <input type="radio" id="radio-1" name="group" checked="checked" @onchange="() => Category = categoryList[0].Category"/>
+                                <input type="radio" id="radio-1" name="group" checked="checked"
+                                       @onchange="() => Category = categoryList[0].Category"/>
                                 <label for="radio-1">Alla</label>
 
-                                <input type="radio" id="radio-2" name="group" @onchange="() => Category = categoryList[1].Category"/>
+                                <input type="radio" id="radio-2" name="group"
+                                       @onchange="() => Category = categoryList[1].Category"/>
                                 <label for="radio-2">Grundkost</label>
 
-                                <input type="radio" id="radio-3" name="group" @onchange="() => Category = categoryList[2].Category"/>
+                                <input type="radio" id="radio-3" name="group"
+                                       @onchange="() => Category = categoryList[2].Category"/>
                                 <label for="radio-3">Vegetariskt</label>
                             </InputRadioGroup>
                         </EditForm>
@@ -344,7 +347,7 @@
 
     private string getNextButtonString()
     {
-        return selectedIndex == overViewIndex ? "Lägg Order" : "Nästa";
+        return selectedIndex == overViewIndex ? "Lägg Order" : "Nästa dag";
     }
 
 }
