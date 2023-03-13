@@ -254,8 +254,8 @@
     {
         using (var db = new DatabaseContext())
         {
-            var mr = new MenuRepository(db);
-            var menus = await mr.GetAllAsync();
+            var repository = new RepositoryWrapper(db);
+            var menus = await repository.Menu.GetAllAsync();
 
             menus.Sort((m1, m2) => m1.lastOrderDate > m2.lastOrderDate ? 1 : -1);
 

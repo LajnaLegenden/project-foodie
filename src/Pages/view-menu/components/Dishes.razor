@@ -114,8 +114,9 @@
     {
         using (var db = new DatabaseContext())
         {
-            var dr = new DishRepository(db);
-            ingredients = await dr.getDishIngredients(dishData.Id);
+            var repository = new RepositoryWrapper(db);
+            Dish dish = await repository.Dish.GetByIdAsync(dishData.Id);
+            ingredients = dish.Ingredients;
         }
 
         foreach (var element in dishData.Allergens)

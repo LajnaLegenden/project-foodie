@@ -46,8 +46,8 @@
     {
         using (var context = new DatabaseContext())
         {
-            var dishRepository = new DishRepository(context);
-            _allDishes = await dishRepository.GetAllAsync();
+            var repository = new RepositoryWrapper(context);
+            _allDishes = await repository.Dish.GetAllAsync();
         }
     }
 

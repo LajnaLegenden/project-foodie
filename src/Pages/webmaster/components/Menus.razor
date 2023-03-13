@@ -68,8 +68,8 @@
     {
         using (var context = new DatabaseContext())
         {
-            var menuRepository = new MenuRepository(context);
-            _allMenus = await menuRepository.GetAllAsync();
+            var repository = new RepositoryWrapper(context);
+            _allMenus = await repository.Menu.GetAllAsync();
         }
     }
 

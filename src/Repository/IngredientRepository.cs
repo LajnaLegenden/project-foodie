@@ -3,58 +3,49 @@ using project_foodie.Model;
 
 namespace project_foodie.Repository;
 
-public class IngredientRepository
+public class IngredientRepository : RepositoryBase<Ingredient>, IIngredientRepository
 {
-    private readonly DatabaseContext _context;
-
-    public IngredientRepository(DatabaseContext context)
+    public IngredientRepository(DatabaseContext databaseContext)
+        : base(databaseContext)
     {
-        _context = context;
-    }
-
-    public async Task<Ingredient> GetByIdAsync(int id)
-    {
-        return await _context.Ingredients.Include(i => i.Allergens).FirstOrDefaultAsync(i => i.Id == id);
-    }
-
-    public async Task<Ingredient> GetByName(string name)
-    {
-        return await _context.Ingredients.Include(i => i.Allergens).FirstOrDefaultAsync(i => i.Name == name);
-    }
-
-    public async Task AddAsync(Ingredient ingredient)
-    {
-        _context.Ingredients.Add(ingredient);
-        await _context.SaveChangesAsync();
-    }
-
-    public async Task UpdateAsync(Ingredient ingredient)
-    {
-        _context.Ingredients.Update(ingredient);
-        await _context.SaveChangesAsync();
-    }
-
-    public async Task DeleteAsync(Ingredient ingredient)
-    {
-        _context.Ingredients.Remove(ingredient);
-        await _context.SaveChangesAsync();
     }
 
     public async Task<List<Ingredient>> GetAllAsync()
     {
-        return await _context.Ingredients.Include(i => i.Allergens).ToListAsync();
+        return await FindAll()
+            .Include(i => i.Allergens)
+            .ToListAsync();
     }
 
-    public async Task AddAllergenToIngredientAsync(Ingredient ingredient, int allergenId)
+    public async Task<Ingredient> GetByIdAsync(int ingredientId)
     {
-        var allergen = _context.Allergens.FirstOrDefault(a => a.Id == allergenId);
+        return await FindByCondition(i => i.Id.Equals(ingredientId))
+            .Include(i => i.Allergens)
+            .FirstOrDefaultAsync();
+    }
 
-        Console.WriteLine("[AddIngredientToDishAsync]: Trying to add " + allergen.Name + " to menu " + ingredient.Name +
-                          "");
-        //if dish.Allergens is null, create new list
+    public void AddIngredient(Ingredient ingredient)
+    {
+        Create(ingredient);
+    }
+
+    public void UpdateIngredient(Ingredient ingredient)
+    {
+        Update(ingredient);
+    }
+
+    public void DeleteIngredient(Ingredient ingredient)
+    {
+        Delete(ingredient);
+    }
+
+    public void AddAllergenToIngredient(Ingredient ingredient, Allergen allergen)
+    {
+        Console.WriteLine("[AddallergenToIngredientAsync]: Trying to add " + allergen.Name + " to menu " + ingredient.Name + "");
+        
+        //if Ingredient.allergens is null, create new list
         if (ingredient.Allergens == null) ingredient.Allergens = new List<Allergen>();
 
         ingredient.Allergens.Add(allergen);
-        await _context.SaveChangesAsync();
     }
 }
