@@ -3,7 +3,6 @@
 @using project_foodie.Repository
 @using System.Globalization
 @inject ILocalStorageService localStorage
-@using System.Linq;
 
 @if (dataLoaded)
 {
@@ -30,10 +29,11 @@
                     {
                         DayMenu dm = DayMenuHelper.getDayMenuByDate(menu, date);
                         <td data-label="Veckodag">@DayMenuHelper.convertToWeekday(date)</td>
-                        <td data-label="Lunch"><ul><img src="/images/warning.png" alt="Warning sign"class="warning"></ul></td>
-                        <td data-label="Pris">0:-</td>
-                        <td data-label="Middag"><ul><img src="/images/warning.png" alt="Warning sign"class="warning"></ul></td>
-                        <td data-label="Pris">0:-</td>
+                        <td data-label="Lunch"><ul>
+                            <li class="warning-text">Måltid ej vald<img src="/images/warning-triangle.png" alt="Warning sign"class="warning"></li></ul></td>
+                        <td data-label="Pris"></td>
+                        <td data-label="Middag"><ul><li class="warning-text">Måltid ej vald<img src="/images/warning-triangle.png" alt="Warning sign"class="warning"></li></ul></td>
+                        <td data-label="Pris"></td>
                         <td data-label="Totalt">0:-</td>
                         <td>
                             <a href="@getModifyUrlbyDayMenu(dm)" class="change-dish-button">Ändra val</a>
@@ -65,11 +65,16 @@
                                 }
                                 @if (!lunchOrdered)
                                 {
-                                    <img src="/images/warning.png" alt="Warning sign"class="warning">
+                                    <li class="warning-text">Måltid ej vald<img src="/images/warning-triangle.png" alt="Warning sign"class="warning"></li>
                                 }
                             </ul>
                         </td>
-                        <td data-label="Pris">@data[index].LunchPrice:-</td>
+                        <td data-label="Pris">
+                            @if (lunchOrdered)
+                            {
+                                @:@data[index].LunchPrice:-
+                            }
+                        </td>
                         <td data-label="Middag">
                             <ul>
                                 @foreach (var item in data[index].dishCount)
@@ -91,11 +96,16 @@
                                 }
                                 @if (!dinnerOrdered)
                                 {
-                                    <img src="/images/warning.png" alt="Warning sign"class="warning">
+                                    <li class="warning-text">Måltid ej vald<img src="/images/warning-triangle.png" alt="Warning sign"class="warning"></li> 
                                 }
                             </ul>
                         </td>
-                        <td data-label="Pris">@data[index].DinnerPrice:-</td>
+                        <td data-label="Pris">
+                            @if (dinnerOrdered)
+                            {
+                                @:@data[index].DinnerPrice:-
+                            }
+                        </td>
                         <td data-label="Totalt">@(data[index].LunchPrice + data[index].DinnerPrice):-</td>
                         <td>
                             <a href="@getModifyUrl(data[index])" class="change-dish-button">Ändra val</a>
