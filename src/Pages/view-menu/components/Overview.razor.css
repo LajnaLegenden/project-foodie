@@ -15,6 +15,7 @@ p {
 }
 
 ul {
+  position: relative;
   border-collapse: collapse;
   list-style-type: none;
   padding-left: 0;
@@ -80,9 +81,10 @@ a {
 
 .total-all-price { text-align: right; }
 
-
 .warning {
   max-width: 40px;
+  vertical-align: -8px;
+  margin-left: 5px;
 }
 
 @media screen and (max-width: 1500px) {
