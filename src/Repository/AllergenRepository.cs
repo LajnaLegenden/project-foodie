@@ -42,5 +42,4 @@ public class AllergenRepository : RepositoryBase<Allergen>, IAllergenRepository
     {
         Delete(allergen);
     }
-
 }

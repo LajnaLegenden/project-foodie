@@ -41,8 +41,9 @@ public class IngredientRepository : RepositoryBase<Ingredient>, IIngredientRepos
 
     public void AddAllergenToIngredient(Ingredient ingredient, Allergen allergen)
     {
-        Console.WriteLine("[AddallergenToIngredientAsync]: Trying to add " + allergen.Name + " to menu " + ingredient.Name + "");
-        
+        Console.WriteLine("[AddallergenToIngredientAsync]: Trying to add " + allergen.Name + " to menu " +
+                          ingredient.Name + "");
+
         //if Ingredient.allergens is null, create new list
         if (ingredient.Allergens == null) ingredient.Allergens = new List<Allergen>();
 

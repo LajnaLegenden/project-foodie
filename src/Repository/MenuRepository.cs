@@ -47,11 +47,12 @@ public class MenuRepository : RepositoryBase<Menu>, IMenuRepository
     // Create orderItem and add to order
     public void AddDayMenu(Menu menu, DateTime date, Dish dish, OrderType orderType)
     {
-        Console.WriteLine("[AddDayMenuAsync]: Trying to add " + dish.Name + " to menu " + menu.Name + " on " + date + " for " + orderType + "");
-       
+        Console.WriteLine("[AddDayMenuAsync]: Trying to add " + dish.Name + " to menu " + menu.Name + " on " + date +
+                          " for " + orderType + "");
+
         //if menu.dayMenus is null, create new list
         if (menu.dayMenus == null) menu.dayMenus = new List<DayMenu>();
-       
+
         //if daymenu for that date already exists add dish to existing daymenu
         foreach (var day in menu.dayMenus)
             if (day.date == date && day.type == orderType)

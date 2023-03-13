@@ -43,8 +43,9 @@ public class DishRepository : RepositoryBase<Dish>, IDishRepository
 
     public void AddIngredientToDish(Dish dish, Ingredient ingredient)
     {
-        Console.WriteLine("[AddIngredientToDishAsync]: Trying to add " + ingredient.Name + " to menu " + dish.Name + "");
-        
+        Console.WriteLine("[AddIngredientToDishAsync]: Trying to add " + ingredient.Name + " to menu " + dish.Name +
+                          "");
+
         //if dish.Ingredients is null, create new list
         if (dish.Ingredients == null) dish.Ingredients = new List<Ingredient>();
 
@@ -54,7 +55,7 @@ public class DishRepository : RepositoryBase<Dish>, IDishRepository
     public void AddAllergenToDish(Dish dish, Allergen allergen)
     {
         Console.WriteLine("[AddallergenToDishAsync]: Trying to add " + allergen.Name + " to menu " + dish.Name + "");
-        
+
         //if dish.allergens is null, create new list
         if (dish.Allergens == null) dish.Allergens = new List<Allergen>();
 

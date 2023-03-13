@@ -9,11 +9,11 @@ namespace project_foodie.Repository;
 public class RepositoryWrapper : IRepositoryWrapper
 {
     private readonly DatabaseContext _dbContext;
-    private IOrderRepository _order;
-    private IMenuRepository _menu;
+    private IAllergenRepository _allergen;
     private IDishRepository _dish;
     private IIngredientRepository _ingredient;
-    private IAllergenRepository _allergen;
+    private IMenuRepository _menu;
+    private IOrderRepository _order;
 
 
     public RepositoryWrapper(DatabaseContext databaseContext)
@@ -51,7 +51,7 @@ public class RepositoryWrapper : IRepositoryWrapper
         }
     }
 
-    
+
     public IIngredientRepository Ingredient
     {
         get
