@@ -31,14 +31,12 @@
 
 .platform {
   font-size: 14px;
+  left: 110px;
   position: absolute;
   top: 32px;
-  left: 110px;
 }
 
-.nav-link-text {
-  color: white;
-}
+.nav-link-text { color: white; }
 
 .nav-kassan-counter {
   background: #00E17C;
@@ -109,9 +107,7 @@
 
 
 @media screen and (max-width: 600px) {
-  .header {
-    background: white;
-  }
+  .header { background: white; }
 
   .nav {
     align-items: center;
@@ -129,15 +125,16 @@
     justify-content: center;
   }
 
-  .nav-link-text {
-    color: #484848;
-  }
+  .nav-link-text { color: #484848; }
 
   .nav-link-item img { width: 2em; }
 
   .nav-link-active img { filter: var(--svg-filter-primary-color); }
 
-  .nav-link-active span { text-decoration: underline; color: var(--primary-color); }
+  .nav-link-active span {
+    color: var(--primary-color);
+    text-decoration: underline;
+  }
 
   #header {
     bottom: 0 !important;
