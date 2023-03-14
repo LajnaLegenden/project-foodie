@@ -81,6 +81,7 @@ a {
 .total-all-price { text-align: right; }
 
 .warning {
+  margin-left: 5px;
   max-width: 40px;
   vertical-align: -8px;
   margin-right: 8px;
