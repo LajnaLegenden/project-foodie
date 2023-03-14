@@ -123,6 +123,10 @@
     {
         <OrderFailPopup OnClose="@PopupClose"/>
     }
+    @if (WarningPopupOpen)
+    {
+        <WarningPopup OnClose="@WarningPopupClose"/>
+    }
 }
 else
 {
@@ -155,6 +159,7 @@ else
 
     /*------- Popup (Modal dialog)--------*/
     public bool PopupOpen { get; set; }
+    public bool WarningPopupOpen { get; set; }
 
     private void PopupClose(bool accepted)
     {
@@ -165,6 +170,18 @@ else
     private void OpenPopup()
     {
         PopupOpen = true;
+        StateHasChanged();
+    }
+
+    private void WarningPopupClose(bool accepted)
+    {
+        WarningPopupOpen = false;
+        StateHasChanged();
+    }
+
+    private void OpenWarningPopup()
+    {
+        WarningPopupOpen = true;
         StateHasChanged();
     }
 
@@ -187,6 +204,7 @@ else
         {
             if (!allMealsOrdered) 
             {
+                OpenWarningPopup();
                 DisableOrderButton();
             }
             else
