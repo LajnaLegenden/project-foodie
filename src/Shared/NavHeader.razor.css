@@ -38,6 +38,15 @@
 
 .nav-link-text { color: white; }
 
+.nav-link-active span {
+  -o-transition: ease-in 0.3s;
+  -webkit-text-decoration: underline;
+  -webkit-transition: ease-in 0.3s;
+  text-decoration: underline;
+  text-underline-offset: 0.3em;
+  transition: ease-in 0.3s;
+}
+
 .nav-kassan-counter {
   background: #00E17C;
   border-radius: 100%;
