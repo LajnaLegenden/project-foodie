@@ -122,6 +122,11 @@ input[type="radio"]:checked + label {
   width: 297px;
 }
 
+.button-forward.disabled {
+  background-color: #6e6e6e;
+  pointer-events: none;
+}
+
 .button-start-container {
   -ms-flex-pack: center;
   -webkit-box-pack: center;

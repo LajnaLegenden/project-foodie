@@ -1,0 +1,26 @@
+<div class="modal-background">
+    <div class="modal-card">
+        <div class="card-header">
+            <img src="/images/warning-triangle.png" alt="Warning sign"class="warning">
+            <h2>Alla måltider ej valda!</h2>
+        </div>
+        <div class="card-body">
+            <p>Kolla igenom översikten för att se vilka måltider det gäller.</p>
+        </div>
+        <div class="card-button">
+            <button class="close-button" onclick="@ModalClose">Stäng ner</button>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public EventCallback<bool> OnClose { get; set; }
+
+    private Task ModalClose()
+    {
+        return OnClose.InvokeAsync(false);
+    }
+
+}

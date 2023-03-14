@@ -54,4 +54,13 @@ public static class DayMenuHelper
 
         return weekday;
     }
+
+    public static DayMenu getDayMenuByDate(Menu menu, DateTime date)
+    {
+        var sections = getSortedDayMenus(menu);
+        for (var i = 0; i < sections.Count; i++)
+            if (sections[i].DayMenu.date == date)
+                return sections[i].DayMenu;
+        return null;
+    }
 }
