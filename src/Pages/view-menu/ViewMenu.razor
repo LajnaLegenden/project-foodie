@@ -13,7 +13,7 @@
 @using Microsoft.AspNetCore.WebUtilities
 @implements IDisposable
 
-<div>
+<div class="menu-view-container">
     @if (loading)
     {
         <p>Loading</p>
@@ -30,34 +30,42 @@
         }
         else
         {
-            @if (selectedIndex != overViewIndex)
-            {
-                <Timeline menu="@_menu" currentIndex="@selectedIndex" state="@viewPort"/>
-                <div class="day-container">
-                    <h1 class="week-highlight">@_menu.Name</h1>
-                    <h1 class=@dayString>@activeWeekday()</h1>
-                    <h1 class=@dayString>@dateString()</h1>
-                </div>
-            }
-            <div class="menu-container">
+            <div class="menu-header">
+                @if (selectedIndex != overViewIndex)
+                {
+                    <Timeline menu="@_menu" currentIndex="@selectedIndex" state="@viewPort"/>
+                    <div class="day-container">
+                        <h1 class="week-highlight">@_menu.Name</h1>
+                        <h1 class=@dayString>@activeWeekday()</h1>
+                        <h1 class=@dayString>@dateString()</h1>
+                        <h1 class=@dayString>-</h1>
+                        <h1 class=@dayString>@activeMeal()</h1>
+                    </div>
+                }
+
                 @if (selectedIndex != overViewIndex)
                 {
                     <div class="radio-group">
                         <EditForm Model="@_model">
                             <InputRadioGroup @bind-Value="_model.Category">
 
-                                <input type="radio" id="radio-1" name="group" checked="checked" @onchange="() => Category = categoryList[0].Category"/>
+                                <input type="radio" id="radio-1" name="group" checked="checked"
+                                       @onchange="() => Category = categoryList[0].Category"/>
                                 <label for="radio-1">Alla</label>
 
-                                <input type="radio" id="radio-2" name="group" @onchange="() => Category = categoryList[1].Category"/>
+                                <input type="radio" id="radio-2" name="group"
+                                       @onchange="() => Category = categoryList[1].Category"/>
                                 <label for="radio-2">Grundkost</label>
 
-                                <input type="radio" id="radio-3" name="group" @onchange="() => Category = categoryList[2].Category"/>
+                                <input type="radio" id="radio-3" name="group"
+                                       @onchange="() => Category = categoryList[2].Category"/>
                                 <label for="radio-3">Vegetariskt</label>
                             </InputRadioGroup>
                         </EditForm>
                     </div>
                 }
+            </div>
+            <div class="menu-container">
                 @foreach (var dayMenu in DayMenuHelper.getSortedDayMenus(_menu))
                 {
                     <div class="@(showSelected(dayMenu.Index) ? "shown" : "hidden")">
@@ -70,14 +78,18 @@
                 }
 
                 <div class="button-container">
-                    <button @onclick="() => setPage(selectedIndex - 1, true)" class="button-back">@getBackButtonString()</button>
+                    <button @onclick="() => setPage(selectedIndex - 1, true)" class="button-back">
+                        <span>@getBackButtonString()</span><img src="/images/arrow-left-short.svg" alt="Tillbaka">
+                    </button>
                     @if (selectedIndex == overViewIndex)
                     {
                         <button @onclick="@SaveOrder" class="@buttonFwdClass">Beställ här</button>
                     }
                     else
                     {
-                        <button @onclick="() => setPage(selectedIndex + 1, true)" class="button-forward">@getNextButtonString()</button>
+                        <button @onclick="() => setPage(selectedIndex + 1, true)" class="button-forward">
+                            <span>@getNextButtonString()</span><img src="/images/arrow-right-short.svg" alt="Nästa">
+                        </button>
                     }
 
                 </div>
@@ -209,6 +221,15 @@
         return DayMenuHelper.convertToWeekday(DayMenuHelper.getSortedDayMenus(_menu)[selectedIndex].DayMenu.date);
     }
 
+    string activeMeal()
+    {
+        if (selectedIndex == -1 || selectedIndex >= DayMenuHelper.getSortedDayMenus(_menu).Count)
+        {
+            return "";
+        }
+        return DayMenuHelper.getSortedDayMenus(_menu)[selectedIndex].DayMenu.type.ToString();
+    }
+
     string dateString()
     {
         if (selectedIndex == -1 || selectedIndex >= DayMenuHelper.getSortedDayMenus(_menu).Count)
@@ -235,8 +256,8 @@
     {
         using (var db = new DatabaseContext())
         {
-            var mr = new MenuRepository(db);
-            var menus = await mr.GetAllAsync();
+            var repository = new RepositoryWrapper(db);
+            var menus = await repository.Menu.GetAllAsync();
 
             menus.Sort((m1, m2) => m1.lastOrderDate > m2.lastOrderDate ? 1 : -1);
 
@@ -315,7 +336,7 @@
 
     private string getNextButtonString()
     {
-        return selectedIndex == overViewIndex ? "Lägg Order" : "Nästa";
+        return selectedIndex == overViewIndex ? "Lägg Order" : "Nästa dag";
     }
 
     protected async Task DisableOrderButton()

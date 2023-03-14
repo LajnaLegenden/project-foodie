@@ -1,9 +1,30 @@
+.flex-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.link-back {
+  display: none;
+}
+
+.sidebar {
+  background-color: blanchedalmond;
+  width: 300px;
+}
+
 .pageControl {
   -ms-flex-pack: distribute;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   justify-content: space-around;
+}
+
+.line {
+  background: var(--primary-color);
+  height: 3px;
+  margin-bottom: 15px;
+  width: 100%;
 }
 
 .tables {
@@ -20,7 +41,7 @@
   width: 100%;
 }
 
-main {
+.container {
   -ms-flex-align: center;
   -ms-flex-direction: column;
   -ms-flex-pack: center;
@@ -48,6 +69,8 @@ main {
 
 .order-history-container { width: 100%; }
 
+/**/
+
 a { color: black; }
 
 a.active {
@@ -55,8 +78,52 @@ a.active {
   color: var(--primary-color);
 }
 
+@media screen and (max-width: 1300px) {
+  .order-history-title { text-align: center; }
+}
+
 .page {
+  -ms-flex-direction: row;
+  -ms-flex-pack: start;
+  -webkit-box-direction: normal;
+  -webkit-box-orient: horizontal;
+  -webkit-box-pack: start;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   flex-direction: row;
   justify-content: start;
+}
+
+@media screen and (max-width: 920px) {
+  .container {
+    margin: 0;
+    width: 100%;
+  }
+
+  .flex-container { justify-content: center; }
+
+  .line { display: none; }
+}
+
+@media screen and (max-width: 720px) {
+  .link-back {
+    display: block;
+    position: absolute;
+    top: 100px;
+    left: 31px;
+    font-weight: bold;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .link-back {
+    top: 65px;
+  }
+}
+
+@media screen and (max-width: 530px) {
+  .order-history-title {
+    font-size: 1.5em;
+  }
 }

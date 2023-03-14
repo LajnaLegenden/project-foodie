@@ -1,0 +1,80 @@
+@page "/me"
+@page "/me/{section}"
+@using project_foodie.Pages.my_page.components.OrderHistory
+@using project_foodie.Pages.my_page.components
+@inject NavigationManager NavManager
+
+<div class="mainContainer">
+    <div class="display-tablet">
+        <h2>Mina sidor</h2>
+        <div class="line"></div>
+        <div class="item">
+            <NavLink class="@(activePage == "/me" ? "nav-link-active" : "nav-link")" href="/me" @onclick="@(() => activePage = "/me")">
+                <span>Översikt</span>
+            </NavLink>
+        </div>
+        <div class="item">
+            <NavLink class="@(activePage == "/me/order_history" ? "nav-link-active" : "nav-link")" href="/me/order_history" @onclick="@(() => activePage = "/me/order_history")">
+                <span>Mina beställningar</span>
+            </NavLink>
+        </div>
+        <div class="item">
+            <NavLink class="@(activePage == "/me/invoice" ? "nav-link-active" : "nav-link")" href="/me/invoice" @onclick="@(() => activePage = "/me/invoice")">
+                <span>Fakturor</span>
+            </NavLink>
+        </div>
+        <div class="item">
+            <NavLink class="@(activePage == "/me/favorites" ? "nav-link-active" : "nav-link")" href="/me/favorites" @onclick="@(() => activePage = "/me/favorites")">
+                <span>Favoriter</span>
+            </NavLink>
+        </div>
+        <div class="item">
+            <NavLink class="@(activePage == "/me/account" ? "nav-link-active" : "nav-link")" href="/me/account" @onclick="@(() => activePage = "/me/account")">
+                <span>Mina uppgifter</span>
+            </NavLink>
+        </div>
+    </div>
+    @switch (section)
+    {
+        case "order_history":
+            <OrderHistory/>
+            break;
+        case "invoices":
+            <Invoices/>
+            break;
+        case "favourites":
+            <Favourites/>
+            break;
+        case "aboutme":
+            <AboutMe/>
+            break;
+        default:
+            <MyPage/>
+            break;
+    }
+</div>
+
+@code {
+
+    [Parameter]
+    public string section { get; set; }
+
+    private string activePage = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        var uri = new Uri(NavManager.Uri);
+        activePage = uri.LocalPath;
+    }
+
+    bool getDefaultActive()
+    {
+        if (section == "order_history" || section == "invoices" || section == "favourites" || section == "aboutme")
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+}
