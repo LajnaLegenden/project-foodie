@@ -31,9 +31,9 @@
                         allMealsOrdered = false;
 
                         <td data-label="Veckodag">@DayMenuHelper.convertToWeekday(date)</td>
-                        <td data-label="Lunch"><ul><li class="warning-text">Måltid ej vald<img src="/images/warning-triangle.png" alt="Warning sign"class="warning"></li></ul></td>
+                        <td data-label="Lunch"><ul><li class="warning-text"><img src="/images/warning-triangle.png" alt="Warning sign"class="warning">Måltid ej vald</li></ul></td>
                         <td data-label="Pris">-</td>
-                        <td data-label="Middag"><ul><li class="warning-text">Måltid ej vald<img src="/images/warning-triangle.png" alt="Warning sign"class="warning"></li></ul></td>
+                        <td data-label="Middag"><ul><li class="warning-text"><img src="/images/warning-triangle.png" alt="Warning sign"class="warning">Måltid ej vald</li></ul></td>
                         <td data-label="Pris">-</td>
                         <td data-label="Totalt">0:-</td>
                         <td>
@@ -67,7 +67,7 @@
                                 @if (!lunchOrdered)
                                 {
                                     allMealsOrdered = false;
-                                    <li class="warning-text">Måltid ej vald<img src="/images/warning-triangle.png" alt="Warning sign"class="warning"></li>
+                                    <li class="warning-text"><img src="/images/warning-triangle.png" alt="Warning sign"class="warning">Måltid ej vald</li>
                                 }
                             </ul>
                         </td>
@@ -102,7 +102,7 @@
                                 @if (!dinnerOrdered)
                                 {
                                     allMealsOrdered = false;
-                                    <li class="warning-text">Måltid ej vald<img src="/images/warning-triangle.png" alt="Warning sign"class="warning"></li> 
+                                    <li class="warning-text"><img src="/images/warning-triangle.png" alt="Warning sign"class="warning">Måltid ej vald</li> 
                                 }
                             </ul>
                         </td>
