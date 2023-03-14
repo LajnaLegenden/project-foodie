@@ -1,7 +1,6 @@
 @using project_foodie.Model
 @using project_foodie.Modules
 @using project_foodie.Repository
-@using System.Globalization
 @inject ILocalStorageService localStorage
 
 @if (dataLoaded)
@@ -23,17 +22,25 @@
             </tr>
             @foreach (var date in dates)
             {
-                int index = data.FindIndex(a => a.dm.date == date);
+                var index = data.FindIndex(a => a.dm.date == date);
                 <tr>
                     @if (index == -1)
                     {
-                        DayMenu dm = DayMenuHelper.getDayMenuByDate(menu, date);
+                        var dm = DayMenuHelper.getDayMenuByDate(menu, date);
                         allMealsOrdered = false;
 
                         <td data-label="Veckodag">@DayMenuHelper.convertToWeekday(date)</td>
-                        <td data-label="Lunch"><ul><li class="warning-text">Måltid ej vald<img src="/images/warning-triangle.png" alt="Warning sign"class="warning"></li></ul></td>
+                        <td data-label="Lunch">
+                            <ul>
+                                <li class="warning-text">Måltid ej vald<img src="/images/warning-triangle.png" alt="Warning sign"class="warning"></li>
+                            </ul>
+                        </td>
                         <td data-label="Pris">-</td>
-                        <td data-label="Middag"><ul><li class="warning-text">Måltid ej vald<img src="/images/warning-triangle.png" alt="Warning sign"class="warning"></li></ul></td>
+                        <td data-label="Middag">
+                            <ul>
+                                <li class="warning-text">Måltid ej vald<img src="/images/warning-triangle.png" alt="Warning sign"class="warning"></li>
+                            </ul>
+                        </td>
                         <td data-label="Pris">-</td>
                         <td data-label="Totalt">0:-</td>
                         <td>
@@ -54,8 +61,10 @@
                                         lunchOrdered = true;
                                         @if (item.Count == -1)
                                         {
-                                            <li><strong>Överhoppad</strong></li>
-                                        } 
+                                            <li>
+                                                <strong>Överhoppad</strong>
+                                            </li>
+                                        }
                                         else
                                         {
                                             <li>
@@ -76,20 +85,23 @@
                             {
                                 @:@data[index].LunchPrice:-
                             }
-                            else {
+                            else
+                            {
                                 @:-
                             }
                         </td>
                         <td data-label="Middag">
                             <ul>
                                 @foreach (var item in data[index].dishCount)
-                                {                                   
+                                {
                                     @if (item.dm.type == OrderType.Middag)
-                                    {   
+                                    {
                                         dinnerOrdered = true;
                                         @if (item.Count == -1)
                                         {
-                                            <li><strong>Överhoppad</strong></li>
+                                            <li>
+                                                <strong>Överhoppad</strong>
+                                            </li>
                                         }
                                         else
                                         {
@@ -102,7 +114,7 @@
                                 @if (!dinnerOrdered)
                                 {
                                     allMealsOrdered = false;
-                                    <li class="warning-text">Måltid ej vald<img src="/images/warning-triangle.png" alt="Warning sign"class="warning"></li> 
+                                    <li class="warning-text">Måltid ej vald<img src="/images/warning-triangle.png" alt="Warning sign"class="warning"></li>
                                 }
                             </ul>
                         </td>
@@ -111,7 +123,8 @@
                             {
                                 @:@data[index].DinnerPrice:-
                             }
-                            else {
+                            else
+                            {
                                 @:-
                             }
                         </td>
@@ -143,21 +156,25 @@ else
 
     [Parameter]
     public Menu menu { get; set; }
+
     [Parameter]
     public EventCallback<bool> OnNotAllMealsOrdered { get; set; }
+
     [Parameter]
     public EventCallback<bool> OnAllMealsOrdered { get; set; }
+
     public bool dataLoaded = false;
     private List<LocalStorage.Row> data;
-    private HashSet<DateTime> dates = new HashSet<DateTime>();
+    private HashSet<DateTime> dates = new();
     private bool lunchOrdered = false;
     private bool dinnerOrdered = false;
     private bool allMealsOrdered = true;
-    
+
     protected async Task DisableOrderButton()
     {
         await OnNotAllMealsOrdered.InvokeAsync();
     }
+
     protected async Task ActivateOrderButton()
     {
         await OnAllMealsOrdered.InvokeAsync();
@@ -193,7 +210,7 @@ else
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        // Get each of every date from menu
+    // Get each of every date from menu
         foreach (var dayMenu in DayMenuHelper.getSortedDayMenus(menu))
         {
             dates.Add(dayMenu.DayMenu.date);
@@ -208,7 +225,7 @@ else
 
         if (firstRender)
         {
-            if (!allMealsOrdered) 
+            if (!allMealsOrdered)
             {
                 OpenWarningPopup();
                 DisableOrderButton();
@@ -228,18 +245,18 @@ else
             var menuRepository = new MenuRepository(db);
             var dishRepository = new DishRepository(db);
 
-            // Create a new order connected to the current menu
+    // Create a new order connected to the current menu
             var order = new Order
             {
                 userId = 1,
-            // This next line will trigger an exception, use for development to trigger OrderFailPopup.
+    // This next line will trigger an exception, use for development to trigger OrderFailPopup.
                 @* menu= menu, *@
             menu = await menuRepository.GetByIdAsync(menu.Id),
                 orderDate = DateTime.Now,
                 orderItems = new List<OrderItem>()
             };
             repository.Order.AddOrder(order);
-            //loop trough dishes in local storage to create orderItems
+    //loop trough dishes in local storage to create orderItems
             @foreach (var r in data)
             {
                 var date = r.dm.date;
@@ -251,7 +268,7 @@ else
                     repository.Order.AddOrderItem(order, dish, amount, date, orderType);
                 }
             }
-            // Lastly, save changes to database. If something goes wrong catch exception and open OrderFailPopup.
+    // Lastly, save changes to database. If something goes wrong catch exception and open OrderFailPopup.
             try
             {
                 await repository.SaveAsync();
@@ -272,14 +289,14 @@ else
 
     private string getModifyUrl(LocalStorage.Row r)
     {
-        // /order/id/page=r.index
+    // /order/id/page=r.index
         var url = "/order/" + menu.Id + "?page=" + DayMenuHelper.getDayMenuIndex(menu, r.dm);
         return url;
     }
 
     private string getModifyUrlbyDayMenu(DayMenu dm)
     {
-        // /order/id/page=r.index
+    // /order/id/page=r.index
         var url = "/order/" + menu.Id + "?page=" + DayMenuHelper.getDayMenuIndex(menu, dm);
         return url;
     }
@@ -303,4 +320,5 @@ else
         }
         return null;
     }
+
 }

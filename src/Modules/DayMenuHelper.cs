@@ -59,12 +59,8 @@ public static class DayMenuHelper
     {
         var sections = getSortedDayMenus(menu);
         for (var i = 0; i < sections.Count; i++)
-        {
             if (sections[i].DayMenu.date == date)
-            {
                 return sections[i].DayMenu;
-            }
-        }
         return null;
     }
 }
