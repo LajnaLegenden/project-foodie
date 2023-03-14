@@ -32,9 +32,9 @@
 
                         <td data-label="Veckodag">@DayMenuHelper.convertToWeekday(date)</td>
                         <td data-label="Lunch"><ul><li class="warning-text">Måltid ej vald<img src="/images/warning-triangle.png" alt="Warning sign"class="warning"></li></ul></td>
-                        <td data-label="Pris"></td>
+                        <td data-label="Pris">-</td>
                         <td data-label="Middag"><ul><li class="warning-text">Måltid ej vald<img src="/images/warning-triangle.png" alt="Warning sign"class="warning"></li></ul></td>
-                        <td data-label="Pris"></td>
+                        <td data-label="Pris">-</td>
                         <td data-label="Totalt">0:-</td>
                         <td>
                             <a href="@getModifyUrlbyDayMenu(dm)" class="change-dish-button">Ändra val</a>
@@ -76,6 +76,9 @@
                             {
                                 @:@data[index].LunchPrice:-
                             }
+                            else {
+                                @:-
+                            }
                         </td>
                         <td data-label="Middag">
                             <ul>
@@ -107,6 +110,9 @@
                             @if (dinnerOrdered)
                             {
                                 @:@data[index].DinnerPrice:-
+                            }
+                            else {
+                                @:-
                             }
                         </td>
                         <td data-label="Totalt">@(data[index].LunchPrice + data[index].DinnerPrice):-</td>
